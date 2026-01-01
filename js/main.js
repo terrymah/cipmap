@@ -29,7 +29,8 @@ import {
     closeDetailPanel, 
     getSelectedProject,
     checkUrlParams,
-    setOnProjectModified
+    setOnProjectModified,
+    setOnShowCommentDialog
 } from './detail-panel.js';
 import {
     isNoLocationFilterActive,
@@ -45,6 +46,28 @@ import {
     downloadUpdatedCsv,
     setOnLocationEditorStateChanged
 } from './location-editor.js';
+import {
+    loadUser,
+    showUserDialog,
+    hideUserDialog,
+    handleUserDialogOk,
+    validateDialogForm,
+    updateUserIcon,
+    setOnUserChanged,
+    hasUser
+} from './user.js';
+import {
+    loadVotesAndComments,
+    getVote,
+    upvote,
+    downvote,
+    getComments,
+    addComment,
+    hasComments
+} from './votes.js';
+
+// Current project for comment dialog
+let commentProjectId = null;
 
 /**
  * Initialize the application
@@ -90,6 +113,9 @@ async function init() {
             updateLocationEditorUI();
         });
 
+        // Set up comment dialog callback for detail panel
+        setOnShowCommentDialog(showCommentDialog);
+
         // Initialize filters
         initFilters();
         initRangeSliders();
@@ -102,6 +128,16 @@ async function init() {
 
         // Initialize event listeners
         initEventListeners();
+
+        // Load user from cookie and update icon
+        loadUser();
+        updateUserIcon();
+        setOnUserChanged(() => {
+            updateUserIcon();
+        });
+
+        // Load votes and comments from cookies
+        loadVotesAndComments();
 
         // Initial render
         renderProjects();
@@ -187,6 +223,8 @@ function initEventListeners() {
         if (e.key === 'Escape') {
             closeDetailPanel();
             exitLocationAssignMode();
+            hideUserDialog();
+            hideCommentDialog();
             document.getElementById('sidebar').classList.remove('open');
         }
     });
@@ -211,6 +249,43 @@ function initEventListeners() {
     // Cancel location assignment
     document.getElementById('cancelLocationAssign').addEventListener('click', () => {
         exitLocationAssignMode();
+    });
+
+    // User button and dialog
+    document.getElementById('userBtn').addEventListener('click', () => {
+        showUserDialog();
+    });
+
+    document.getElementById('userDialogCancel').addEventListener('click', () => {
+        hideUserDialog();
+    });
+
+    document.getElementById('userDialogOk').addEventListener('click', () => {
+        handleUserDialogOk();
+    });
+
+    document.getElementById('userDialogOverlay').addEventListener('click', () => {
+        hideUserDialog();
+    });
+
+    // Validate user form on input
+    ['userFirstName', 'userLastName', 'userEmail'].forEach(id => {
+        document.getElementById(id).addEventListener('input', () => {
+            validateDialogForm();
+        });
+    });
+
+    // Comment dialog handlers
+    document.getElementById('commentDialogCancel').addEventListener('click', () => {
+        hideCommentDialog();
+    });
+
+    document.getElementById('commentDialogOverlay').addEventListener('click', () => {
+        hideCommentDialog();
+    });
+
+    document.getElementById('commentDialogOk').addEventListener('click', () => {
+        handleCommentDialogOk();
     });
 }
 
@@ -324,6 +399,58 @@ function createProjectCard(project, config) {
         card.classList.add('assigning-location');
     }
 
+    // Vote and comment buttons
+    const upvoteBtn = card.querySelector('.upvote-btn');
+    const downvoteBtn = card.querySelector('.downvote-btn');
+    const commentBtn = card.querySelector('.comment-btn');
+
+    // Set initial vote state
+    const currentVote = getVote(project.id);
+    if (currentVote === 'up') {
+        upvoteBtn.classList.add('active');
+    } else if (currentVote === 'down') {
+        downvoteBtn.classList.add('active');
+    }
+
+    // Set initial comment state
+    if (hasComments(project.id)) {
+        commentBtn.classList.add('has-comments');
+    }
+
+    // Upvote handler
+    upvoteBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (!hasUser()) {
+            showUserDialog('Please provide your information to use this feature');
+            return;
+        }
+        const newVote = upvote(project.id);
+        upvoteBtn.classList.toggle('active', newVote === 'up');
+        downvoteBtn.classList.remove('active');
+    });
+
+    // Downvote handler
+    downvoteBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (!hasUser()) {
+            showUserDialog('Please provide your information to use this feature');
+            return;
+        }
+        const newVote = downvote(project.id);
+        downvoteBtn.classList.toggle('active', newVote === 'down');
+        upvoteBtn.classList.remove('active');
+    });
+
+    // Comment handler
+    commentBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (!hasUser()) {
+            showUserDialog('Please provide your information to use this feature');
+            return;
+        }
+        showCommentDialog(project);
+    });
+
     // Click handler - shift+click for location assignment mode
     card.addEventListener('click', (e) => {
         if (e.shiftKey && isNoLocationFilterActive() && !project.hasLocation) {
@@ -346,6 +473,102 @@ function showError(message) {
     fragment.querySelector('.error-message').textContent = message;
     container.innerHTML = '';
     container.appendChild(fragment);
+}
+
+/**
+ * Show the comment dialog for a project
+ */
+function showCommentDialog(project) {
+    commentProjectId = project.id;
+    
+    const dialog = document.getElementById('commentDialog');
+    const overlay = document.getElementById('commentDialogOverlay');
+    
+    // Set project name
+    document.getElementById('commentProjectName').textContent = project.name;
+    
+    // Clear input
+    document.getElementById('commentInput').value = '';
+    
+    // Render previous comments
+    const previousCommentsContainer = document.getElementById('previousComments');
+    previousCommentsContainer.innerHTML = '';
+    
+    const comments = getComments(project.id);
+    comments.forEach(comment => {
+        const commentEl = document.createElement('div');
+        commentEl.className = 'comment-item';
+        
+        const textEl = document.createElement('div');
+        textEl.className = 'comment-text';
+        textEl.textContent = comment.text;
+        
+        const timeEl = document.createElement('div');
+        timeEl.className = 'comment-time';
+        timeEl.textContent = formatCommentTime(comment.timestamp);
+        
+        commentEl.appendChild(textEl);
+        commentEl.appendChild(timeEl);
+        previousCommentsContainer.appendChild(commentEl);
+    });
+    
+    // Show dialog
+    dialog.hidden = false;
+    overlay.hidden = false;
+    
+    // Focus input
+    document.getElementById('commentInput').focus();
+}
+
+/**
+ * Hide the comment dialog
+ */
+function hideCommentDialog() {
+    const dialog = document.getElementById('commentDialog');
+    const overlay = document.getElementById('commentDialogOverlay');
+    
+    dialog.hidden = true;
+    overlay.hidden = true;
+    commentProjectId = null;
+}
+
+/**
+ * Handle OK button on comment dialog
+ */
+function handleCommentDialogOk() {
+    const input = document.getElementById('commentInput');
+    const commentText = input.value.trim();
+    
+    if (commentText && commentProjectId) {
+        addComment(commentProjectId, commentText);
+        
+        // Update the comment button state in the project list
+        const card = document.querySelector(`.project-card[data-project-id="${commentProjectId}"]`);
+        if (card) {
+            card.querySelector('.comment-btn').classList.add('has-comments');
+        }
+    }
+    
+    hideCommentDialog();
+}
+
+/**
+ * Format comment timestamp for display
+ */
+function formatCommentTime(timestamp) {
+    const date = new Date(timestamp);
+    const now = new Date();
+    const diffMs = now - date;
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMs / 3600000);
+    const diffDays = Math.floor(diffMs / 86400000);
+    
+    if (diffMins < 1) return 'Just now';
+    if (diffMins < 60) return `${diffMins} minute${diffMins !== 1 ? 's' : ''} ago`;
+    if (diffHours < 24) return `${diffHours} hour${diffHours !== 1 ? 's' : ''} ago`;
+    if (diffDays < 7) return `${diffDays} day${diffDays !== 1 ? 's' : ''} ago`;
+    
+    return date.toLocaleDateString();
 }
 
 // Initialize the app when DOM is ready

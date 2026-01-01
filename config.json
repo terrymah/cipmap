@@ -31,5 +31,15 @@
     "department": "Town of Apex Budget & Management Services",
     "email": "budget@apexnc.org",
     "website": "https://www.apexnc.org/cip"
+  },
+  "userLocationPicker": {
+    "center": {
+      "lat": 35.7327,
+      "lng": -78.8503
+    },
+    "zoom": 11,
+    "hexSize": 0.008,
+    "gridCols": 11,
+    "gridRows": 9
   }
 }

@@ -57,6 +57,9 @@
                     <i class="fas fa-download"></i>
                     <span>Download CSV</span>
                 </button>
+                <button class="user-btn" id="userBtn" title="Set your identity">
+                    <i class="fas fa-question"></i>
+                </button>
             </div>
             <button class="mobile-menu-toggle" id="menuToggle" aria-label="Toggle menu">
                 <i class="fas fa-bars"></i>
@@ -206,6 +209,17 @@
                         <span class="meta-badge priority-badge"></span>
                     </div>
                 </div>
+                <div class="project-card-actions">
+                    <button class="vote-btn upvote-btn" title="Upvote this project">
+                        <i class="fas fa-arrow-up"></i>
+                    </button>
+                    <button class="vote-btn downvote-btn" title="Downvote this project">
+                        <i class="fas fa-arrow-down"></i>
+                    </button>
+                    <button class="vote-btn comment-btn" title="Comment on this project">
+                        <i class="fas fa-comment"></i>
+                    </button>
+                </div>
             </div>
             <div class="project-card-funding">
                 <span class="funding-amount"></span>
@@ -264,7 +278,20 @@
                 <i class="fas"></i>
                 <span class="type-label"></span>
             </span>
-            <h2 class="project-name"></h2>
+            <div class="detail-title-row">
+                <h2 class="project-name"></h2>
+                <div class="detail-vote-buttons">
+                    <button class="vote-btn upvote-btn" title="Upvote this project">
+                        <i class="fas fa-arrow-up"></i>
+                    </button>
+                    <button class="vote-btn downvote-btn" title="Downvote this project">
+                        <i class="fas fa-arrow-down"></i>
+                    </button>
+                    <button class="vote-btn comment-btn" title="Comment on this project">
+                        <i class="fas fa-comment"></i>
+                    </button>
+                </div>
+            </div>
             <div class="detail-meta">
                 <span class="meta-badge status-badge"></span>
                 <span class="meta-badge priority-badge"></span>
@@ -351,6 +378,64 @@
             <span class="timeline-date"></span>
         </div>
     </template>
+
+    <!-- User Dialog Overlay -->
+    <div class="dialog-overlay" id="userDialogOverlay" hidden></div>
+    
+    <!-- User Dialog -->
+    <div class="user-dialog" id="userDialog" hidden>
+        <div class="dialog-header">
+            <h2>Your Information</h2>
+            <p class="dialog-banner" id="userDialogBanner" hidden></p>
+        </div>
+        <div class="dialog-body">
+            <div class="form-group">
+                <label for="userFirstName">First Name</label>
+                <input type="text" id="userFirstName" placeholder="Enter your first name">
+            </div>
+            <div class="form-group">
+                <label for="userLastName">Last Name</label>
+                <input type="text" id="userLastName" placeholder="Enter your last name">
+            </div>
+            <div class="form-group">
+                <label for="userEmail">Email</label>
+                <input type="email" id="userEmail" placeholder="Enter your email address">
+            </div>
+            <div class="form-group">
+                <label>Approximate Location</label>
+                <div class="user-location-map" id="userLocationMap"></div>
+                <p class="location-hint" id="userLocationHint">Click on a hexagon to select your area</p>
+            </div>
+        </div>
+        <div class="dialog-footer">
+            <button class="btn btn-secondary" id="userDialogCancel">Cancel</button>
+            <button class="btn btn-primary" id="userDialogOk" disabled>OK</button>
+        </div>
+    </div>
+
+    <!-- Comment Dialog Overlay -->
+    <div class="dialog-overlay" id="commentDialogOverlay" hidden></div>
+    
+    <!-- Comment Dialog -->
+    <div class="comment-dialog" id="commentDialog" hidden>
+        <div class="dialog-header">
+            <h2>Comments</h2>
+            <p class="comment-project-name" id="commentProjectName"></p>
+        </div>
+        <div class="dialog-body">
+            <div class="previous-comments" id="previousComments">
+                <!-- Previous comments will be inserted here -->
+            </div>
+            <div class="form-group">
+                <label for="commentInput">Add a comment</label>
+                <textarea id="commentInput" rows="3" placeholder="Share your thoughts on this project..."></textarea>
+            </div>
+        </div>
+        <div class="dialog-footer">
+            <button class="btn btn-secondary" id="commentDialogCancel">Cancel</button>
+            <button class="btn btn-primary" id="commentDialogOk">OK</button>
+        </div>
+    </div>
 
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" 

@@ -9,6 +9,8 @@ import { cloneTemplate } from './templates.js';
 import { formatCurrency, formatDate, isPastDate } from './utils.js';
 import { panTo, setMapView } from './map.js';
 import { assignLink } from './location-editor.js';
+import { hasUser, showUserDialog } from './user.js';
+import { getVote, upvote, downvote, hasComments } from './votes.js';
 
 // Currently selected project
 let selectedProject = null;
@@ -16,11 +18,21 @@ let selectedProject = null;
 // Callback for when project is modified
 let onProjectModified = null;
 
+// Callback for showing comment dialog (set by main.js)
+let onShowCommentDialog = null;
+
 /**
  * Set callback for project modifications
  */
 export function setOnProjectModified(callback) {
     onProjectModified = callback;
+}
+
+/**
+ * Set callback for showing comment dialog
+ */
+export function setOnShowCommentDialog(callback) {
+    onShowCommentDialog = callback;
 }
 
 /**
@@ -175,6 +187,60 @@ export function showDetailPanel(project) {
         viewMapBtn.hidden = false;
         viewMapBtn.addEventListener('click', () => zoomToProject(project.id));
     }
+
+    // Vote buttons
+    const upvoteBtn = fragment.querySelector('.upvote-btn');
+    const downvoteBtn = fragment.querySelector('.downvote-btn');
+    const commentBtn = fragment.querySelector('.comment-btn');
+
+    // Set initial vote state
+    const currentVote = getVote(project.id);
+    if (currentVote === 'up') {
+        upvoteBtn.classList.add('active');
+    } else if (currentVote === 'down') {
+        downvoteBtn.classList.add('active');
+    }
+
+    // Set initial comment state
+    if (hasComments(project.id)) {
+        commentBtn.classList.add('has-comments');
+    }
+
+    // Upvote handler
+    upvoteBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (!hasUser()) {
+            showUserDialog('Please provide your information to use this feature');
+            return;
+        }
+        const newVote = upvote(project.id);
+        upvoteBtn.classList.toggle('active', newVote === 'up');
+        downvoteBtn.classList.remove('active');
+    });
+
+    // Downvote handler
+    downvoteBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (!hasUser()) {
+            showUserDialog('Please provide your information to use this feature');
+            return;
+        }
+        const newVote = downvote(project.id);
+        downvoteBtn.classList.toggle('active', newVote === 'down');
+        upvoteBtn.classList.remove('active');
+    });
+
+    // Comment handler
+    commentBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (!hasUser()) {
+            showUserDialog('Please provide your information to use this feature');
+            return;
+        }
+        if (onShowCommentDialog) {
+            onShowCommentDialog(project);
+        }
+    });
 
     // Replace content
     const detailContent = document.getElementById('detailContent');
