@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head><title>Debug</title></head>
+<body>
+<pre id="output"></pre>
+<script type="module">
+const out = document.getElementById('output');
+function log(msg) { out.textContent += msg + '\n'; console.log(msg); }
+
+try {
+    log('Importing test harness...');
+    const { testHarness, assert } = await import('./test-harness.js');
+    log('✓ Test harness loaded');
+    
+    log('Importing utils...');
+    const { formatCurrency, formatDate, isPastDate } = await import('../js/utils.js');
+    log('✓ Utils loaded');
+    
+    log('Testing formatCurrency(1000000)...');
+    const result = formatCurrency(1000000);
+    log('  Result: ' + JSON.stringify(result));
+    log('  Expected: "$1.0M"');
+    log('  Match: ' + (result === '$1.0M'));
+    
+    log('Testing formatCurrency(0)...');
+    const result2 = formatCurrency(0);
+    log('  Result: ' + JSON.stringify(result2));
+    log('  Expected: "$0"');
+    log('  Match: ' + (result2 === '$0'));
+    
+    log('Importing parseProject...');
+    const { parseProject } = await import('../js/data.js');
+    log('✓ parseProject loaded');
+    
+    log('Importing fixtures...');
+    const { sampleConfig, sampleCsvRows } = await import('./fixtures.js');
+    log('✓ Fixtures loaded');
+    
+    log('Testing parseProject...');
+    const project = parseProject(sampleCsvRows[0], sampleConfig);
+    log('  Project name: ' + project.name);
+    log('  Total funding: ' + project.totalFunding);
+    
+    log('Importing matchesFilters...');
+    const { matchesFilters } = await import('../js/filters.js');
+    log('✓ matchesFilters loaded');
+    
+    log('\n=== All imports successful ===');
+} catch (e) {
+    log('ERROR: ' + e.message);
+    log(e.stack);
+}
+</script>
+</body>
+</html>

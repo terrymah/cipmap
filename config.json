@@ -1,0 +1,35 @@
+{
+  "title": "Town of Apex Capital Improvement Projects",
+  "subtitle": "FY2025-2030 Capital Improvement Plan",
+  "logo": {
+    "image": "logo.png",
+    "link": "https://visionofthepeak.org",
+    "alt": "Terry Mahaffey"
+  },
+  "mapCenter": {
+    "lat": 35.7327,
+    "lng": -78.8503
+  },
+  "defaultZoom": 13,
+  "minZoom": 10,
+  "maxZoom": 18,
+  "dataFile": "projects_updated.csv",
+  "fundingYears": ["FY25", "FY26", "FY27", "FY28", "FY29", "Future"],
+  "projectTypes": {
+    "Transportation": { "color": "#e74c3c", "icon": "road" },
+    "Parks, Recreation & Cultural Resources": { "color": "#27ae60", "icon": "tree" },
+    "Water & Sewer Utility": { "color": "#3498db", "icon": "water" },
+    "Public Safety": { "color": "#e67e22", "icon": "shield" },
+    "Public Facilities": { "color": "#9b59b6", "icon": "building" },
+    "Stormwater Utility": { "color": "#1abc9c", "icon": "cloud-rain" },
+    "Electric Utility": { "color": "#f1c40f", "icon": "bolt" },
+    "Public Works and Environmental Services": { "color": "#8e44ad", "icon": "truck" }
+  },
+  "statusOptions": ["Planning", "Design", "Bid/Award", "Under Construction", "Completed"],
+  "priorityLevels": ["Critical", "High", "Medium", "Low"],
+  "contact": {
+    "department": "Town of Apex Budget & Management Services",
+    "email": "budget@apexnc.org",
+    "website": "https://www.apexnc.org/cip"
+  }
+}

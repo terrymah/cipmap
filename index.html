@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apex CIP Map</title>
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="icons/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="icons/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/favicon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="icons/favicon-512x512.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/favicon-180x180.png">
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" 
+          crossorigin="">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- App CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-left">
+                <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle project list">
+                    <i class="fas fa-list"></i>
+                </button>
+                <div class="header-content">
+                    <h1 id="app-title">Capital Improvement Projects</h1>
+                    <p id="app-subtitle" class="subtitle"></p>
+                </div>
+            </div>
+            <div class="header-stats">
+                <span id="projectCount">0 Projects</span>
+                <span class="stats-separator">•</span>
+                <span id="totalFunding">$0 Total</span>
+            </div>
+            <div class="header-search">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Search projects...">
+                    <button class="clear-search" id="clearSearch" aria-label="Clear search">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-download" id="downloadCsvBtn" hidden>
+                    <i class="fas fa-download"></i>
+                    <span>Download CSV</span>
+                </button>
+            </div>
+            <button class="mobile-menu-toggle" id="menuToggle" aria-label="Toggle menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Sidebar / Project List -->
+            <aside class="sidebar collapsed" id="sidebar">
+                <!-- Filters -->
+                <div class="filters-section">
+                    <div class="filter-toggles">
+                        <button class="filter-toggle-btn active" id="filterToggle">
+                            <i class="fas fa-filter"></i> Filters
+                        </button>
+                    </div>
+                    
+                    <div class="filters-panel" id="filtersPanel">
+                        <div class="filter-group">
+                            <label>Project Type</label>
+                            <div class="filter-options" id="typeFilters"></div>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label>Status</label>
+                            <div class="filter-options" id="statusFilters"></div>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label>Priority</label>
+                            <div class="filter-options" id="priorityFilters"></div>
+                        </div>
+
+                        <div class="filter-group">
+                            <label>Funding Years</label>
+                            <div class="range-slider-container">
+                                <div class="range-slider" id="fundingYearSlider">
+                                    <div class="range-track">
+                                        <div class="range-fill"></div>
+                                    </div>
+                                    <input type="range" class="range-input range-min" id="fundingYearMin">
+                                    <input type="range" class="range-input range-max" id="fundingYearMax">
+                                </div>
+                                <div class="range-labels">
+                                    <span class="range-label-min" id="fundingYearMinLabel"></span>
+                                    <span class="range-label-max" id="fundingYearMaxLabel"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="filter-group">
+                            <label>Project Timeline</label>
+                            <div class="range-slider-container">
+                                <div class="range-slider" id="timelineSlider">
+                                    <div class="range-track">
+                                        <div class="range-fill"></div>
+                                    </div>
+                                    <input type="range" class="range-input range-min" id="timelineMin">
+                                    <input type="range" class="range-input range-max" id="timelineMax">
+                                </div>
+                                <div class="range-labels">
+                                    <span class="range-label-min" id="timelineMinLabel"></span>
+                                    <span class="range-label-max" id="timelineMaxLabel"></span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="filter-actions">
+                            <label class="checkbox-filter" id="noLocationFilter">
+                                <input type="checkbox" id="noLocationCheckbox">
+                                <span><i class="fas fa-map-marker-alt"></i> Show only projects without location</span>
+                            </label>
+                            <button class="btn btn-secondary" id="clearFilters">Clear All</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project List -->
+                <div class="project-list-section">
+                    <div class="project-list" id="projectList">
+                        <!-- Projects will be inserted here -->
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Location Assignment Banner (hidden by default) -->
+            <div class="location-assign-banner" id="locationAssignBanner" hidden>
+                <span class="banner-text">Click on the map to assign location for:</span>
+                <span class="banner-project" id="bannerProjectName"></span>
+                <button class="btn-cancel" id="cancelLocationAssign">Cancel</button>
+            </div>
+
+            <!-- Map Container -->
+            <div class="map-container">
+                <div id="map"></div>
+                
+                <!-- Floating Logo -->
+                <a class="floating-logo" id="floatingLogo" href="#" target="_blank" rel="noopener" hidden>
+                    <img id="logoImage" src="" alt="">
+                </a>
+                
+                <!-- Map Legend -->
+                <div class="map-legend" id="mapLegend">
+                    <div class="legend-header">
+                        <span>Legend</span>
+                        <button class="legend-toggle" id="legendToggle">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+                    <div class="legend-content" id="legendContent">
+                        <!-- Legend items will be inserted here -->
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Project Detail Modal/Panel -->
+        <div class="project-detail-overlay" id="detailOverlay">
+            <div class="project-detail-panel" id="detailPanel">
+                <button class="close-detail" id="closeDetail" aria-label="Close details">
+                    <i class="fas fa-times"></i>
+                </button>
+                
+                <div class="detail-content" id="detailContent">
+                    <!-- Project details will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         HTML Templates
+         ========================================== -->
+    
+    <!-- Project Card Template -->
+    <template id="template-project-card">
+        <div class="project-card" data-project-id="">
+            <div class="project-card-header">
+                <div class="project-type-icon">
+                    <i class="fas"></i>
+                </div>
+                <div class="project-card-title">
+                    <h3 class="project-name"></h3>
+                    <div class="project-card-meta">
+                        <span class="meta-badge status-badge"></span>
+                        <span class="meta-badge priority-badge"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="project-card-funding">
+                <span class="funding-amount"></span>
+                <span class="no-location-badge" hidden>
+                    <i class="fas fa-map-marker-alt"></i> No location
+                </span>
+            </div>
+        </div>
+    </template>
+
+    <!-- Empty State Template -->
+    <template id="template-empty-state">
+        <div class="empty-state">
+            <i class="fas fa-search"></i>
+            <h3>No projects found</h3>
+            <p>Try adjusting your filters or search terms.</p>
+        </div>
+    </template>
+
+    <!-- Error State Template -->
+    <template id="template-error-state">
+        <div class="empty-state">
+            <i class="fas fa-exclamation-triangle"></i>
+            <h3>Error</h3>
+            <p class="error-message"></p>
+        </div>
+    </template>
+
+    <!-- Map Marker Template -->
+    <template id="template-map-marker">
+        <div class="custom-marker">
+            <i class="fas"></i>
+        </div>
+    </template>
+
+    <!-- Legend Item Template -->
+    <template id="template-legend-item">
+        <div class="legend-item">
+            <div class="legend-color"></div>
+            <span class="legend-label"></span>
+        </div>
+    </template>
+
+    <!-- Filter Chip Template -->
+    <template id="template-filter-chip">
+        <button class="filter-chip">
+            <span class="color-dot" hidden></span>
+            <span class="chip-label"></span>
+        </button>
+    </template>
+
+    <!-- Project Detail Template -->
+    <template id="template-project-detail">
+        <div class="detail-header">
+            <span class="detail-type-badge">
+                <i class="fas"></i>
+                <span class="type-label"></span>
+            </span>
+            <h2 class="project-name"></h2>
+            <div class="detail-meta">
+                <span class="meta-badge status-badge"></span>
+                <span class="meta-badge priority-badge"></span>
+            </div>
+        </div>
+
+        <div class="detail-section">
+            <h3>Description</h3>
+            <p class="detail-description"></p>
+        </div>
+
+        <div class="detail-section location-section" hidden>
+            <h3>Location</h3>
+            <p class="detail-location">
+                <i class="fas fa-map-marker-alt"></i>
+                <span class="location-name"></span>
+            </p>
+        </div>
+
+        <div class="detail-section">
+            <h3>Funding Plan</h3>
+            <table class="funding-table">
+                <thead>
+                    <tr>
+                        <th>Fiscal Year</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody class="funding-body">
+                    <!-- Funding rows inserted here -->
+                </tbody>
+            </table>
+            <p class="funding-source-text" style="margin-top: 10px; font-size: 0.85rem; color: var(--text-secondary);" hidden>
+                <strong>Funding Source:</strong> <span class="funding-source"></span>
+            </p>
+        </div>
+
+        <div class="detail-section timeline-section" hidden>
+            <h3>Timeline</h3>
+            <div class="timeline">
+                <!-- Timeline items inserted here -->
+            </div>
+        </div>
+
+        <div class="detail-section department-section" hidden>
+            <h3>Responsible Department</h3>
+            <p class="department-name"></p>
+        </div>
+
+        <div class="detail-actions">
+            <a href="" target="_blank" rel="noopener noreferrer" class="btn btn-primary learn-more-btn" hidden>
+                <i class="fas fa-external-link-alt"></i> Learn More
+            </a>
+            <button class="btn btn-outline add-link-btn" hidden>
+                <i class="fas fa-link"></i> Add Link
+            </button>
+            <button class="btn btn-secondary view-map-btn" hidden>
+                <i class="fas fa-map-marker-alt"></i> View on Map
+            </button>
+        </div>
+    </template>
+
+    <!-- Funding Row Template -->
+    <template id="template-funding-row">
+        <tr>
+            <td class="fiscal-year"></td>
+            <td class="fiscal-amount"></td>
+        </tr>
+    </template>
+
+    <!-- Funding Total Row Template -->
+    <template id="template-funding-total">
+        <tr class="total-row">
+            <td><strong>Total</strong></td>
+            <td><strong class="total-amount"></strong></td>
+        </tr>
+    </template>
+
+    <!-- Timeline Item Template -->
+    <template id="template-timeline-item">
+        <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <span class="timeline-label"></span>
+            <span class="timeline-date"></span>
+        </div>
+    </template>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" 
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" 
+            crossorigin=""></script>
+    
+    <!-- PapaParse for CSV -->
+    <script src="https://unpkg.com/papaparse@5.4.1/papaparse.min.js"></script>
+    
+    <!-- App JS (ES6 Modules) -->
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
