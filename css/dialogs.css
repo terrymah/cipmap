@@ -1,0 +1,351 @@
+/* ========================================
+   User Button & Dialog
+   ======================================== */
+
+/* User button in header */
+.user-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    transition: var(--transition);
+}
+
+.user-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.8);
+}
+
+.user-btn.has-user {
+    background: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+.user-btn.has-user:hover {
+    background: #2980b9;
+    border-color: #2980b9;
+}
+
+/* Dialog overlay */
+.dialog-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+}
+
+.dialog-overlay:not([hidden]) {
+    display: block;
+}
+
+/* User dialog */
+.user-dialog {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--card-background);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    z-index: 2001;
+    width: 90%;
+    max-width: 450px;
+    max-height: 90vh;
+    overflow: hidden;
+    flex-direction: column;
+}
+
+.user-dialog:not([hidden]) {
+    display: flex;
+}
+
+.dialog-header {
+    padding: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.dialog-header h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.dialog-body {
+    padding: 20px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.dialog-body .form-group {
+    margin-bottom: 16px;
+}
+
+.dialog-body .form-group:last-child {
+    margin-bottom: 0;
+}
+
+.dialog-body label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+}
+
+.dialog-body input[type="text"],
+.dialog-body input[type="email"] {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-size: 0.95rem;
+    transition: var(--transition);
+}
+
+.dialog-body input[type="text"]:focus,
+.dialog-body input[type="email"]:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
+}
+
+/* User location map in dialog */
+.user-location-map {
+    width: 100%;
+    height: 200px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+}
+
+/* Hex cell styling */
+.user-location-map .hex-cell {
+    cursor: pointer;
+}
+
+.location-hint {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-top: 8px;
+    text-align: center;
+}
+
+.location-hint.location-set {
+    color: var(--success-color);
+}
+
+.dialog-footer {
+    padding: 16px 20px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.dialog-footer .btn {
+    padding: 10px 20px;
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.dialog-footer .btn-secondary {
+    background: var(--background-color);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+}
+
+.dialog-footer .btn-secondary:hover {
+    background: var(--border-color);
+}
+
+.dialog-footer .btn-primary {
+    background: var(--secondary-color);
+    border: none;
+    color: white;
+}
+
+.dialog-footer .btn-primary:hover:not(:disabled) {
+    background: #2980b9;
+}
+
+.dialog-footer .btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ========================================
+   Vote & Comment Buttons
+   ======================================== */
+
+.project-card-actions {
+    display: flex;
+    gap: 0;
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+.vote-btn {
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    transition: var(--transition);
+}
+
+.vote-btn:hover {
+    background: var(--background-color);
+    color: var(--text-primary);
+}
+
+.vote-btn.upvote-btn.active {
+    color: var(--success-color);
+    background: rgba(39, 174, 96, 0.1);
+}
+
+.vote-btn.upvote-btn.active i {
+    font-weight: 900;
+}
+
+.vote-btn.downvote-btn.active {
+    color: var(--accent-color);
+    background: rgba(231, 76, 60, 0.1);
+}
+
+.vote-btn.downvote-btn.active i {
+    font-weight: 900;
+}
+
+.vote-btn.comment-btn.has-comments {
+    color: var(--secondary-color);
+    background: rgba(52, 152, 219, 0.1);
+}
+
+.vote-btn.comment-btn.has-comments i {
+    font-weight: 900;
+}
+
+/* ========================================
+   Comment Dialog
+   ======================================== */
+
+.comment-dialog {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--card-background);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    z-index: 2001;
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow: hidden;
+    flex-direction: column;
+}
+
+.comment-dialog:not([hidden]) {
+    display: flex;
+}
+
+.comment-project-name {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-top: 4px;
+}
+
+.previous-comments {
+    max-height: 200px;
+    overflow-y: auto;
+    margin-bottom: 16px;
+}
+
+.previous-comments:empty {
+    display: none;
+}
+
+.previous-comments:not(:empty)::before {
+    content: 'Your previous comments:';
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.comment-item {
+    background: var(--background-color);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    margin-bottom: 8px;
+}
+
+.comment-item:last-child {
+    margin-bottom: 0;
+}
+
+.comment-item .comment-text {
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.comment-item .comment-time {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.dialog-body textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-size: 0.95rem;
+    font-family: inherit;
+    resize: vertical;
+    transition: var(--transition);
+}
+
+.dialog-body textarea:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
+}
+
+/* Dialog banner (for user info required message) */
+.dialog-banner {
+    display: none;
+    background: var(--warning-color);
+    color: white;
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    margin-top: 10px;
+}
+
+.dialog-banner:not([hidden]) {
+    display: block;
+}

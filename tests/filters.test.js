@@ -99,7 +99,7 @@ describe('matchesFilters - status filter', () => {
     });
 
     it('does not match when status is not in filter list', () => {
-        const filters = { ...emptyFilters(), statuses: ['Complete'] };
+        const filters = { ...emptyFilters(), statuses: ['Completed'] };
         const project = sampleProjects[0]; // Design status
         
         assert.equal(matchesFilters(project, filters, sampleConfig), false);

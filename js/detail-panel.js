@@ -9,8 +9,7 @@ import { cloneTemplate } from './templates.js';
 import { formatCurrency, formatDate, isPastDate } from './utils.js';
 import { panTo, setMapView } from './map.js';
 import { assignLink } from './location-editor.js';
-import { hasUser, showUserDialog } from './user.js';
-import { getVote, upvote, downvote, hasComments } from './votes.js';
+import { wireVoteButtons } from './vote-buttons.js';
 
 // Currently selected project
 let selectedProject = null;
@@ -122,6 +121,9 @@ export function showDetailPanel(project) {
 
     // Funding total row
     const totalFragment = cloneTemplate('funding-total');
+    if (project.hasExplicitTotalCost) {
+        totalFragment.querySelector('.total-label').textContent = 'Total*';
+    }
     totalFragment.querySelector('.total-amount').textContent = formatCurrency(project.totalFunding);
     fundingBody.appendChild(totalFragment);
 
@@ -130,6 +132,11 @@ export function showDetailPanel(project) {
         const sourceText = fragment.querySelector('.funding-source-text');
         sourceText.hidden = false;
         sourceText.querySelector('.funding-source').textContent = project.fundingSource.join(', ');
+    }
+
+    // Show funding note if using explicit total cost
+    if (project.hasExplicitTotalCost) {
+        fragment.querySelector('.funding-note').hidden = false;
     }
 
     // Timeline (conditional)
@@ -188,66 +195,22 @@ export function showDetailPanel(project) {
         viewMapBtn.addEventListener('click', () => zoomToProject(project.id));
     }
 
-    // Vote buttons
-    const upvoteBtn = fragment.querySelector('.upvote-btn');
-    const downvoteBtn = fragment.querySelector('.downvote-btn');
-    const commentBtn = fragment.querySelector('.comment-btn');
-
-    // Set initial vote state
-    const currentVote = getVote(project.id);
-    if (currentVote === 'up') {
-        upvoteBtn.classList.add('active');
-    } else if (currentVote === 'down') {
-        downvoteBtn.classList.add('active');
-    }
-
-    // Set initial comment state
-    if (hasComments(project.id)) {
-        commentBtn.classList.add('has-comments');
-    }
-
-    // Upvote handler
-    upvoteBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        if (!hasUser()) {
-            showUserDialog('Please provide your information to use this feature');
-            return;
-        }
-        const newVote = upvote(project.id);
-        upvoteBtn.classList.toggle('active', newVote === 'up');
-        downvoteBtn.classList.remove('active');
-    });
-
-    // Downvote handler
-    downvoteBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        if (!hasUser()) {
-            showUserDialog('Please provide your information to use this feature');
-            return;
-        }
-        const newVote = downvote(project.id);
-        downvoteBtn.classList.toggle('active', newVote === 'down');
-        upvoteBtn.classList.remove('active');
-    });
-
-    // Comment handler
-    commentBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        if (!hasUser()) {
-            showUserDialog('Please provide your information to use this feature');
-            return;
-        }
-        if (onShowCommentDialog) {
-            onShowCommentDialog(project);
-        }
-    });
+    // Wire up vote buttons
+    wireVoteButtons(fragment, project, onShowCommentDialog);
 
     // Replace content
     const detailContent = document.getElementById('detailContent');
     detailContent.innerHTML = '';
     detailContent.appendChild(fragment);
 
+    // Show panel and reset scroll position
+    const detailPanel = document.getElementById('detailPanel');
     document.getElementById('detailOverlay').classList.add('open');
+    
+    // Reset scroll after panel is displayed
+    requestAnimationFrame(() => {
+        detailPanel.scrollTop = 0;
+    });
 }
 
 /**

@@ -327,6 +327,9 @@
             <p class="funding-source-text" style="margin-top: 10px; font-size: 0.85rem; color: var(--text-secondary);" hidden>
                 <strong>Funding Source:</strong> <span class="funding-source"></span>
             </p>
+            <p class="funding-note" style="margin-top: 8px; font-size: 0.8rem; font-style: italic; color: var(--text-secondary);" hidden>
+                * Total includes funding from years or sources not listed here
+            </p>
         </div>
 
         <div class="detail-section timeline-section" hidden>
@@ -365,7 +368,7 @@
     <!-- Funding Total Row Template -->
     <template id="template-funding-total">
         <tr class="total-row">
-            <td><strong>Total</strong></td>
+            <td><strong><span class="total-label">Total</span></strong></td>
             <td><strong class="total-amount"></strong></td>
         </tr>
     </template>

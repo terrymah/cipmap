@@ -20,6 +20,7 @@ let filters = {
 // Range slider bounds
 let fundingYearBounds = null;
 let timelineBounds = null;
+let futureYear = null; // The year value used to represent "Future"
 
 // Callbacks for filter changes
 let onFiltersChanged = null;
@@ -63,8 +64,8 @@ export function matchesFilters(project, filterCriteria, config) {
         const { min, max } = filterCriteria.fundingYearRange;
         const hasFundingInRange = config.fundingYears.some(fy => {
             if (fy === 'Future') {
-                // Future is included when max is at the "Future" position (9999)
-                return max >= 9999 && (project.fundingYears['Future'] || 0) > 0;
+                // Future is included when max is at the "Future" position
+                return max >= futureYear && (project.fundingYears['Future'] || 0) > 0;
             }
             const match = fy.match(/\d+/);
             if (!match) return false;
@@ -208,12 +209,14 @@ export function initRangeSliders() {
         return match ? parseInt(match[0]) + 2000 : null;
     }).filter(Boolean);
     
-    // Add 9999 to represent "Future" as the last notch
+    // Use the year after the last fiscal year for "Future" (e.g., FY29 -> 2030)
     const hasFuture = config.fundingYears.includes('Future');
+    const lastFyYear = Math.max(...fyNumbers);
+    futureYear = lastFyYear + 1;
     
     fundingYearBounds = {
         min: Math.min(...fyNumbers),
-        max: hasFuture ? 9999 : Math.max(...fyNumbers)
+        max: hasFuture ? futureYear : lastFyYear
     };
 
     // Determine timeline bounds from projects
@@ -245,7 +248,7 @@ export function initRangeSliders() {
             filters.fundingYearRange = { min, max };
             applyFilters();
         },
-        (val) => val >= 9999 ? 'Future' : `FY${String(val).slice(-2)}`
+        (val) => val >= futureYear ? 'Future' : `FY${String(val).slice(-2)}`
     );
 
     // Initialize timeline slider
@@ -382,7 +385,7 @@ export function clearAllFilters() {
         document.getElementById('fundingYearMax').value = fundingYearBounds.max;
         updateRangeSliderUI('fundingYearSlider', 'fundingYearMinLabel', 'fundingYearMaxLabel', 
             fundingYearBounds.min, fundingYearBounds.max, fundingYearBounds,
-            (val) => `FY${String(val).slice(-2)}`);
+            (val) => val >= futureYear ? 'Future' : `FY${String(val).slice(-2)}`);
     }
     if (timelineBounds) {
         document.getElementById('timelineMin').value = timelineBounds.min;

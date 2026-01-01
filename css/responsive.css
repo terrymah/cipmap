@@ -1,0 +1,121 @@
+/* ========================================
+   Mobile Responsive Styles
+   ======================================== */
+@media (max-width: 768px) {
+    .mobile-menu-toggle {
+        display: block;
+    }
+
+    .sidebar-toggle {
+        display: none;
+    }
+
+    .header-search {
+        display: none;
+    }
+
+    .header-content .subtitle {
+        display: none;
+    }
+
+    .main-content {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        position: fixed;
+        top: var(--header-height);
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        z-index: 900;
+    }
+
+    .sidebar.collapsed {
+        width: 100%;
+        transform: translateX(-100%);
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+
+    .sidebar.open .filters-section,
+    .sidebar.open .project-list-section {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .map-container {
+        height: calc(100vh - var(--header-height));
+    }
+
+    .map-legend {
+        bottom: 20px;
+        right: 10px;
+        left: 10px;
+        min-width: auto;
+    }
+
+    /* Full screen detail panel on mobile */
+    .project-detail-overlay {
+        align-items: flex-end;
+    }
+
+    .project-detail-panel {
+        width: 100%;
+        max-width: 100%;
+        max-height: 90vh;
+        border-radius: var(--radius) var(--radius) 0 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-content h1 {
+        font-size: 1.1rem;
+    }
+
+    .header-content .subtitle {
+        display: none;
+    }
+
+    .filter-chip {
+        font-size: 0.75rem;
+        padding: 4px 10px;
+    }
+
+    .project-card {
+        padding: 10px;
+    }
+
+    .project-card-title h3 {
+        font-size: 0.9rem;
+    }
+}
+
+/* ========================================
+   Scrollbar Styles
+   ======================================== */
+.project-list::-webkit-scrollbar,
+.project-detail-panel::-webkit-scrollbar {
+    width: 8px;
+}
+
+.project-list::-webkit-scrollbar-track,
+.project-detail-panel::-webkit-scrollbar-track {
+    background: var(--background-color);
+}
+
+.project-list::-webkit-scrollbar-thumb,
+.project-detail-panel::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+.project-list::-webkit-scrollbar-thumb:hover,
+.project-detail-panel::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
+}
+

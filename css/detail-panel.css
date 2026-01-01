@@ -1,0 +1,238 @@
+/* ========================================
+   Project Detail Panel
+   ======================================== */
+.project-detail-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.project-detail-overlay.open {
+    display: flex;
+}
+
+.project-detail-panel {
+    background: var(--card-background);
+    border-radius: var(--radius);
+    max-width: 600px;
+    width: 90%;
+    max-height: 85vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: var(--shadow-lg);
+}
+
+.close-detail {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: var(--background-color);
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: var(--transition);
+}
+
+.close-detail:hover {
+    background: var(--border-color);
+}
+
+.detail-content {
+    padding: 25px;
+}
+
+.detail-header {
+    margin-bottom: 20px;
+}
+
+.detail-type-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    color: white;
+    margin-bottom: 10px;
+}
+
+.detail-header h2 {
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+}
+
+.detail-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.detail-title-row h2 {
+    flex: 1;
+    margin: 0;
+}
+
+.detail-vote-buttons {
+    display: flex;
+    gap: 0;
+    flex-shrink: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.detail-vote-buttons .vote-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+}
+
+.detail-meta {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.detail-section {
+    margin-bottom: 20px;
+}
+
+.detail-section h3 {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.detail-description {
+    color: var(--text-primary);
+    line-height: 1.7;
+}
+
+.detail-location {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-secondary);
+}
+
+.detail-location i {
+    color: var(--accent-color);
+}
+
+/* Funding Table */
+.funding-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.funding-table th,
+.funding-table td {
+    padding: 10px 12px;
+    text-align: right;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.funding-table th {
+    background: var(--background-color);
+    font-weight: 600;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.funding-table th:first-child,
+.funding-table td:first-child {
+    text-align: left;
+}
+
+.funding-table tr:last-child td {
+    border-bottom: none;
+}
+
+.funding-table .total-row {
+    font-weight: 600;
+    background: var(--background-color);
+}
+
+.funding-table .total-row td {
+    border-top: 2px solid var(--border-color);
+}
+
+/* Timeline */
+.timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.timeline-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.timeline-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--border-color);
+    flex-shrink: 0;
+}
+
+.timeline-dot.active {
+    background: var(--success-color);
+}
+
+.timeline-dot.future {
+    background: var(--secondary-color);
+}
+
+.timeline-label {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    min-width: 120px;
+}
+
+.timeline-date {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Detail Actions - bottom action buttons */
+.detail-actions {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    gap: 10px;
+}
+
+.btn-primary {
+    background: var(--secondary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #2980b9;
+}
+
+.btn i {
+    margin-right: 6px;
+}
+

@@ -4,6 +4,8 @@
  * Stored in cookies until API integration
  */
 
+import { getCookie, setCookie } from './cookies.js';
+
 const VOTES_COOKIE_NAME = 'cipmap_votes';
 const COMMENTS_COOKIE_NAME = 'cipmap_comments';
 const COOKIE_DAYS = 365;
@@ -113,34 +115,12 @@ export function hasComments(projectId) {
  * Save votes to cookie
  */
 function saveVotesToCookie() {
-    const expires = new Date();
-    expires.setTime(expires.getTime() + COOKIE_DAYS * 24 * 60 * 60 * 1000);
-    const cookieValue = encodeURIComponent(JSON.stringify(userVotes));
-    document.cookie = `${VOTES_COOKIE_NAME}=${cookieValue};expires=${expires.toUTCString()};path=/;SameSite=Lax`;
+    setCookie(VOTES_COOKIE_NAME, JSON.stringify(userVotes), COOKIE_DAYS);
 }
 
 /**
  * Save comments to cookie
  */
 function saveCommentsToCookie() {
-    const expires = new Date();
-    expires.setTime(expires.getTime() + COOKIE_DAYS * 24 * 60 * 60 * 1000);
-    const cookieValue = encodeURIComponent(JSON.stringify(userComments));
-    document.cookie = `${COMMENTS_COOKIE_NAME}=${cookieValue};expires=${expires.toUTCString()};path=/;SameSite=Lax`;
-}
-
-/**
- * Get cookie value
- */
-function getCookie(name) {
-    const nameEQ = name + '=';
-    const ca = document.cookie.split(';');
-    for (let i = 0; i < ca.length; i++) {
-        let c = ca[i];
-        while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-        if (c.indexOf(nameEQ) === 0) {
-            return decodeURIComponent(c.substring(nameEQ.length, c.length));
-        }
-    }
-    return null;
+    setCookie(COMMENTS_COOKIE_NAME, JSON.stringify(userComments), COOKIE_DAYS);
 }

@@ -73,7 +73,7 @@ export function initMap() {
  */
 export function invalidateMapSize() {
     if (map) {
-        map.invalidateSize();
+        map.invalidateSize({ pan: false });
     }
 }
 

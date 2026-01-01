@@ -84,6 +84,14 @@ export function parseProject(row, config) {
     const futureFunding = parseCurrency(row.funding_future);
     fundingYears['Future'] = futureFunding;
     totalFunding += futureFunding;
+
+    // Use explicit total_cost if provided, otherwise use calculated sum
+    const explicitTotalCost = parseCurrency(row.total_cost);
+    let hasExplicitTotalCost = false;
+    if (explicitTotalCost > 0) {
+        totalFunding = explicitTotalCost;
+        hasExplicitTotalCost = true;
+    }
     
     // If only future funding, note that
     if (futureFunding > 0 && !lastFundedYear) {
@@ -126,6 +134,7 @@ export function parseProject(row, config) {
         hasLocation: !!(row.lat && row.lng),
         fundingYears,
         totalFunding,
+        hasExplicitTotalCost,
         fundingSource,
         department: row.department || null,
         startDate: parseDate(row.start_date, inferredStartDate),

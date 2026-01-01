@@ -5,6 +5,7 @@
  */
 
 import { getConfig } from './config.js';
+import { getCookie, setCookie, deleteCookie } from './cookies.js';
 
 const COOKIE_NAME = 'cipmap_user';
 const COOKIE_DAYS = 365;
@@ -60,7 +61,7 @@ export function setUser(user) {
  */
 export function clearUser() {
     currentUser = null;
-    deleteCookie();
+    deleteCookie(COOKIE_NAME);
     if (onUserChanged) onUserChanged(null);
 }
 
@@ -122,33 +123,7 @@ function isValidEmail(email) {
  * Save user to cookie
  */
 function saveToCookie(user) {
-    const expires = new Date();
-    expires.setTime(expires.getTime() + COOKIE_DAYS * 24 * 60 * 60 * 1000);
-    const cookieValue = encodeURIComponent(JSON.stringify(user));
-    document.cookie = `${COOKIE_NAME}=${cookieValue};expires=${expires.toUTCString()};path=/;SameSite=Lax`;
-}
-
-/**
- * Get cookie value
- */
-function getCookie(name) {
-    const nameEQ = name + '=';
-    const ca = document.cookie.split(';');
-    for (let i = 0; i < ca.length; i++) {
-        let c = ca[i];
-        while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-        if (c.indexOf(nameEQ) === 0) {
-            return decodeURIComponent(c.substring(nameEQ.length, c.length));
-        }
-    }
-    return null;
-}
-
-/**
- * Delete cookie
- */
-function deleteCookie() {
-    document.cookie = `${COOKIE_NAME}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;`;
+    setCookie(COOKIE_NAME, JSON.stringify(user), COOKIE_DAYS);
 }
 
 /**

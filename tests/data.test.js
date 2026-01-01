@@ -64,6 +64,24 @@ describe('parseProject', () => {
         assert.equal(project.totalFunding, 5100000); // 100K FY29 + 5M Future
     });
 
+    it('uses explicit total_cost when provided', () => {
+        const row = { ...sampleCsvRows[0], total_cost: '10000000' };
+        const project = parseProject(row, sampleConfig);
+        
+        // Should use explicit total_cost instead of sum of funding columns
+        assert.equal(project.totalFunding, 10000000);
+        assert.equal(project.hasExplicitTotalCost, true);
+    });
+
+    it('falls back to calculated sum when total_cost is empty', () => {
+        const row = { ...sampleCsvRows[0], total_cost: '' };
+        const project = parseProject(row, sampleConfig);
+        
+        // Should use sum of funding columns (500K + 1.5M = 2M)
+        assert.equal(project.totalFunding, 2000000);
+        assert.equal(project.hasExplicitTotalCost, false);
+    });
+
     it('converts empty strings to null for optional fields', () => {
         const row = sampleCsvRows[1]; // Central Park - missing constructionStart and link
         const project = parseProject(row, sampleConfig);
@@ -149,7 +167,7 @@ describe('parseProject - defaults and inference', () => {
     it('uses default status when missing', () => {
         const row = { ...sampleCsvRows[0], status: '' };
         const project = parseProject(row, sampleConfig);
-        assert.equal(project.status, 'Planning'); // First in config
+        assert.equal(project.status, 'Not Started'); // First in config
     });
 
     it('uses default priority when missing', () => {

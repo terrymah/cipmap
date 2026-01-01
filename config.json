@@ -25,12 +25,15 @@
     "Electric Utility": { "color": "#f1c40f", "icon": "bolt" },
     "Public Works and Environmental Services": { "color": "#8e44ad", "icon": "truck" }
   },
-  "statusOptions": ["Planning", "Design", "Bid/Award", "Under Construction", "Completed"],
+  "statusOptions": ["Not Started", "Ongoing", "Planning", "Design", "Bid/Award", "Aquisition", "Construction", "Completed"],
   "priorityLevels": ["Critical", "High", "Medium", "Low"],
   "contact": {
     "department": "Town of Apex Budget & Management Services",
     "email": "budget@apexnc.org",
     "website": "https://www.apexnc.org/cip"
+  },
+  "cookies": {
+    "expirationDays": 365
   },
   "userLocationPicker": {
     "center": {
@@ -40,6 +43,15 @@
     "zoom": 11,
     "hexSize": 0.008,
     "gridCols": 11,
-    "gridRows": 9
+    "gridRows": 9,
+    "colors": {
+      "defaultBorder": "rgba(150, 150, 150, 0.5)",
+      "defaultFill": "#3498db",
+      "defaultFillOpacity": 0.05,
+      "hoverFillOpacity": 0.3,
+      "selectedBorder": "#27ae60",
+      "selectedFill": "#27ae60",
+      "selectedFillOpacity": 0.4
+    }
   }
 }

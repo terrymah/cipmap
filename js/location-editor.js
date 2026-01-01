@@ -178,7 +178,7 @@ export function generateUpdatedCsv() {
     });
     
     // Add remaining columns
-    headers.push('funding_source', 'department', 'start_date', 'construction_start', 'end_date', 'link');
+    headers.push('total_cost', 'funding_source', 'department', 'start_date', 'construction_start', 'end_date', 'link');
     
     // Build rows
     const rows = [headers.join(',')];
@@ -203,6 +203,7 @@ export function generateUpdatedCsv() {
         
         // Add remaining fields
         values.push(
+            project.hasExplicitTotalCost ? project.totalFunding : '',
             escapeCsvValue(Array.isArray(project.fundingSource) ? project.fundingSource.join(', ') : (project.fundingSource || '')),
             escapeCsvValue(project.department || ''),
             escapeCsvValue(project.isOngoing && !project.startDate ? '*' : (project.startDate || '')),

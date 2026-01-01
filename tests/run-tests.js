@@ -189,6 +189,14 @@ function parseProject(row, config) {
     const futureFunding = parseCurrency(row.funding_future);
     fundingYears['Future'] = futureFunding;
     totalFunding += futureFunding;
+
+    // Use explicit total_cost if provided, otherwise use calculated sum
+    const explicitTotalCost = parseCurrency(row.total_cost);
+    let hasExplicitTotalCost = false;
+    if (explicitTotalCost > 0) {
+        totalFunding = explicitTotalCost;
+        hasExplicitTotalCost = true;
+    }
     
     if (futureFunding > 0 && !lastFundedYear) {
         lastFundedYear = 'Future';
@@ -227,6 +235,7 @@ function parseProject(row, config) {
         hasLocation: !!(row.lat && row.lng),
         fundingYears,
         totalFunding,
+        hasExplicitTotalCost,
         fundingSource,
         department: row.department || null,
         startDate: parseDate(row.start_date, inferredStartDate),
@@ -308,7 +317,7 @@ const sampleConfig = {
         "Water": { color: "#2980b9", icon: "tint" },
         "Facilities": { color: "#9b59b6", icon: "building" }
     },
-    statusOptions: ["Planning", "Design", "Under Construction", "Complete"],
+    statusOptions: ["Not Started", "Ongoing", "Planning", "Design", "Bid/Award", "Aquisition", "Construction", "Completed"],
     priorityLevels: ["High", "Medium", "Low"]
 };
 
@@ -363,7 +372,7 @@ const sampleCsvRows = [
         id: "proj-003",
         name: "Water Treatment Upgrade",
         type: "Water",
-        status: "Under Construction",
+        status: "Construction",
         priority: "High",
         description: "Upgrading water treatment capacity",
         location_name: "Water Treatment Plant",
@@ -386,7 +395,7 @@ const sampleCsvRows = [
         id: "proj-004",
         name: "City Hall Renovation",
         type: "Facilities",
-        status: "Complete",
+        status: "Completed",
         priority: "Low",
         description: "Interior renovation of City Hall",
         location_name: "",
@@ -637,7 +646,7 @@ describe('matchesFilters - status filter', () => {
     });
 
     it('does not match when status is not in filter list', () => {
-        const filters = { ...emptyFilters(), statuses: ['Complete'] };
+        const filters = { ...emptyFilters(), statuses: ['Completed'] };
         assert.equal(matchesFilters(sampleProjects[0], filters, sampleConfig), false);
     });
 });
