@@ -122,6 +122,10 @@
 
     .sidebar-close {
         display: flex;
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     .sidebar .filters-section {
