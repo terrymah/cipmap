@@ -15,10 +15,10 @@
 }
 
 .sidebar-close {
-    display: none;
-    position: absolute;
-    top: 15px;
-    right: 15px;
+    display: flex;
+    position: fixed;
+    top: calc(var(--header-height) + 15px);
+    left: calc(var(--sidebar-width) - 47px);
     width: 32px;
     height: 32px;
     background: var(--background-color);
@@ -26,7 +26,7 @@
     border-radius: 50%;
     cursor: pointer;
     color: var(--text-secondary);
-    z-index: 10;
+    z-index: 600;
     align-items: center;
     justify-content: center;
     transition: var(--transition);
@@ -35,6 +35,11 @@
 
 .sidebar-close:hover {
     background: var(--border-color);
+}
+
+/* Hide close button when sidebar is collapsed */
+.sidebar.collapsed ~ .sidebar-close {
+    display: none;
 }
 
 .sidebar.collapsed {

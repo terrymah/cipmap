@@ -49,10 +49,15 @@ export function initEventListeners(callbacks) {
         sidebarClose.classList.toggle('visible', sidebar.classList.contains('open'));
     });
 
-    // Mobile sidebar close button
+    // Sidebar close button (works for both mobile and desktop)
     sidebarClose.addEventListener('click', () => {
+        // Mobile
         sidebar.classList.remove('open');
         sidebarClose.classList.remove('visible');
+        // Desktop
+        sidebar.classList.add('collapsed');
+        sidebarToggle.classList.remove('active');
+        setTimeout(() => invalidateMapSize(), 350);
     });
 
     // Search input
@@ -107,8 +112,13 @@ export function initEventListeners(callbacks) {
             exitLocationAssignMode();
             hideUserDialog();
             hideCommentDialog();
+            // Mobile sidebar
             document.getElementById('sidebar').classList.remove('open');
             document.getElementById('sidebarClose').classList.remove('visible');
+            // Desktop sidebar
+            sidebar.classList.add('collapsed');
+            sidebarToggle.classList.remove('active');
+            setTimeout(() => invalidateMapSize(), 350);
         }
     });
 

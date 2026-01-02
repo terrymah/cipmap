@@ -135,7 +135,7 @@
         pointer-events: auto;
     }
 
-    /* Sidebar close button - shown when sidebar is open */
+    /* Sidebar close button - fixed position on mobile for floating effect */
     .sidebar-close {
         display: none;
         position: fixed;
@@ -144,6 +144,8 @@
         z-index: 1200; /* Above sidebar */
     }
 
+    /* Override the desktop collapsed rule - on mobile, .visible takes precedence */
+    .sidebar.collapsed ~ .sidebar-close.visible,
     .sidebar-close.visible {
         display: flex;
     }
@@ -160,9 +162,10 @@
     }
 
     /* Position legend and logo higher to avoid mobile browser UI */
-    /* Use safe-area-inset-bottom for devices with home indicators/notches */
+    /* Chrome doesn't support safe-area-inset like Safari, so use larger base offset */
+    /* 80px base works for Chrome bottom bar, env() adds extra for iOS home indicator */
     .map-legend {
-        bottom: calc(60px + env(safe-area-inset-bottom, 0px));
+        bottom: calc(80px + env(safe-area-inset-bottom, 0px));
         right: 10px;
         left: auto;
         width: 60%;
@@ -172,7 +175,7 @@
 
     /* Smaller logo on mobile, positioned left to not overlap legend */
     .floating-logo {
-        bottom: calc(60px + env(safe-area-inset-bottom, 0px));
+        bottom: calc(80px + env(safe-area-inset-bottom, 0px));
         right: auto;
         left: 10px;
         width: 20%;

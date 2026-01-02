@@ -68,11 +68,6 @@
 
         <!-- Main Content -->
         <main class="main-content">
-            <!-- Mobile sidebar close button (outside sidebar for proper fixed positioning) -->
-            <button class="sidebar-close" id="sidebarClose" aria-label="Close sidebar">
-                <i class="fas fa-times"></i>
-            </button>
-            
             <!-- Sidebar / Project List -->
             <aside class="sidebar collapsed" id="sidebar">
                 <!-- Filters -->
@@ -150,6 +145,11 @@
                     </div>
                 </div>
             </aside>
+            
+            <!-- Sidebar close button (after sidebar for CSS sibling selector) -->
+            <button class="sidebar-close" id="sidebarClose" aria-label="Close sidebar">
+                <i class="fas fa-times"></i>
+            </button>
 
             <!-- Location Assignment Banner (hidden by default) -->
             <div class="location-assign-banner" id="locationAssignBanner" hidden>

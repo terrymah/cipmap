@@ -205,12 +205,11 @@ export function showDetailPanel(project) {
     detailContent.appendChild(fragment);
 
     // Show panel and reset scroll position
-    const detailPanel = document.getElementById('detailPanel');
     document.getElementById('detailOverlay').classList.add('open');
     
-    // Reset scroll after panel is displayed
+    // Reset scroll on the scrollable container (detailContent, not detailPanel)
     requestAnimationFrame(() => {
-        detailPanel.scrollTop = 0;
+        detailContent.scrollTop = 0;
     });
 }
 
