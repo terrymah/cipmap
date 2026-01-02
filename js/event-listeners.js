@@ -45,6 +45,11 @@ export function initEventListeners(callbacks) {
         sidebar.classList.toggle('open');
     });
 
+    // Mobile sidebar close button
+    document.getElementById('sidebarClose').addEventListener('click', () => {
+        sidebar.classList.remove('open');
+    });
+
     // Search input
     const searchInput = document.getElementById('searchInput');
     const clearSearch = document.getElementById('clearSearch');

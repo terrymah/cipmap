@@ -2,6 +2,10 @@
    Mobile Responsive Styles
    ======================================== */
 @media (max-width: 768px) {
+    :root {
+        --header-height: auto;
+    }
+
     .mobile-menu-toggle {
         display: block;
     }
@@ -10,12 +14,58 @@
         display: none;
     }
 
-    .header-search {
-        display: none;
+    /* Mobile header - two row layout */
+    .app-header {
+        flex-wrap: wrap;
+        height: auto;
+        padding: 10px 15px;
+        gap: 10px;
+    }
+
+    .header-left {
+        order: 1;
+        flex: 1;
+        min-width: 0;
+    }
+
+    .header-content h1 {
+        font-size: 1rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .header-content .subtitle {
         display: none;
+    }
+
+    .header-stats {
+        display: none;
+    }
+
+    .header-search {
+        order: 3;
+        width: 100%;
+        max-width: none;
+        flex-basis: 100%;
+    }
+
+    .header-search .search-box input {
+        padding: 10px 35px 10px 38px;
+    }
+
+    .header-actions {
+        order: 2;
+        display: flex;
+        gap: 8px;
+    }
+
+    .header-actions .btn-download {
+        display: none;
+    }
+
+    .mobile-menu-toggle {
+        order: 2;
     }
 
     .main-content {
@@ -24,13 +74,14 @@
 
     .sidebar {
         position: fixed;
-        top: var(--header-height);
+        top: 0;
         left: 0;
         bottom: 0;
         width: 100%;
         transform: translateX(-100%);
         transition: transform 0.3s ease;
-        z-index: 900;
+        z-index: 1100;
+        padding-top: 0;
     }
 
     .sidebar.collapsed {
@@ -48,15 +99,36 @@
         pointer-events: auto;
     }
 
+    .sidebar-close {
+        display: flex;
+    }
+
+    .sidebar .filters-section {
+        padding-top: 50px;
+    }
+
     .map-container {
-        height: calc(100vh - var(--header-height));
+        height: calc(100vh - 100px);
     }
 
     .map-legend {
         bottom: 20px;
         right: 10px;
+        left: auto;
+        min-width: 120px;
+        max-width: 150px;
+    }
+
+    /* Smaller logo on mobile, positioned left to not overlap legend */
+    .floating-logo {
+        bottom: 10px;
+        right: auto;
         left: 10px;
-        min-width: auto;
+    }
+
+    .floating-logo img {
+        max-width: 100px;
+        max-height: 70px;
     }
 
     /* Full screen detail panel on mobile */
@@ -70,15 +142,42 @@
         max-height: 90vh;
         border-radius: var(--radius) var(--radius) 0 0;
     }
+
+    /* Mobile user dialog - full screen wizard */
+    .user-dialog {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        max-width: none;
+        max-height: none;
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .user-dialog .dialog-body {
+        flex: 1;
+        overflow-y: auto;
+        padding: 20px;
+    }
+
+    .user-dialog .user-location-map {
+        height: 250px;
+    }
+
+    .user-dialog .dialog-footer {
+        padding: 15px 20px;
+        border-top: 1px solid var(--border-color);
+    }
 }
 
 @media (max-width: 480px) {
     .header-content h1 {
-        font-size: 1.1rem;
-    }
-
-    .header-content .subtitle {
-        display: none;
+        font-size: 0.95rem;
     }
 
     .filter-chip {
@@ -92,6 +191,10 @@
 
     .project-card-title h3 {
         font-size: 0.9rem;
+    }
+
+    .user-dialog .user-location-map {
+        height: 200px;
     }
 }
 
