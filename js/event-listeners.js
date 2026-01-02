@@ -155,6 +155,10 @@ export function initEventListeners(callbacks) {
         hideUserDialog();
     });
 
+    document.getElementById('userDialogClose').addEventListener('click', () => {
+        hideUserDialog();
+    });
+
     // Validate user form on input
     ['userFirstName', 'userLastName', 'userEmail'].forEach(id => {
         document.getElementById(id).addEventListener('input', () => {
@@ -164,6 +168,10 @@ export function initEventListeners(callbacks) {
 
     // Comment dialog handlers
     document.getElementById('commentDialogCancel').addEventListener('click', () => {
+        hideCommentDialog();
+    });
+
+    document.getElementById('commentDialogClose').addEventListener('click', () => {
         hideCommentDialog();
     });
 

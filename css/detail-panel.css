@@ -24,9 +24,11 @@
     max-width: 600px;
     width: 90%;
     max-height: 85vh;
-    overflow-y: auto;
+    overflow: hidden;
     position: relative;
     box-shadow: var(--shadow-lg);
+    display: flex;
+    flex-direction: column;
 }
 
 .close-detail {
@@ -44,6 +46,7 @@
     justify-content: center;
     z-index: 10;
     transition: var(--transition);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .close-detail:hover {
@@ -52,6 +55,8 @@
 
 .detail-content {
     padding: 25px;
+    overflow-y: auto;
+    flex: 1;
 }
 
 .detail-header {

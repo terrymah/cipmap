@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <!-- App CSS -->
-    <link rel="stylesheet" href="styles.css?v=20260101q">
+    <link rel="stylesheet" href="styles.css?v=20260101r">
 </head>
 <body>
     <div id="app">
@@ -392,6 +392,9 @@
     
     <!-- User Dialog -->
     <div class="user-dialog" id="userDialog" hidden>
+        <button class="dialog-close-btn" id="userDialogClose" aria-label="Close dialog">
+            <i class="fas fa-times"></i>
+        </button>
         <div class="dialog-header">
             <h2>Your Information</h2>
             <p class="dialog-banner" id="userDialogBanner" hidden></p>
@@ -438,6 +441,9 @@
     
     <!-- Comment Dialog -->
     <div class="comment-dialog" id="commentDialog" hidden>
+        <button class="dialog-close-btn" id="commentDialogClose" aria-label="Close dialog">
+            <i class="fas fa-times"></i>
+        </button>
         <div class="dialog-header">
             <h2>Comments</h2>
             <p class="comment-project-name" id="commentProjectName"></p>

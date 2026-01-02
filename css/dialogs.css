@@ -71,8 +71,32 @@
     display: flex;
 }
 
+/* Floating close button for dialogs */
+.dialog-close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: var(--background-color);
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: var(--transition);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.dialog-close-btn:hover {
+    background: var(--border-color);
+}
+
 .dialog-header {
     padding: 20px;
+    padding-right: 50px; /* Make room for close button */
     border-bottom: 1px solid var(--border-color);
 }
 
