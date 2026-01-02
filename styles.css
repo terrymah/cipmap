@@ -18,11 +18,11 @@
 /* Detail Panel - project detail overlay and content */
 @import url('css/detail-panel.css');
 
-/* Responsive - mobile and tablet adaptations */
-@import url('css/responsive.css');
-
 /* Components - scrollbars, loading states, location editor */
 @import url('css/components.css');
 
 /* Dialogs - user dialog, vote buttons, comment dialog */
 @import url('css/dialogs.css');
+
+/* Responsive - mobile and tablet adaptations (must be last to override) */
+@import url('css/responsive.css');

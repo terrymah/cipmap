@@ -21,12 +21,17 @@
         display: none;
     }
 
+    /* Hide zoom controls on mobile - users pinch to zoom */
+    .leaflet-control-zoom {
+        display: none !important;
+    }
+
     /* Mobile header - two row layout */
     .app-header {
         flex-wrap: wrap;
         height: auto;
         padding: 10px 15px;
-        gap: 8px;
+        gap: 1px;
     }
 
     /* First row: title, user icon */
@@ -63,6 +68,17 @@
         display: none;
     }
 
+    .user-btn {
+        width: 24px;
+        height: 24px;
+        min-width: 24px;
+    }
+
+    .user-btn svg {
+        width: 14px;
+        height: 14px;
+    }
+
     /* Use a pseudo-element to force line break after first row */
     .app-header::before {
         content: '';
@@ -82,7 +98,6 @@
         flex: 1;
         min-width: 0;
         max-width: none;
-    }
     }
 
     .header-search .search-box input {
@@ -120,16 +135,17 @@
         pointer-events: auto;
     }
 
+    /* Sidebar close button - shown when sidebar is open */
     .sidebar-close {
-        display: flex;
+        display: none;
         position: fixed;
-        top: 10px;
-        right: 10px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        top: 15px;
+        right: 15px;
+        z-index: 1200; /* Above sidebar */
     }
 
-    .sidebar .filters-section {
-        padding-top: 50px;
+    .sidebar-close.visible {
+        display: flex;
     }
 
     /* Project card title truncation on mobile */

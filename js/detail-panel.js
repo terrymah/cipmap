@@ -67,6 +67,7 @@ export function selectProject(project) {
 
     // Close mobile sidebar
     document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebarClose').classList.remove('visible');
 }
 
 /**

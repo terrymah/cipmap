@@ -34,6 +34,7 @@ export function initEventListeners(callbacks) {
     // Sidebar toggle (desktop)
     const sidebarToggle = document.getElementById('sidebarToggle');
     const sidebar = document.getElementById('sidebar');
+    const sidebarClose = document.getElementById('sidebarClose');
     
     sidebarToggle.addEventListener('click', () => {
         sidebar.classList.toggle('collapsed');
@@ -45,11 +46,13 @@ export function initEventListeners(callbacks) {
     // Mobile menu toggle
     document.getElementById('menuToggle').addEventListener('click', () => {
         sidebar.classList.toggle('open');
+        sidebarClose.classList.toggle('visible', sidebar.classList.contains('open'));
     });
 
     // Mobile sidebar close button
-    document.getElementById('sidebarClose').addEventListener('click', () => {
+    sidebarClose.addEventListener('click', () => {
         sidebar.classList.remove('open');
+        sidebarClose.classList.remove('visible');
     });
 
     // Search input
@@ -105,6 +108,7 @@ export function initEventListeners(callbacks) {
             hideUserDialog();
             hideCommentDialog();
             document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('sidebarClose').classList.remove('visible');
         }
     });
 
