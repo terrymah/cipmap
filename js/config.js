@@ -38,9 +38,10 @@ export async function loadConfig() {
             logoLink.href = config.logo.link || '#';
             logoLink.hidden = false;
             
-            // Position legend above logo after image loads
+            // On desktop, position legend above logo after image loads
+            // On mobile, CSS handles positioning (don't override with inline styles)
             logoImg.onload = () => {
-                if (mapLegend) {
+                if (mapLegend && !isMobile()) {
                     const logoHeight = logoImg.offsetHeight;
                     // Logo is 20px from bottom, add 10px gap between logo and legend
                     mapLegend.style.bottom = (20 + logoHeight + 10) + 'px';
