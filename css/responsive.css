@@ -13,6 +13,14 @@
         --header-height: auto;
     }
 
+    /* Lock viewport - prevent any page scrolling */
+    html, body {
+        overflow: hidden;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+    }
+
     .mobile-menu-toggle {
         display: block;
     }
