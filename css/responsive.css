@@ -203,16 +203,16 @@
     /* Mobile user dialog - full screen wizard */
     .user-dialog:not([hidden]) {
         position: fixed;
-        top: 0;
+        top: 50%;
         left: 0;
         right: 0;
-        bottom: 0;
-        transform: none;
+        bottom: auto;
+        transform: translateY(-50%);
         max-width: none;
         max-height: none;
         width: 100%;
-        height: 100%;
-        border-radius: 0;
+        height: 90%;
+        border-radius: var(--radius);
         display: flex;
         flex-direction: column;
     }
