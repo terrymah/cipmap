@@ -140,8 +140,9 @@
     }
 
     /* Position legend and logo higher to avoid mobile browser UI */
+    /* Use safe-area-inset-bottom for devices with home indicators/notches */
     .map-legend {
-        bottom: 60px;
+        bottom: calc(60px + env(safe-area-inset-bottom, 0px));
         right: 10px;
         left: auto;
         width: 60%;
@@ -151,7 +152,7 @@
 
     /* Smaller logo on mobile, positioned left to not overlap legend */
     .floating-logo {
-        bottom: 60px;
+        bottom: calc(60px + env(safe-area-inset-bottom, 0px));
         right: auto;
         left: 10px;
         width: 20%;
@@ -172,6 +173,7 @@
         max-width: 100%;
         max-height: 90vh;
         border-radius: var(--radius) var(--radius) 0 0;
+        padding-bottom: env(safe-area-inset-bottom, 0px);
     }
 
     /* Mobile user dialog - full screen wizard */
@@ -203,6 +205,7 @@
 
     .user-dialog .dialog-footer {
         padding: 15px 20px;
+        padding-bottom: calc(15px + env(safe-area-inset-bottom, 0px));
         border-top: 1px solid var(--border-color);
     }
 
