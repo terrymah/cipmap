@@ -19,7 +19,7 @@
         flex-wrap: wrap;
         height: auto;
         padding: 10px 15px;
-        gap: 10px;
+        gap: 8px;
     }
 
     .header-left {
@@ -43,29 +43,33 @@
         display: none;
     }
 
-    .header-search {
-        order: 3;
-        width: 100%;
-        max-width: none;
-        flex-basis: 100%;
-    }
-
-    .header-search .search-box input {
-        padding: 10px 35px 10px 38px;
-    }
-
+    /* User button right-aligned on first row */
     .header-actions {
         order: 2;
         display: flex;
         gap: 8px;
+        margin-left: auto;
     }
 
     .header-actions .btn-download {
         display: none;
     }
 
+    /* Menu toggle (hamburger) moves to second row with search */
     .mobile-menu-toggle {
-        order: 2;
+        order: 3;
+        flex-shrink: 0;
+    }
+
+    /* Search bar on second row */
+    .header-search {
+        order: 4;
+        flex: 1;
+        max-width: none;
+    }
+
+    .header-search .search-box input {
+        padding: 10px 35px 10px 38px;
     }
 
     .main-content {
@@ -108,11 +112,12 @@
     }
 
     .map-container {
-        height: calc(100vh - 100px);
+        height: calc(100dvh - 100px);
     }
 
+    /* Position legend and logo higher to avoid mobile browser UI */
     .map-legend {
-        bottom: 20px;
+        bottom: 60px;
         right: 10px;
         left: auto;
         min-width: 120px;
@@ -121,7 +126,7 @@
 
     /* Smaller logo on mobile, positioned left to not overlap legend */
     .floating-logo {
-        bottom: 10px;
+        bottom: 60px;
         right: auto;
         left: 10px;
     }
