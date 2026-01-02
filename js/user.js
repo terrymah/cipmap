@@ -177,6 +177,9 @@ export function showUserDialog(bannerMessage = null) {
     // Validate initially
     validateDialogForm();
     
+    // Initialize wizard step (step 1 on mobile)
+    initWizardStep(1);
+    
     // Focus first field
     firstNameInput.focus();
 }
@@ -476,5 +479,104 @@ export function updateUserIcon() {
         icon.className = 'fas fa-question';
         userBtn.title = 'Set your identity';
         userBtn.classList.remove('has-user');
+    }
+}
+
+// Wizard state
+let currentWizardStep = 1;
+
+/**
+ * Check if we're in mobile wizard mode
+ */
+function isMobileWizard() {
+    return window.innerWidth <= 768;
+}
+
+/**
+ * Initialize wizard step display
+ */
+export function initWizardStep(step = 1) {
+    currentWizardStep = step;
+    
+    if (!isMobileWizard()) {
+        // Desktop: show all panels, hide wizard nav
+        document.getElementById('wizardStep1').classList.add('active');
+        document.getElementById('wizardStep2').classList.add('active');
+        document.getElementById('userDialogOk').hidden = false;
+        document.getElementById('userDialogNext').hidden = true;
+        document.getElementById('userDialogBack').hidden = true;
+        return;
+    }
+    
+    // Mobile: show wizard navigation
+    updateWizardStep(step);
+}
+
+/**
+ * Update wizard to show a specific step
+ */
+function updateWizardStep(step) {
+    currentWizardStep = step;
+    
+    const step1Panel = document.getElementById('wizardStep1');
+    const step2Panel = document.getElementById('wizardStep2');
+    const step1Indicator = document.querySelector('.wizard-step[data-step="1"]');
+    const step2Indicator = document.querySelector('.wizard-step[data-step="2"]');
+    const backBtn = document.getElementById('userDialogBack');
+    const nextBtn = document.getElementById('userDialogNext');
+    const okBtn = document.getElementById('userDialogOk');
+    
+    // Update panels
+    step1Panel.classList.toggle('active', step === 1);
+    step2Panel.classList.toggle('active', step === 2);
+    
+    // Update indicators
+    step1Indicator.classList.toggle('active', step === 1);
+    step1Indicator.classList.toggle('completed', step > 1);
+    step2Indicator.classList.toggle('active', step === 2);
+    
+    // Update buttons
+    if (step === 1) {
+        backBtn.hidden = true;
+        nextBtn.hidden = false;
+        okBtn.hidden = true;
+    } else {
+        backBtn.hidden = false;
+        nextBtn.hidden = true;
+        okBtn.hidden = false;
+        // Re-validate to update OK button state
+        validateDialogForm();
+        // Refresh map when entering step 2 (container may have changed size)
+        if (dialogMap) {
+            setTimeout(() => dialogMap.invalidateSize(), 100);
+        }
+    }
+}
+
+/**
+ * Handle Next button click
+ */
+export function handleWizardNext() {
+    if (currentWizardStep === 1) {
+        // Validate step 1 fields before proceeding
+        const firstName = document.getElementById('userFirstName').value.trim();
+        const lastName = document.getElementById('userLastName').value.trim();
+        const email = document.getElementById('userEmail').value.trim();
+        
+        if (!firstName || !lastName || !email) {
+            // Could show validation messages here
+            return;
+        }
+        
+        updateWizardStep(2);
+    }
+}
+
+/**
+ * Handle Back button click
+ */
+export function handleWizardBack() {
+    if (currentWizardStep === 2) {
+        updateWizardStep(1);
     }
 }

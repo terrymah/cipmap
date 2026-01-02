@@ -5,6 +5,13 @@
 let config = null;
 
 /**
+ * Check if we're on mobile
+ */
+export function isMobile() {
+    return window.innerWidth <= 768;
+}
+
+/**
  * Load configuration from config.json
  * @returns {Promise<Object>} Configuration object
  */
@@ -12,10 +19,12 @@ export async function loadConfig() {
     const response = await fetch('config.json');
     config = await response.json();
     
-    // Update UI with config values
-    document.getElementById('app-title').textContent = config.title;
+    // Update UI with config values (use mobile title if available and on mobile)
+    updateTitle();
     document.getElementById('app-subtitle').textContent = config.subtitle;
-    document.title = config.title;
+    
+    // Listen for resize to update title
+    window.addEventListener('resize', updateTitle);
     
     // Initialize floating logo if configured
     if (config.logo && config.logo.image) {
@@ -41,6 +50,28 @@ export async function loadConfig() {
     }
     
     return config;
+}
+
+/**
+ * Update title based on screen size
+ */
+function updateTitle() {
+    const titleEl = document.getElementById('app-title');
+    const title = isMobile() && config.mobileTitle ? config.mobileTitle : config.title;
+    titleEl.textContent = title;
+    titleEl.classList.remove('title-loading'); // Reveal after setting
+    document.title = config.title; // Browser tab always uses full title
+}
+
+/**
+ * Get display name for a project type (mobile-aware)
+ */
+export function getTypeDisplayName(type) {
+    const typeConfig = config?.projectTypes?.[type];
+    if (typeConfig && isMobile() && typeConfig.mobileLabel) {
+        return typeConfig.mobileLabel;
+    }
+    return type;
 }
 
 /**

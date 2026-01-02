@@ -288,7 +288,21 @@
     display: flex;
     align-items: flex-start;
     gap: 10px;
-    margin-bottom: 8px;
+}
+
+.project-type-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.project-type-column .funding-amount {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--success-color);
+    white-space: nowrap;
 }
 
 .project-type-icon {
@@ -305,6 +319,7 @@
 
 .project-card-title {
     flex: 1;
+    min-width: 0;
 }
 
 .project-card-title h3 {
@@ -341,21 +356,6 @@
 .meta-badge.priority-high { background: #fff3cd; color: #856404; }
 .meta-badge.priority-medium { background: #cce5ff; color: #004085; }
 .meta-badge.priority-low { background: #e2e3e5; color: #41464b; }
-
-.project-card-funding {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 8px;
-    padding-top: 8px;
-    border-top: 1px solid var(--border-color);
-    font-size: 0.85rem;
-}
-
-.funding-amount {
-    font-weight: 600;
-    color: var(--success-color);
-}
 
 .no-location-badge {
     font-size: 0.7rem;

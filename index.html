@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <!-- App CSS -->
-    <link rel="stylesheet" href="styles.css?v=20260101e">
+    <link rel="stylesheet" href="styles.css?v=20260101o">
 </head>
 <body>
     <div id="app">
@@ -34,7 +34,7 @@
                     <i class="fas fa-list"></i>
                 </button>
                 <div class="header-content">
-                    <h1 id="app-title">Capital Improvement Projects</h1>
+                    <h1 id="app-title" class="title-loading">Capital Improvement Projects</h1>
                     <p id="app-subtitle" class="subtitle"></p>
                 </div>
             </div>
@@ -204,14 +204,20 @@
     <template id="template-project-card">
         <div class="project-card" data-project-id="">
             <div class="project-card-header">
-                <div class="project-type-icon">
-                    <i class="fas"></i>
+                <div class="project-type-column">
+                    <div class="project-type-icon">
+                        <i class="fas"></i>
+                    </div>
+                    <span class="funding-amount"></span>
                 </div>
                 <div class="project-card-title">
                     <h3 class="project-name"></h3>
                     <div class="project-card-meta">
                         <span class="meta-badge status-badge"></span>
                         <span class="meta-badge priority-badge"></span>
+                        <span class="no-location-badge" hidden>
+                            <i class="fas fa-map-marker-alt"></i> No location
+                        </span>
                     </div>
                 </div>
                 <div class="project-card-actions">
@@ -225,12 +231,6 @@
                         <i class="fas fa-comment"></i>
                     </button>
                 </div>
-            </div>
-            <div class="project-card-funding">
-                <span class="funding-amount"></span>
-                <span class="no-location-badge" hidden>
-                    <i class="fas fa-map-marker-alt"></i> No location
-                </span>
             </div>
         </div>
     </template>
@@ -395,29 +395,41 @@
         <div class="dialog-header">
             <h2>Your Information</h2>
             <p class="dialog-banner" id="userDialogBanner" hidden></p>
+            <div class="wizard-progress" id="wizardProgress">
+                <span class="wizard-step active" data-step="1">1. Info</span>
+                <span class="wizard-step" data-step="2">2. Location</span>
+            </div>
         </div>
         <div class="dialog-body">
-            <div class="form-group">
-                <label for="userFirstName">First Name</label>
-                <input type="text" id="userFirstName" placeholder="Enter your first name">
+            <!-- Step 1: Name and Email -->
+            <div class="wizard-panel" id="wizardStep1">
+                <div class="form-group">
+                    <label for="userFirstName">First Name</label>
+                    <input type="text" id="userFirstName" placeholder="Enter your first name">
+                </div>
+                <div class="form-group">
+                    <label for="userLastName">Last Name</label>
+                    <input type="text" id="userLastName" placeholder="Enter your last name">
+                </div>
+                <div class="form-group">
+                    <label for="userEmail">Email</label>
+                    <input type="email" id="userEmail" placeholder="Enter your email address">
+                </div>
             </div>
-            <div class="form-group">
-                <label for="userLastName">Last Name</label>
-                <input type="text" id="userLastName" placeholder="Enter your last name">
-            </div>
-            <div class="form-group">
-                <label for="userEmail">Email</label>
-                <input type="email" id="userEmail" placeholder="Enter your email address">
-            </div>
-            <div class="form-group">
-                <label>Approximate Location</label>
-                <div class="user-location-map" id="userLocationMap"></div>
-                <p class="location-hint" id="userLocationHint">Click on a hexagon to select your area</p>
+            <!-- Step 2: Location -->
+            <div class="wizard-panel" id="wizardStep2">
+                <div class="form-group">
+                    <label>Approximate Location</label>
+                    <div class="user-location-map" id="userLocationMap"></div>
+                    <p class="location-hint" id="userLocationHint">Click on a hexagon to select your area</p>
+                </div>
             </div>
         </div>
         <div class="dialog-footer">
+            <button class="btn btn-secondary" id="userDialogBack" hidden>Back</button>
             <button class="btn btn-secondary" id="userDialogCancel">Cancel</button>
-            <button class="btn btn-primary" id="userDialogOk" disabled>OK</button>
+            <button class="btn btn-primary" id="userDialogNext">Next</button>
+            <button class="btn btn-primary" id="userDialogOk" hidden disabled>OK</button>
         </div>
     </div>
 

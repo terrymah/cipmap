@@ -3,7 +3,7 @@
  * Handles filter initialization, state, and filtering logic
  */
 
-import { getConfig } from './config.js';
+import { getConfig, getTypeDisplayName } from './config.js';
 import { cloneTemplate } from './templates.js';
 import { getProjects, setFilteredProjects } from './data.js';
 
@@ -124,21 +124,22 @@ export function initFilters() {
     // Type filters
     const typeContainer = document.getElementById('typeFilters');
     Object.entries(config.projectTypes).forEach(([type, settings]) => {
-        const chip = createFilterChip(type, settings.color, 'type');
+        const displayName = getTypeDisplayName(type);
+        const chip = createFilterChip(type, displayName, settings.color, 'type');
         typeContainer.appendChild(chip);
     });
 
     // Status filters
     const statusContainer = document.getElementById('statusFilters');
     config.statusOptions.forEach(status => {
-        const chip = createFilterChip(status, null, 'status');
+        const chip = createFilterChip(status, status, null, 'status');
         statusContainer.appendChild(chip);
     });
 
     // Priority filters
     const priorityContainer = document.getElementById('priorityFilters');
     config.priorityLevels.forEach(priority => {
-        const chip = createFilterChip(priority, null, 'priority');
+        const chip = createFilterChip(priority, priority, null, 'priority');
         priorityContainer.appendChild(chip);
     });
 }
@@ -146,7 +147,7 @@ export function initFilters() {
 /**
  * Create a filter chip element
  */
-function createFilterChip(value, color, filterType) {
+function createFilterChip(value, displayName, color, filterType) {
     const fragment = cloneTemplate('filter-chip');
     const chip = fragment.querySelector('.filter-chip');
     
@@ -160,7 +161,7 @@ function createFilterChip(value, color, filterType) {
         colorDot.hidden = false;
         colorDot.style.backgroundColor = color;
     }
-    label.textContent = value;
+    label.textContent = displayName;
 
     chip.addEventListener('click', () => toggleFilter(filterType, value, chip));
     return fragment;

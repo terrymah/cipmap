@@ -3,7 +3,7 @@
  * Handles Leaflet map initialization, markers, and legend
  */
 
-import { getConfig } from './config.js';
+import { getConfig, getTypeDisplayName } from './config.js';
 import { getProjects, getFilteredProjects } from './data.js';
 import { cloneTemplate } from './templates.js';
 
@@ -195,7 +195,7 @@ export function renderLegend() {
         const item = fragment.querySelector('.legend-item');
         
         item.querySelector('.legend-color').style.backgroundColor = settings.color;
-        item.querySelector('.legend-label').textContent = type;
+        item.querySelector('.legend-label').textContent = getTypeDisplayName(type);
         item.dataset.type = type;
         item.style.cursor = 'pointer';
         item.title = 'Click to toggle filter';

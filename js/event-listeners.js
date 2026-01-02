@@ -15,7 +15,9 @@ import {
     showUserDialog,
     hideUserDialog,
     handleUserDialogOk,
-    validateDialogForm
+    validateDialogForm,
+    handleWizardNext,
+    handleWizardBack
 } from './user.js';
 
 /**
@@ -139,6 +141,14 @@ export function initEventListeners(callbacks) {
 
     document.getElementById('userDialogOk').addEventListener('click', () => {
         handleUserDialogOk();
+    });
+
+    document.getElementById('userDialogNext').addEventListener('click', () => {
+        handleWizardNext();
+    });
+
+    document.getElementById('userDialogBack').addEventListener('click', () => {
+        handleWizardBack();
     });
 
     document.getElementById('userDialogOverlay').addEventListener('click', () => {

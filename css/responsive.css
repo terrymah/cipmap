@@ -1,6 +1,13 @@
 /* ========================================
    Mobile Responsive Styles
    ======================================== */
+/* Hide title on mobile until JS sets it (prevents flash) */
+@media (max-width: 768px) {
+    #app-title.title-loading {
+        visibility: hidden;
+    }
+}
+
 @media (max-width: 768px) {
     :root {
         --header-height: auto;
@@ -121,6 +128,13 @@
         padding-top: 50px;
     }
 
+    /* Project card title truncation on mobile */
+    .project-card-title h3 {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
     .map-container {
         height: calc(100dvh - 100px);
     }
@@ -191,6 +205,58 @@
         padding: 15px 20px;
         border-top: 1px solid var(--border-color);
     }
+
+    /* Wizard navigation on mobile */
+    .wizard-progress {
+        display: flex;
+        gap: 16px;
+        margin-top: 12px;
+    }
+
+    .wizard-step {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        padding-bottom: 4px;
+        border-bottom: 2px solid transparent;
+    }
+
+    .wizard-step.active {
+        color: var(--secondary-color);
+        border-bottom-color: var(--secondary-color);
+        font-weight: 600;
+    }
+
+    .wizard-step.completed {
+        color: var(--success-color);
+    }
+
+    /* Wizard panels - show one at a time */
+    .wizard-panel {
+        display: none !important;
+    }
+
+    .wizard-panel.active {
+        display: block !important;
+    }
+
+    /* Wizard buttons */
+    #userDialogBack,
+    #userDialogNext,
+    #userDialogOk {
+        display: inline-flex !important;
+    }
+
+    #userDialogBack[hidden],
+    #userDialogNext[hidden],
+    #userDialogOk[hidden] {
+        display: none !important;
+    }
+
+    /* Location map takes more height on mobile wizard */
+    .user-dialog .user-location-map {
+        height: calc(100dvh - 300px);
+        min-height: 250px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -209,6 +275,9 @@
 
     .project-card-title h3 {
         font-size: 0.9rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .user-dialog .user-location-map {

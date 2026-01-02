@@ -189,14 +189,39 @@
 }
 
 /* ========================================
+   Wizard Steps (for mobile)
+   ======================================== */
+
+/* Desktop: hide wizard navigation, show all content */
+.wizard-progress {
+    display: none;
+}
+
+#userDialogBack,
+#userDialogNext {
+    display: none;
+}
+
+.wizard-panel {
+    display: block;
+}
+
+/* ========================================
    Vote & Comment Buttons
    ======================================== */
 
 .project-card-actions {
-    display: flex;
-    gap: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 2px;
     margin-left: auto;
     flex-shrink: 0;
+}
+
+.project-card-actions .comment-btn {
+    grid-column: 2;
+    justify-self: end;
 }
 
 .vote-btn {
