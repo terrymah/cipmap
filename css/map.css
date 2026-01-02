@@ -69,10 +69,28 @@
     gap: 8px;
     margin-bottom: 6px;
     font-size: 0.8rem;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.legend-item:hover {
+    opacity: 0.8;
 }
 
 .legend-item:last-child {
     margin-bottom: 0;
+}
+
+.legend-item.filtered-out {
+    opacity: 0.5;
+}
+
+.legend-item.filtered-out .legend-label {
+    text-decoration: line-through;
+}
+
+.legend-item.filtered-out .legend-color {
+    opacity: 0.4;
 }
 
 .legend-color {

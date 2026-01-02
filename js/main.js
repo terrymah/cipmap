@@ -12,14 +12,17 @@ import {
     initFilters, 
     initRangeSliders, 
     setOnFiltersChanged, 
-    applyFilters
+    applyFilters,
+    toggleFilter,
+    syncLegendWithFilters
 } from './filters.js';
 import { 
     initMap, 
     renderMarkers, 
     renderLegend, 
     setOnMarkerClick,
-    setOnMapClick
+    setOnMapClick,
+    setOnLegendFilterChange
 } from './map.js';
 import { 
     selectProject, 
@@ -107,6 +110,7 @@ async function init() {
         setOnFiltersChanged(() => {
             renderProjects();
             renderMarkers();
+            syncLegendWithFilters();
         });
 
         // Initialize event listeners
@@ -131,6 +135,26 @@ async function init() {
         renderProjects();
         renderMarkers(true, false);  // Fit bounds on initial load, no animation
         renderLegend();
+
+        // Set up legend click to toggle filters
+        setOnLegendFilterChange((type) => {
+            // Find the corresponding filter chip and toggle it
+            const chip = document.querySelector(`.filter-chip[data-type="${type}"]`);
+            if (chip) {
+                toggleFilter('type', type, chip);
+            }
+            // Sync legend visual state with filters
+            syncLegendWithFilters();
+        });
+
+        // Collapse legend on mobile by default
+        if (window.innerWidth <= 768) {
+            const legendContent = document.getElementById('legendContent');
+            const legendIcon = document.querySelector('#legendToggle i');
+            legendContent.classList.add('collapsed');
+            legendIcon.classList.remove('fa-chevron-down');
+            legendIcon.classList.add('fa-chevron-up');
+        }
 
         // Check URL for project selection
         checkUrlParams();

@@ -196,6 +196,73 @@ export function toggleFilter(filterType, value, chipElement) {
 }
 
 /**
+ * Toggle a type filter from the legend (without a chip element)
+ * @param {string} type - The project type to filter
+ * @param {boolean} filterOut - Whether to filter out (true) or include (false)
+ */
+export function toggleTypeFromLegend(type, filterOut) {
+    const index = filters.types.indexOf(type);
+    
+    if (filterOut && index === -1) {
+        // Add to exclusion - but we need to invert the logic
+        // When legend item is "filtered out", we want to HIDE that type
+        // The existing filter logic includes types in the array, not excludes
+        // So we need to add all OTHER types to show only those
+        
+        // For simplicity, let's track excluded types separately
+        // Actually, let's sync with the sidebar filter chips
+        const chip = document.querySelector(`.filter-chip[data-type="${type}"]`);
+        if (chip) {
+            // If chip is active, clicking legend removes it
+            if (chip.classList.contains('active')) {
+                toggleFilter('type', type, chip);
+            }
+        } else {
+            // No chip, just toggle directly
+            if (index === -1) {
+                filters.types.push(type);
+            }
+            applyFilters();
+        }
+    } else if (!filterOut && index !== -1) {
+        // Remove from filter
+        const chip = document.querySelector(`.filter-chip[data-type="${type}"]`);
+        if (chip && chip.classList.contains('active')) {
+            toggleFilter('type', type, chip);
+        } else {
+            filters.types.splice(index, 1);
+            applyFilters();
+        }
+    }
+    
+    // Sync legend item state
+    syncLegendWithFilters();
+}
+
+/**
+ * Sync legend items with current filter state
+ */
+export function syncLegendWithFilters() {
+    const legendItems = document.querySelectorAll('.legend-item[data-type]');
+    legendItems.forEach(item => {
+        const type = item.dataset.type;
+        // If types array has items and this type is NOT in it, it's filtered out
+        // If types array is empty, nothing is filtered
+        const isFiltered = filters.types.length > 0 && filters.types.includes(type);
+        
+        // Wait - the filter logic is: if types array has items, only show those types
+        // So if a type IS in the array, it's being SHOWN (included), not filtered out
+        // We want strikethrough when a type is being filtered OUT (not shown)
+        
+        // Actually check: types.length > 0 means filtering is active
+        // types.includes(type) means this type IS selected to show
+        // So filtered out = types.length > 0 && !types.includes(type)
+        const isFilteredOut = filters.types.length > 0 && !filters.types.includes(type);
+        item.classList.toggle('filtered-out', isFilteredOut);
+    });
+}
+
+/**
  * Initialize dual-range sliders for funding years and timeline
  */
 export function initRangeSliders() {

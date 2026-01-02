@@ -172,6 +172,16 @@ function createMarker(project, maxFunding, config) {
     return marker;
 }
 
+// Callback for legend filter changes
+let onLegendFilterChange = null;
+
+/**
+ * Set callback for when legend filters change
+ */
+export function setOnLegendFilterChange(callback) {
+    onLegendFilterChange = callback;
+}
+
 /**
  * Render the map legend
  */
@@ -186,6 +196,15 @@ export function renderLegend() {
         
         item.querySelector('.legend-color').style.backgroundColor = settings.color;
         item.querySelector('.legend-label').textContent = type;
+        item.dataset.type = type;
+        item.style.cursor = 'pointer';
+        item.title = 'Click to toggle filter';
+        
+        item.addEventListener('click', () => {
+            if (onLegendFilterChange) {
+                onLegendFilterChange(type);
+            }
+        });
         
         container.appendChild(fragment);
     });
