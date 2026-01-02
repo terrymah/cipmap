@@ -211,7 +211,7 @@ export function toggleTypeFromLegend(type, filterOut) {
         
         // For simplicity, let's track excluded types separately
         // Actually, let's sync with the sidebar filter chips
-        const chip = document.querySelector(`.filter-chip[data-type="${type}"]`);
+        const chip = document.querySelector(`.filter-chip[data-filter-type="type"][data-value="${type}"]`);
         if (chip) {
             // If chip is active, clicking legend removes it
             if (chip.classList.contains('active')) {
@@ -226,7 +226,7 @@ export function toggleTypeFromLegend(type, filterOut) {
         }
     } else if (!filterOut && index !== -1) {
         // Remove from filter
-        const chip = document.querySelector(`.filter-chip[data-type="${type}"]`);
+        const chip = document.querySelector(`.filter-chip[data-filter-type="type"][data-value="${type}"]`);
         if (chip && chip.classList.contains('active')) {
             toggleFilter('type', type, chip);
         } else {

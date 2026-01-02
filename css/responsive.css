@@ -22,6 +22,7 @@
         gap: 8px;
     }
 
+    /* First row: title, user icon */
     .header-left {
         order: 1;
         flex: 1;
@@ -45,27 +46,36 @@
 
     /* User button right-aligned on first row */
     .header-actions {
-        order: 2;
+        order: 1;
         display: flex;
         gap: 8px;
-        margin-left: auto;
+        flex-shrink: 0;
     }
 
     .header-actions .btn-download {
         display: none;
     }
 
-    /* Menu toggle (hamburger) moves to second row with search */
+    /* Use a pseudo-element to force line break after first row */
+    .app-header::before {
+        content: '';
+        width: 100%;
+        order: 2;
+    }
+
+    /* Second row: hamburger + search */
     .mobile-menu-toggle {
         order: 3;
         flex-shrink: 0;
+        margin-right: 8px;
     }
 
-    /* Search bar on second row */
     .header-search {
         order: 4;
         flex: 1;
+        min-width: 0;
         max-width: none;
+    }
     }
 
     .header-search .search-box input {
@@ -120,8 +130,9 @@
         bottom: 60px;
         right: 10px;
         left: auto;
-        min-width: 120px;
-        max-width: 150px;
+        width: 60%;
+        max-width: 60%;
+        min-width: auto;
     }
 
     /* Smaller logo on mobile, positioned left to not overlap legend */
@@ -129,10 +140,11 @@
         bottom: 60px;
         right: auto;
         left: 10px;
+        width: 20%;
     }
 
     .floating-logo img {
-        max-width: 100px;
+        max-width: 100%;
         max-height: 70px;
     }
 

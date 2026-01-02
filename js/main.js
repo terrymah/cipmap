@@ -14,6 +14,7 @@ import {
     setOnFiltersChanged, 
     applyFilters,
     toggleFilter,
+    getFilters,
     syncLegendWithFilters
 } from './filters.js';
 import { 
@@ -137,11 +138,27 @@ async function init() {
         renderLegend();
 
         // Set up legend click to toggle filters
+        // On first click (no filters active), hide the clicked type
+        // On subsequent clicks, toggle that type
         setOnLegendFilterChange((type) => {
-            // Find the corresponding filter chip and toggle it
-            const chip = document.querySelector(`.filter-chip[data-type="${type}"]`);
-            if (chip) {
-                toggleFilter('type', type, chip);
+            const filters = getFilters();
+            const currentConfig = getConfig();
+            const allTypes = Object.keys(currentConfig.projectTypes);
+            
+            if (filters.types.length === 0) {
+                // First click: add all types EXCEPT the clicked one (to hide it)
+                allTypes.filter(t => t !== type).forEach(t => {
+                    const chip = document.querySelector(`.filter-chip[data-filter-type="type"][data-value="${t}"]`);
+                    if (chip && !chip.classList.contains('active')) {
+                        toggleFilter('type', t, chip);
+                    }
+                });
+            } else {
+                // Toggle the clicked type
+                const chip = document.querySelector(`.filter-chip[data-filter-type="type"][data-value="${type}"]`);
+                if (chip) {
+                    toggleFilter('type', type, chip);
+                }
             }
             // Sync legend visual state with filters
             syncLegendWithFilters();
