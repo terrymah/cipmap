@@ -13,14 +13,6 @@
         --header-height: auto;
     }
 
-    /* Lock viewport - prevent any page scrolling */
-    html, body {
-        overflow: hidden;
-        position: fixed;
-        width: 100%;
-        height: 90%;
-    }
-
     .mobile-menu-toggle {
         display: block;
     }
@@ -170,10 +162,10 @@
     }
 
     /* Position legend and logo higher to avoid mobile browser UI */
-    /* Chrome doesn't support safe-area-inset like Safari, so use larger base offset */
-    /* 100px base works for Chrome bottom bar, env() adds extra for iOS home indicator */
+    /* Position legend and logo at TOP of map on mobile to avoid browser UI issues */
     .map-legend {
-        bottom: calc(100px + env(safe-area-inset-bottom, 0px));
+        bottom: auto;
+        top: 20px;
         right: 10px;
         left: auto;
         width: 60%;
@@ -183,7 +175,8 @@
 
     /* Smaller logo on mobile, positioned left to not overlap legend */
     .floating-logo {
-        bottom: calc(100px + env(safe-area-inset-bottom, 0px));
+        bottom: auto;
+        top: 20px;
         right: auto;
         left: 10px;
         width: 20%;
