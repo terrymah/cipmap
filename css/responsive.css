@@ -149,12 +149,13 @@
     }
 
     /* Mobile user dialog - full screen wizard */
-    .user-dialog {
+    .user-dialog:not([hidden]) {
         position: fixed;
         top: 0;
         left: 0;
         right: 0;
         bottom: 0;
+        transform: none;
         max-width: none;
         max-height: none;
         width: 100%;
