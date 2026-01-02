@@ -36,6 +36,7 @@
   "cookies": {
     "expirationDays": 365
   },
+  "apiServer": "http://sum.wakeresults.org",
   "userLocationPicker": {
     "center": {
       "lat": 35.7327,

@@ -356,15 +356,36 @@
     margin-bottom: 0;
 }
 
+.comment-item .comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.comment-item .comment-author {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
 .comment-item .comment-text {
     font-size: 0.9rem;
     color: var(--text-primary);
-    margin-bottom: 4px;
 }
 
 .comment-item .comment-time {
     font-size: 0.75rem;
     color: var(--text-secondary);
+}
+
+.loading-comments,
+.no-comments {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    text-align: center;
+    padding: 15px;
+    font-style: italic;
 }
 
 .dialog-body textarea {

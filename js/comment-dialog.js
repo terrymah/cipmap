@@ -4,15 +4,138 @@
  */
 
 import { getComments, addComment } from './votes.js';
+import { getUser } from './user.js';
+import { getConfig } from './config.js';
 
 // Current project ID for comment dialog
 let commentProjectId = null;
 
 /**
+ * Post comment to API server
+ * @param {string} projectId - The project ID
+ * @param {string} commentText - The comment text
+ * @returns {Promise<boolean>} - Success status
+ */
+async function postCommentToApi(projectId, commentText) {
+    const config = getConfig();
+    if (!config.apiServer) {
+        return false;
+    }
+    
+    const user = getUser();
+    if (!user?.userId) {
+        console.warn('No userId available for API comment');
+        return false;
+    }
+    
+    try {
+        const response = await fetch(`${config.apiServer}/api/comment`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                userid: user.userId,
+                appid: 'cipmap',
+                item_id: projectId,
+                comment: commentText
+            })
+        });
+        
+        if (!response.ok) {
+            console.error('API comment failed:', response.status);
+            return false;
+        }
+        
+        return true;
+    } catch (error) {
+        console.error('API comment error:', error);
+        return false;
+    }
+}
+
+/**
+ * Fetch comments from API server
+ * @param {string} projectId - The project ID
+ * @returns {Promise<Array>} - Array of comments from server
+ */
+async function fetchCommentsFromApi(projectId) {
+    const config = getConfig();
+    if (!config.apiServer) {
+        return [];
+    }
+    
+    try {
+        const params = new URLSearchParams({
+            appid: 'cipmap',
+            item_id: projectId
+        });
+        
+        const response = await fetch(`${config.apiServer}/api/comment?${params}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        if (!response.ok) {
+            console.error('API fetch comments failed:', response.status);
+            return [];
+        }
+        
+        return await response.json();
+    } catch (error) {
+        console.error('API fetch comments error:', error);
+        return [];
+    }
+}
+
+/**
+ * Render comments in the dialog
+ * @param {Array} comments - Array of comment objects from API
+ */
+function renderComments(comments) {
+    const previousCommentsContainer = document.getElementById('previousComments');
+    previousCommentsContainer.innerHTML = '';
+    
+    if (comments.length === 0) {
+        previousCommentsContainer.innerHTML = '<div class="no-comments">No comments yet</div>';
+        return;
+    }
+    
+    comments.forEach(comment => {
+        const commentEl = document.createElement('div');
+        commentEl.className = 'comment-item';
+        
+        const headerEl = document.createElement('div');
+        headerEl.className = 'comment-header';
+        
+        const authorEl = document.createElement('span');
+        authorEl.className = 'comment-author';
+        authorEl.textContent = `${comment.firstname} ${comment.lastname}`;
+        
+        const timeEl = document.createElement('span');
+        timeEl.className = 'comment-time';
+        timeEl.textContent = formatCommentTime(comment.created_at);
+        
+        headerEl.appendChild(authorEl);
+        headerEl.appendChild(timeEl);
+        
+        const textEl = document.createElement('div');
+        textEl.className = 'comment-text';
+        textEl.textContent = comment.comment;
+        
+        commentEl.appendChild(headerEl);
+        commentEl.appendChild(textEl);
+        previousCommentsContainer.appendChild(commentEl);
+    });
+}
+
+/**
  * Show the comment dialog for a project
  * @param {Object} project - The project to comment on
  */
-export function showCommentDialog(project) {
+export async function showCommentDialog(project) {
     commentProjectId = project.id;
     
     const dialog = document.getElementById('commentDialog');
@@ -24,27 +147,9 @@ export function showCommentDialog(project) {
     // Clear input
     document.getElementById('commentInput').value = '';
     
-    // Render previous comments
+    // Show loading state
     const previousCommentsContainer = document.getElementById('previousComments');
-    previousCommentsContainer.innerHTML = '';
-    
-    const comments = getComments(project.id);
-    comments.forEach(comment => {
-        const commentEl = document.createElement('div');
-        commentEl.className = 'comment-item';
-        
-        const textEl = document.createElement('div');
-        textEl.className = 'comment-text';
-        textEl.textContent = comment.text;
-        
-        const timeEl = document.createElement('div');
-        timeEl.className = 'comment-time';
-        timeEl.textContent = formatCommentTime(comment.timestamp);
-        
-        commentEl.appendChild(textEl);
-        commentEl.appendChild(timeEl);
-        previousCommentsContainer.appendChild(commentEl);
-    });
+    previousCommentsContainer.innerHTML = '<div class="loading-comments">Loading comments...</div>';
     
     // Show dialog
     dialog.hidden = false;
@@ -52,6 +157,10 @@ export function showCommentDialog(project) {
     
     // Focus input
     document.getElementById('commentInput').focus();
+    
+    // Fetch and render comments from API
+    const comments = await fetchCommentsFromApi(project.id);
+    renderComments(comments);
 }
 
 /**
@@ -69,11 +178,15 @@ export function hideCommentDialog() {
 /**
  * Handle OK button on comment dialog
  */
-export function handleCommentDialogOk() {
+export async function handleCommentDialogOk() {
     const input = document.getElementById('commentInput');
     const commentText = input.value.trim();
     
     if (commentText && commentProjectId) {
+        // Post to API (async, don't wait)
+        postCommentToApi(commentProjectId, commentText);
+        
+        // Save locally
         addComment(commentProjectId, commentText);
         
         // Update the comment button state in the project list

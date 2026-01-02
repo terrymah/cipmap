@@ -22,9 +22,49 @@ let onUserChanged = null;
  *   firstName: string,
  *   lastName: string,
  *   email: string,
- *   location: { lat: number, lng: number }
+ *   location: { lat: number, lng: number, hexId: string },
+ *   userId: string (from API, if available)
  * }
  */
+
+/**
+ * Register user with API server
+ * @param {Object} user - User data
+ * @returns {Promise<string|null>} - User ID from server, or null if API not configured/failed
+ */
+async function registerUserWithApi(user) {
+    const config = getConfig();
+    if (!config.apiServer) {
+        return null;
+    }
+    
+    try {
+        const response = await fetch(`${config.apiServer}/api/users`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                first_name: user.firstName,
+                last_name: user.lastName,
+                email: user.email,
+                hex_location: user.location?.hexId || null,
+                appid: 'cipmap'
+            })
+        });
+        
+        if (!response.ok) {
+            console.error('API registration failed:', response.status);
+            return null;
+        }
+        
+        const data = await response.json();
+        return data.userid || data.userId || data.id || null;
+    } catch (error) {
+        console.error('API registration error:', error);
+        return null;
+    }
+}
 
 /**
  * Set callback for user changes
@@ -444,7 +484,7 @@ export function validateDialogForm() {
 /**
  * Handle OK button click
  */
-export function handleUserDialogOk() {
+export async function handleUserDialogOk() {
     const firstName = document.getElementById('userFirstName').value.trim();
     const lastName = document.getElementById('userLastName').value.trim();
     const email = document.getElementById('userEmail').value.trim();
@@ -459,6 +499,12 @@ export function handleUserDialogOk() {
     const { isValid } = validateUser(user);
     
     if (isValid) {
+        // Register with API if configured
+        const userId = await registerUserWithApi(user);
+        if (userId) {
+            user.userId = userId;
+        }
+        
         setUser(user);
         hideUserDialog();
     }
