@@ -93,10 +93,30 @@
 
 .detail-vote-buttons {
     display: flex;
-    gap: 0;
+    flex-direction: column;
+    gap: 6px;
     flex-shrink: 0;
     margin: 0;
     padding: 0;
+}
+
+.detail-vote-buttons .vote-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.detail-vote-buttons .comment-row {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.detail-vote-buttons .vote-score {
+    min-width: 28px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text-primary);
 }
 
 .detail-vote-buttons .vote-btn {

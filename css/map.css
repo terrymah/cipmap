@@ -28,8 +28,9 @@
    ======================================== */
 .map-legend {
     position: absolute;
-    bottom: 20px;
+    top: 20px;
     right: 10px;
+    bottom: auto;
     background: var(--card-background);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
@@ -106,8 +107,10 @@
    ======================================== */
 .floating-logo {
     position: absolute;
-    bottom: 20px;
-    right: 20px;
+    top: 20px;
+    left: 60px;
+    right: auto;
+    bottom: auto;
     z-index: 1000;
     opacity: 0.6;
     transition: opacity 0.3s ease, transform 0.3s ease;

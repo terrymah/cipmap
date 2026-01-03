@@ -161,23 +161,16 @@
         height: calc(100dvh - 200px);
     }
 
-    /* Position legend and logo higher to avoid mobile browser UI */
-    /* Position legend and logo at TOP of map on mobile to avoid browser UI issues */
+    /* Mobile legend - same position as desktop, just smaller width */
     .map-legend {
-        bottom: auto;
-        top: 20px;
-        right: 10px;
-        left: auto;
         width: 60%;
         max-width: 60%;
         min-width: auto;
     }
 
-    /* Smaller logo on mobile, positioned left to not overlap legend */
+    /* Mobile logo - same position as desktop, just smaller */
+    /* Reset left to 10px since zoom buttons are hidden on mobile */
     .floating-logo {
-        bottom: auto;
-        top: 20px;
-        right: auto;
         left: 10px;
         width: 20%;
     }

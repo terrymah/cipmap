@@ -3,7 +3,7 @@
  * Shared logic for wiring up vote/comment buttons on project cards and detail panels
  */
 
-import { getVote, upvote, downvote, hasComments } from './votes.js';
+import { getVote, upvote, downvote, hasComments, fetchVoteScore } from './votes.js';
 import { hasUser, showUserDialog } from './user.js';
 
 /**
@@ -16,6 +16,7 @@ export function wireVoteButtons(container, project, onShowCommentDialog) {
     const upvoteBtn = container.querySelector('.upvote-btn');
     const downvoteBtn = container.querySelector('.downvote-btn');
     const commentBtn = container.querySelector('.comment-btn');
+    const scoreEl = container.querySelector('.vote-score');
 
     if (!upvoteBtn || !downvoteBtn || !commentBtn) {
         return; // Buttons not found
@@ -34,8 +35,13 @@ export function wireVoteButtons(container, project, onShowCommentDialog) {
         commentBtn.classList.add('has-comments');
     }
 
+    // Fetch and display score if score element exists (detail panel only)
+    if (scoreEl) {
+        fetchAndDisplayScore(project.id, scoreEl);
+    }
+
     // Upvote handler
-    upvoteBtn.addEventListener('click', (e) => {
+    upvoteBtn.addEventListener('click', async (e) => {
         e.stopPropagation();
         if (!hasUser()) {
             showUserDialog('Please provide your information to use this feature');
@@ -44,10 +50,15 @@ export function wireVoteButtons(container, project, onShowCommentDialog) {
         const newVote = upvote(project.id);
         upvoteBtn.classList.toggle('active', newVote === 'up');
         downvoteBtn.classList.remove('active');
+        
+        // Refresh score after voting
+        if (scoreEl) {
+            setTimeout(() => fetchAndDisplayScore(project.id, scoreEl), 500);
+        }
     });
 
     // Downvote handler
-    downvoteBtn.addEventListener('click', (e) => {
+    downvoteBtn.addEventListener('click', async (e) => {
         e.stopPropagation();
         if (!hasUser()) {
             showUserDialog('Please provide your information to use this feature');
@@ -56,6 +67,11 @@ export function wireVoteButtons(container, project, onShowCommentDialog) {
         const newVote = downvote(project.id);
         downvoteBtn.classList.toggle('active', newVote === 'down');
         upvoteBtn.classList.remove('active');
+        
+        // Refresh score after voting
+        if (scoreEl) {
+            setTimeout(() => fetchAndDisplayScore(project.id, scoreEl), 500);
+        }
     });
 
     // Comment handler
@@ -69,4 +85,19 @@ export function wireVoteButtons(container, project, onShowCommentDialog) {
             onShowCommentDialog(project);
         }
     });
+}
+
+/**
+ * Fetch vote score from API and update display
+ * @param {string} projectId - The project ID
+ * @param {Element} scoreEl - The score element to update
+ */
+async function fetchAndDisplayScore(projectId, scoreEl) {
+    const data = await fetchVoteScore(projectId);
+    if (data && typeof data.score === 'number') {
+        scoreEl.textContent = data.score;
+        scoreEl.title = `${data.upvotes} upvotes, ${data.downvotes} downvotes`;
+    } else {
+        scoreEl.textContent = '0';
+    }
 }
