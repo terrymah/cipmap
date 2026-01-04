@@ -5,8 +5,8 @@
 
 import { getComments, addComment } from './votes.js';
 import { getUser } from './user.js';
-import { getConfig } from './config.js';
-import { showApiError } from './debug.js';
+import { getConfig, getAppId } from './config.js';
+import { showApiError, isDebugMode } from './debug.js';
 
 // Current project ID for comment dialog
 let commentProjectId = null;
@@ -37,7 +37,7 @@ async function postCommentToApi(projectId, commentText) {
             },
             body: JSON.stringify({
                 userid: user.userId,
-                appid: 'cipmap',
+                appid: getAppId(),
                 item_id: projectId,
                 comment: commentText
             })
@@ -69,7 +69,7 @@ async function fetchCommentsFromApi(projectId) {
     
     try {
         const params = new URLSearchParams({
-            appid: 'cipmap',
+            appid: getAppId(),
             item_id: projectId
         });
         
@@ -150,9 +150,15 @@ export async function showCommentDialog(project) {
     // Clear input
     document.getElementById('commentInput').value = '';
     
-    // Show loading state
+    // Show/hide previous comments based on debug mode
     const previousCommentsContainer = document.getElementById('previousComments');
-    previousCommentsContainer.innerHTML = '<div class="loading-comments">Loading comments...</div>';
+    if (isDebugMode()) {
+        previousCommentsContainer.style.display = '';
+        // Show loading state
+        previousCommentsContainer.innerHTML = '<div class="loading-comments">Loading comments...</div>';
+    } else {
+        previousCommentsContainer.style.display = 'none';
+    }
     
     // Show dialog
     dialog.hidden = false;
@@ -161,9 +167,11 @@ export async function showCommentDialog(project) {
     // Focus input
     document.getElementById('commentInput').focus();
     
-    // Fetch and render comments from API
-    const comments = await fetchCommentsFromApi(project.id);
-    renderComments(comments);
+    // Fetch and render comments from API (only in debug mode)
+    if (isDebugMode()) {
+        const comments = await fetchCommentsFromApi(project.id);
+        renderComments(comments);
+    }
 }
 
 /**

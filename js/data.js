@@ -2,7 +2,7 @@
  * Data loading and parsing for CIP projects
  */
 
-import { getConfig } from './config.js';
+import { getConfig, isSurveyMode } from './config.js';
 
 let projects = [];
 let filteredProjects = [];
@@ -85,6 +85,18 @@ export function parseProject(row, config) {
     fundingYears['Future'] = futureFunding;
     totalFunding += futureFunding;
 
+    // In survey mode, calculate prior funding as sum of all funding year columns
+    // (the funding columns represent previously allocated amounts, not future plans)
+    let priorFunding = 0;
+    if (isSurveyMode()) {
+        config.fundingYears.forEach(year => {
+            if (year !== 'Future') {
+                priorFunding += fundingYears[year] || 0;
+            }
+        });
+        priorFunding += futureFunding;
+    }
+
     // Use explicit total_cost if provided, otherwise use calculated sum
     const explicitTotalCost = parseCurrency(row.total_cost);
     let hasExplicitTotalCost = false;
@@ -134,6 +146,7 @@ export function parseProject(row, config) {
         hasLocation: !!(row.lat && row.lng),
         fundingYears,
         totalFunding,
+        priorFunding,
         hasExplicitTotalCost,
         fundingSource,
         department: row.department || null,

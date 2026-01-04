@@ -43,47 +43,62 @@ export function wireVoteButtons(container, project, onShowCommentDialog) {
     // Upvote handler
     upvoteBtn.addEventListener('click', async (e) => {
         e.stopPropagation();
+        
+        const doUpvote = () => {
+            const newVote = upvote(project.id);
+            upvoteBtn.classList.toggle('active', newVote === 'up');
+            downvoteBtn.classList.remove('active');
+            
+            // Refresh score after voting
+            if (scoreEl) {
+                setTimeout(() => fetchAndDisplayScore(project.id, scoreEl), 500);
+            }
+        };
+        
         if (!hasUser()) {
-            showUserDialog('Please provide your information to use this feature');
+            showUserDialog('Please provide your information to use this feature', doUpvote);
             return;
         }
-        const newVote = upvote(project.id);
-        upvoteBtn.classList.toggle('active', newVote === 'up');
-        downvoteBtn.classList.remove('active');
-        
-        // Refresh score after voting
-        if (scoreEl) {
-            setTimeout(() => fetchAndDisplayScore(project.id, scoreEl), 500);
-        }
+        doUpvote();
     });
 
     // Downvote handler
     downvoteBtn.addEventListener('click', async (e) => {
         e.stopPropagation();
+        
+        const doDownvote = () => {
+            const newVote = downvote(project.id);
+            downvoteBtn.classList.toggle('active', newVote === 'down');
+            upvoteBtn.classList.remove('active');
+            
+            // Refresh score after voting
+            if (scoreEl) {
+                setTimeout(() => fetchAndDisplayScore(project.id, scoreEl), 500);
+            }
+        };
+        
         if (!hasUser()) {
-            showUserDialog('Please provide your information to use this feature');
+            showUserDialog('Please provide your information to use this feature', doDownvote);
             return;
         }
-        const newVote = downvote(project.id);
-        downvoteBtn.classList.toggle('active', newVote === 'down');
-        upvoteBtn.classList.remove('active');
-        
-        // Refresh score after voting
-        if (scoreEl) {
-            setTimeout(() => fetchAndDisplayScore(project.id, scoreEl), 500);
-        }
+        doDownvote();
     });
 
     // Comment handler
     commentBtn.addEventListener('click', (e) => {
         e.stopPropagation();
+        
+        const doShowComment = () => {
+            if (onShowCommentDialog) {
+                onShowCommentDialog(project);
+            }
+        };
+        
         if (!hasUser()) {
-            showUserDialog('Please provide your information to use this feature');
+            showUserDialog('Please provide your information to use this feature', doShowComment);
             return;
         }
-        if (onShowCommentDialog) {
-            onShowCommentDialog(project);
-        }
+        doShowComment();
     });
 }
 

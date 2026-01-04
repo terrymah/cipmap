@@ -184,13 +184,23 @@ export function setOnLegendFilterChange(callback) {
 
 /**
  * Render the map legend
+ * Only shows project types that exist in the loaded data
  */
 export function renderLegend() {
     const config = getConfig();
     const container = document.getElementById('legendContent');
     container.innerHTML = '';
 
+    // Get unique types from loaded projects
+    const projects = getProjects();
+    const typesInData = new Set(projects.map(p => p.type));
+
     Object.entries(config.projectTypes).forEach(([type, settings]) => {
+        // Skip types not present in the data
+        if (!typesInData.has(type)) {
+            return;
+        }
+        
         const fragment = cloneTemplate('legend-item');
         const item = fragment.querySelector('.legend-item');
         

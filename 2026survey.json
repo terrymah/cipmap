@@ -1,8 +1,10 @@
 {
-  "appId": "cipmap",
+  "appId": "2026survey",
   "title": "Town of Apex Capital Improvement Projects",
   "mobileTitle": "Town of Apex Projects",
-  "subtitle": "FY2025-2030 Capital Improvement Plan",
+  "subtitle": "FY26-27 Capital Project Prioritization Exercise",
+  "survey": true,
+  "help": "<p>Welcome to the FY26-27 Capital Project Prioritization Exercise!</p><p>Browse the list of proposed capital improvement projects and vote on the ones you feel are most important for our community.</p><p>Click on any project to see details, then use the thumbs up or down buttons to share your priorities. You can also leave comments to provide additional feedback on specific projects.</p>",
   "logo": {
     "image": "logo.png",
     "link": "https://visionofthepeak.com",
@@ -15,8 +17,8 @@
   "defaultZoom": 13,
   "minZoom": 10,
   "maxZoom": 18,
-  "dataFile": "projects_updated.csv",
-  "fundingYears": ["FY25", "FY26", "FY27", "FY28", "FY29", "Future"],
+  "dataFile": "2026survey.csv",
+  "fundingYears": ["FY26", "FY27", "FY28", "FY29", "FY30", "Future"],
   "projectTypes": {
     "Transportation": { "color": "#e74c3c", "icon": "road" },
     "Parks, Recreation & Cultural Resources": { "color": "#27ae60", "icon": "tree", "mobileLabel": "Parks & Rec" },

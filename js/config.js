@@ -12,11 +12,38 @@ export function isMobile() {
 }
 
 /**
- * Load configuration from config.json
+ * Get the config file path from URL query parameter or default
+ * @returns {string} Config file path
+ */
+function getConfigPath() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const configParam = urlParams.get('config');
+    
+    if (configParam) {
+        // Sanitize: only allow alphanumeric, dash, underscore, and .json extension
+        const sanitized = configParam.replace(/[^a-zA-Z0-9_-]/g, '');
+        return `${sanitized}.json`;
+    }
+    
+    return 'config.json';
+}
+
+/**
+ * Load configuration from config.json or custom config file via ?config= query param
  * @returns {Promise<Object>} Configuration object
+ * @throws {Error} If config file not found (404)
  */
 export async function loadConfig() {
-    const response = await fetch('config.json');
+    const configPath = getConfigPath();
+    const response = await fetch(configPath);
+    
+    if (!response.ok) {
+        if (response.status === 404) {
+            throw new Error(`Configuration file not found: ${configPath}`);
+        }
+        throw new Error(`Failed to load configuration: ${response.status}`);
+    }
+    
     config = await response.json();
     
     // Update UI with config values (use mobile title if available and on mobile)
@@ -70,6 +97,22 @@ export function getTypeDisplayName(type) {
  */
 export function getConfig() {
     return config;
+}
+
+/**
+ * Get the application ID for API calls
+ * @returns {string} The appId from config, defaults to 'cipmap'
+ */
+export function getAppId() {
+    return config?.appId || 'cipmap';
+}
+
+/**
+ * Check if survey mode is enabled
+ * @returns {boolean} True if survey mode is enabled
+ */
+export function isSurveyMode() {
+    return config?.survey === true;
 }
 
 /**

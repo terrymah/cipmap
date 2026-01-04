@@ -12,13 +12,15 @@ import {
     addComment, 
     hasComments 
 } from '../js/votes.js';
+import { getAppId } from '../js/config.js';
 
 const { describe, it, beforeEach } = testHarness;
 
 // Helper to clear vote cookies
 function clearVoteCookies() {
-    document.cookie = 'cipmap_votes=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/';
-    document.cookie = 'cipmap_comments=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/';
+    const appId = getAppId();
+    document.cookie = `${appId}_votes=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
+    document.cookie = `${appId}_comments=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
 }
 
 describe('getVote', () => {

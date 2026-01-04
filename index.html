@@ -463,6 +463,27 @@
         </div>
     </div>
 
+    <!-- Help Dialog Overlay -->
+    <div class="dialog-overlay" id="helpDialogOverlay" hidden></div>
+    
+    <!-- Help Dialog -->
+    <div class="help-dialog" id="helpDialog" hidden>
+        <button class="dialog-close-btn" id="helpDialogClose" aria-label="Close dialog">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="dialog-header">
+            <h2>Welcome</h2>
+        </div>
+        <div class="dialog-body">
+            <div class="help-content" id="helpContent">
+                <!-- Help text will be inserted here -->
+            </div>
+        </div>
+        <div class="dialog-footer">
+            <button class="btn btn-primary" id="helpDialogOk">Got it!</button>
+        </div>
+    </div>
+
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" 
             integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" 

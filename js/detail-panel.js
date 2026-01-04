@@ -3,7 +3,7 @@
  * Handles project selection and detail panel display
  */
 
-import { getConfig } from './config.js';
+import { getConfig, isSurveyMode } from './config.js';
 import { getProjects } from './data.js';
 import { cloneTemplate } from './templates.js';
 import { formatCurrency, formatDate, isPastDate } from './utils.js';
@@ -112,20 +112,40 @@ export function showDetailPanel(project) {
 
     // Funding table
     const fundingBody = fragment.querySelector('.funding-body');
-    config.fundingYears.forEach(year => {
-        const rowFragment = cloneTemplate('funding-row');
-        rowFragment.querySelector('.fiscal-year').textContent = year;
-        rowFragment.querySelector('.fiscal-amount').textContent = 
-            formatCurrency(project.fundingYears[year] || 0);
-        fundingBody.appendChild(rowFragment);
-    });
+    const surveyMode = isSurveyMode();
+    
+    // In survey mode, hide header row and only show total row
+    if (surveyMode) {
+        const thead = fragment.querySelector('.funding-table thead');
+        if (thead) {
+            thead.style.display = 'none';
+        }
+    } else {
+        config.fundingYears.forEach(year => {
+            const rowFragment = cloneTemplate('funding-row');
+            rowFragment.querySelector('.fiscal-year').textContent = year;
+            rowFragment.querySelector('.fiscal-amount').textContent = formatCurrency(project.fundingYears[year] || 0);
+            fundingBody.appendChild(rowFragment);
+        });
+    }
 
     // Funding total row
     const totalFragment = cloneTemplate('funding-total');
-    if (project.hasExplicitTotalCost) {
+    // Show asterisk only if explicit total cost AND not in survey mode
+    if (project.hasExplicitTotalCost && !surveyMode) {
         totalFragment.querySelector('.total-label').textContent = 'Total*';
     }
-    totalFragment.querySelector('.total-amount').textContent = formatCurrency(project.totalFunding);
+    
+    // In survey mode, show prior funding next to total (if any)
+    const totalAmountEl = totalFragment.querySelector('.total-amount');
+    totalAmountEl.textContent = formatCurrency(project.totalFunding);
+    if (surveyMode && project.priorFunding > 0) {
+        const priorText = document.createElement('span');
+        priorText.style.fontWeight = 'normal';
+        priorText.style.fontStyle = 'italic';
+        priorText.textContent = ` (Previously ${formatCurrency(project.priorFunding)})`;
+        totalAmountEl.appendChild(priorText);
+    }
     fundingBody.appendChild(totalFragment);
 
     // Funding source (now an array)
@@ -135,8 +155,8 @@ export function showDetailPanel(project) {
         sourceText.querySelector('.funding-source').textContent = project.fundingSource.join(', ');
     }
 
-    // Show funding note if using explicit total cost
-    if (project.hasExplicitTotalCost) {
+    // Show funding note if using explicit total cost (not in survey mode)
+    if (project.hasExplicitTotalCost && !surveyMode) {
         fragment.querySelector('.funding-note').hidden = false;
     }
 
@@ -147,7 +167,8 @@ export function showDetailPanel(project) {
         { date: project.endDate, label: 'Completion' }
     ].filter(item => item.date);
 
-    if (timelineData.length > 0) {
+    // Hide timeline in survey mode
+    if (timelineData.length > 0 && !surveyMode) {
         const timelineSection = fragment.querySelector('.timeline-section');
         timelineSection.hidden = false;
         const timeline = timelineSection.querySelector('.timeline');

@@ -4,11 +4,13 @@
  * Stored in a cookie, no authentication required
  */
 
-import { getConfig } from './config.js';
+import { getConfig, getAppId } from './config.js';
 import { getCookie, setCookie, deleteCookie } from './cookies.js';
 import { showApiError } from './debug.js';
 
-const COOKIE_NAME = 'cipmap_user';
+function getUserCookieName() {
+    return `${getAppId()}_user`;
+}
 const COOKIE_DAYS = 365;
 
 // Current user state
@@ -16,6 +18,9 @@ let currentUser = null;
 
 // Callbacks
 let onUserChanged = null;
+
+// Pending action to execute after successful user creation
+let pendingAction = null;
 
 /**
  * User object structure:
@@ -50,7 +55,7 @@ async function registerUserWithApi(user) {
                 last_name: user.lastName,
                 email: user.email,
                 hex_location: user.location?.hexId || null,
-                appid: 'cipmap'
+                appid: getAppId()
             })
         });
         
@@ -103,7 +108,7 @@ export function setUser(user) {
  */
 export function clearUser() {
     currentUser = null;
-    deleteCookie(COOKIE_NAME);
+    deleteCookie(getUserCookieName());
     if (onUserChanged) onUserChanged(null);
 }
 
@@ -111,7 +116,7 @@ export function clearUser() {
  * Load user from cookie on init
  */
 export function loadUser() {
-    const cookieValue = getCookie(COOKIE_NAME);
+    const cookieValue = getCookie(getUserCookieName());
     if (cookieValue) {
         try {
             currentUser = JSON.parse(cookieValue);
@@ -165,17 +170,21 @@ function isValidEmail(email) {
  * Save user to cookie
  */
 function saveToCookie(user) {
-    setCookie(COOKIE_NAME, JSON.stringify(user), COOKIE_DAYS);
+    setCookie(getUserCookieName(), JSON.stringify(user), COOKIE_DAYS);
 }
 
 /**
  * Show the user dialog
  * @param {string} bannerMessage - Optional message to show in a banner
+ * @param {Function} onSuccess - Optional callback to execute after successful user creation
  */
-export function showUserDialog(bannerMessage = null) {
+export function showUserDialog(bannerMessage = null, onSuccess = null) {
     const dialog = document.getElementById('userDialog');
     const overlay = document.getElementById('userDialogOverlay');
     const banner = document.getElementById('userDialogBanner');
+    
+    // Store pending action
+    pendingAction = onSuccess;
     
     // Show/hide banner
     if (bannerMessage) {
@@ -235,6 +244,9 @@ export function hideUserDialog() {
     
     dialog.hidden = true;
     overlay.hidden = true;
+    
+    // Clear pending action (user cancelled)
+    pendingAction = null;
     
     // Cleanup dialog map
     destroyDialogMap();
@@ -507,8 +519,21 @@ export async function handleUserDialogOk() {
             user.userId = userId;
         }
         
+        // Capture pending action before it's cleared
+        const actionToExecute = pendingAction;
+        pendingAction = null;
+        
         setUser(user);
         hideUserDialog();
+        
+        // Execute pending action if one was stored
+        if (actionToExecute) {
+            try {
+                actionToExecute();
+            } catch (error) {
+                console.error('Error executing pending action:', error);
+            }
+        }
     }
 }
 

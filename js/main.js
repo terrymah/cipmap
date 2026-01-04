@@ -4,7 +4,7 @@
  */
 
 // Import modules
-import { loadConfig, getConfig } from './config.js';
+import { loadConfig, getConfig, isSurveyMode } from './config.js';
 import { loadProjects, getProjects, getFilteredProjects, setFilteredProjects } from './data.js';
 import { cacheTemplates, cloneTemplate } from './templates.js';
 import { formatCurrency } from './utils.js';
@@ -56,6 +56,7 @@ import { wireVoteButtons } from './vote-buttons.js';
 import { initEventListeners } from './event-listeners.js';
 import { showCommentDialog, hideCommentDialog, handleCommentDialogOk } from './comment-dialog.js';
 import { initDebugMode, isDebugMode } from './debug.js';
+import { initHelp } from './help.js';
 
 /**
  * Initialize the application
@@ -70,6 +71,18 @@ async function init() {
 
         // Load configuration
         await loadConfig();
+        
+        // In survey mode, hide the funding year and timeline filters
+        if (isSurveyMode()) {
+            const fundingYearFilter = document.getElementById('fundingYearSlider')?.closest('.filter-group');
+            if (fundingYearFilter) {
+                fundingYearFilter.style.display = 'none';
+            }
+            const timelineFilter = document.getElementById('timelineSlider')?.closest('.filter-group');
+            if (timelineFilter) {
+                timelineFilter.style.display = 'none';
+            }
+        }
 
         // Load project data
         await loadProjects();
@@ -179,6 +192,9 @@ async function init() {
 
         // Check URL for project selection
         checkUrlParams();
+        
+        // Show help dialog on first visit (if configured)
+        initHelp();
 
     } catch (error) {
         console.error('Failed to initialize app:', error);

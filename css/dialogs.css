@@ -419,3 +419,64 @@
 .dialog-banner:not([hidden]) {
     display: block;
 }
+
+/* Help Dialog */
+.help-dialog {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--card-background);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    z-index: 2001;
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow: hidden;
+    flex-direction: column;
+}
+
+.help-dialog:not([hidden]) {
+    display: flex;
+}
+
+.help-dialog .dialog-header {
+    padding: 20px;
+    padding-right: 50px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.help-dialog .dialog-header h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: var(--text-primary);
+}
+
+.help-dialog .dialog-body {
+    padding: 20px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.help-dialog .help-content {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text-primary);
+}
+
+.help-dialog .help-content p {
+    margin-bottom: 1em;
+}
+
+.help-dialog .help-content p:last-child {
+    margin-bottom: 0;
+}
+
+.help-dialog .dialog-footer {
+    padding: 15px 20px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: flex-end;
+}

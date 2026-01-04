@@ -6,11 +6,15 @@
 
 import { getCookie, setCookie } from './cookies.js';
 import { getUser } from './user.js';
-import { getConfig } from './config.js';
+import { getConfig, getAppId } from './config.js';
 import { showApiError } from './debug.js';
 
-const VOTES_COOKIE_NAME = 'cipmap_votes';
-const COMMENTS_COOKIE_NAME = 'cipmap_comments';
+function getVotesCookieName() {
+    return `${getAppId()}_votes`;
+}
+function getCommentsCookieName() {
+    return `${getAppId()}_comments`;
+}
 const COOKIE_DAYS = 365;
 
 // State
@@ -42,7 +46,7 @@ async function postVoteToApi(projectId, vote) {
             },
             body: JSON.stringify({
                 userid: user.userId,
-                appid: 'cipmap',
+                appid: getAppId(),
                 item_id: projectId,
                 vote: vote
             })
@@ -70,7 +74,7 @@ export async function fetchVoteScore(projectId) {
     
     try {
         const params = new URLSearchParams({
-            appid: 'cipmap',
+            appid: getAppId(),
             item_id: projectId
         });
         
@@ -103,7 +107,7 @@ export function loadVotesAndComments() {
     userComments = {};
     
     // Load votes
-    const votesCookie = getCookie(VOTES_COOKIE_NAME);
+    const votesCookie = getCookie(getVotesCookieName());
     if (votesCookie) {
         try {
             userVotes = JSON.parse(votesCookie);
@@ -114,7 +118,7 @@ export function loadVotesAndComments() {
     }
     
     // Load comments
-    const commentsCookie = getCookie(COMMENTS_COOKIE_NAME);
+    const commentsCookie = getCookie(getCommentsCookieName());
     if (commentsCookie) {
         try {
             userComments = JSON.parse(commentsCookie);
@@ -203,12 +207,12 @@ export function hasComments(projectId) {
  * Save votes to cookie
  */
 function saveVotesToCookie() {
-    setCookie(VOTES_COOKIE_NAME, JSON.stringify(userVotes), COOKIE_DAYS);
+    setCookie(getVotesCookieName(), JSON.stringify(userVotes), COOKIE_DAYS);
 }
 
 /**
  * Save comments to cookie
  */
 function saveCommentsToCookie() {
-    setCookie(COMMENTS_COOKIE_NAME, JSON.stringify(userComments), COOKIE_DAYS);
+    setCookie(getCommentsCookieName(), JSON.stringify(userComments), COOKIE_DAYS);
 }
