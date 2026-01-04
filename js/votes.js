@@ -7,6 +7,7 @@
 import { getCookie, setCookie } from './cookies.js';
 import { getUser } from './user.js';
 import { getConfig } from './config.js';
+import { showApiError } from './debug.js';
 
 const VOTES_COOKIE_NAME = 'cipmap_votes';
 const COMMENTS_COOKIE_NAME = 'cipmap_comments';
@@ -52,6 +53,7 @@ async function postVoteToApi(projectId, vote) {
         }
     } catch (error) {
         console.error('API vote error:', error);
+        showApiError('/api/vote POST', error);
     }
 }
 
@@ -87,6 +89,7 @@ export async function fetchVoteScore(projectId) {
         return await response.json();
     } catch (error) {
         console.error('API fetch vote score error:', error);
+        showApiError('/api/vote GET', error);
         return null;
     }
 }

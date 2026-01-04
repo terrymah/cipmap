@@ -6,6 +6,7 @@
 import { getComments, addComment } from './votes.js';
 import { getUser } from './user.js';
 import { getConfig } from './config.js';
+import { showApiError } from './debug.js';
 
 // Current project ID for comment dialog
 let commentProjectId = null;
@@ -50,6 +51,7 @@ async function postCommentToApi(projectId, commentText) {
         return true;
     } catch (error) {
         console.error('API comment error:', error);
+        showApiError('/api/comment POST', error);
         return false;
     }
 }
@@ -86,6 +88,7 @@ async function fetchCommentsFromApi(projectId) {
         return await response.json();
     } catch (error) {
         console.error('API fetch comments error:', error);
+        showApiError('/api/comment GET', error);
         return [];
     }
 }

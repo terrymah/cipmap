@@ -6,6 +6,7 @@
 
 import { getConfig } from './config.js';
 import { getCookie, setCookie, deleteCookie } from './cookies.js';
+import { showApiError } from './debug.js';
 
 const COOKIE_NAME = 'cipmap_user';
 const COOKIE_DAYS = 365;
@@ -62,6 +63,7 @@ async function registerUserWithApi(user) {
         return data.userid || data.userId || data.id || null;
     } catch (error) {
         console.error('API registration error:', error);
+        showApiError('/api/users', error);
         return null;
     }
 }

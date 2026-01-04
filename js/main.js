@@ -55,12 +55,16 @@ import {
 import { wireVoteButtons } from './vote-buttons.js';
 import { initEventListeners } from './event-listeners.js';
 import { showCommentDialog, hideCommentDialog, handleCommentDialogOk } from './comment-dialog.js';
+import { initDebugMode, isDebugMode } from './debug.js';
 
 /**
  * Initialize the application
  */
 async function init() {
     try {
+        // Initialize debug mode from URL
+        initDebugMode();
+        
         // Cache template references
         cacheTemplates();
 
@@ -295,9 +299,9 @@ function createProjectCard(project, config) {
     // Wire up vote buttons
     wireVoteButtons(card, project, showCommentDialog);
 
-    // Click handler - shift+click for location assignment mode
+    // Click handler - shift+click for location assignment mode (debug mode only)
     card.addEventListener('click', (e) => {
-        if (e.shiftKey && isNoLocationFilterActive() && !project.hasLocation) {
+        if (isDebugMode() && e.shiftKey && isNoLocationFilterActive() && !project.hasLocation) {
             e.preventDefault();
             enterLocationAssignMode(project);
         } else if (!isInLocationEditMode()) {

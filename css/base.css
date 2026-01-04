@@ -45,3 +45,20 @@ body {
     overflow: hidden;
 }
 
+/* Debug mode - hide elements by default, show only in debug mode */
+#noLocationFilter {
+    display: none;
+}
+
+.debug-mode #noLocationFilter {
+    display: flex;
+}
+
+.add-link-btn {
+    display: none !important;
+}
+
+.debug-mode .add-link-btn {
+    display: inline-flex !important;
+}
+
