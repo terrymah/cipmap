@@ -100,6 +100,14 @@ export function getConfig() {
 }
 
 /**
+ * Set the configuration (for testing only)
+ * @param {Object} newConfig - Configuration object to set
+ */
+export function setConfig(newConfig) {
+    config = newConfig;
+}
+
+/**
  * Get the application ID for API calls
  * @returns {string} The appId from config, defaults to 'cipmap'
  */

@@ -735,5 +735,104 @@ describe('matchesFilters - combined filters', () => {
     });
 });
 
+// ============================================
+// TESTS: Config functions
+// ============================================
+
+// Mock config state for testing
+let mockConfig = null;
+
+function setMockConfig(config) {
+    mockConfig = config;
+}
+
+function getMockConfig() {
+    return mockConfig;
+}
+
+function getMockAppId() {
+    return mockConfig?.appId || 'cipmap';
+}
+
+function isMockSurveyMode() {
+    return mockConfig?.survey === true;
+}
+
+function getMockTypeConfig(type) {
+    return mockConfig?.projectTypes?.[type] || { color: '#95a5a6', icon: 'folder' };
+}
+
+describe('getAppId', () => {
+    it('returns cipmap as default when config is null', () => {
+        setMockConfig(null);
+        assert.equal(getMockAppId(), 'cipmap');
+    });
+
+    it('returns cipmap as default when appId not set', () => {
+        setMockConfig({ title: 'Test' });
+        assert.equal(getMockAppId(), 'cipmap');
+    });
+
+    it('returns configured appId when set', () => {
+        setMockConfig({ appId: 'myapp' });
+        assert.equal(getMockAppId(), 'myapp');
+    });
+
+    it('returns configured appId for survey config', () => {
+        setMockConfig({ appId: '2026survey', survey: true });
+        assert.equal(getMockAppId(), '2026survey');
+    });
+});
+
+describe('isSurveyMode', () => {
+    it('returns false when config is null', () => {
+        setMockConfig(null);
+        assert.equal(isMockSurveyMode(), false);
+    });
+
+    it('returns false when survey not set', () => {
+        setMockConfig({ title: 'Test' });
+        assert.equal(isMockSurveyMode(), false);
+    });
+
+    it('returns false when survey is false', () => {
+        setMockConfig({ survey: false });
+        assert.equal(isMockSurveyMode(), false);
+    });
+
+    it('returns true when survey is true', () => {
+        setMockConfig({ survey: true });
+        assert.equal(isMockSurveyMode(), true);
+    });
+
+    it('returns false for non-boolean truthy values', () => {
+        setMockConfig({ survey: 'yes' });
+        assert.equal(isMockSurveyMode(), false);
+    });
+});
+
+describe('getTypeConfig', () => {
+    it('returns config for known project type', () => {
+        setMockConfig(sampleConfig);
+        const typeConfig = getMockTypeConfig('Transportation');
+        assert.equal(typeConfig.color, '#3498db');
+        assert.equal(typeConfig.icon, 'road');
+    });
+
+    it('returns default config for unknown project type', () => {
+        setMockConfig(sampleConfig);
+        const typeConfig = getMockTypeConfig('Unknown');
+        assert.equal(typeConfig.color, '#95a5a6');
+        assert.equal(typeConfig.icon, 'folder');
+    });
+
+    it('returns default config when config is null', () => {
+        setMockConfig(null);
+        const typeConfig = getMockTypeConfig('Transportation');
+        assert.equal(typeConfig.color, '#95a5a6');
+        assert.equal(typeConfig.icon, 'folder');
+    });
+});
+
 // Run tests
 harness.run();
