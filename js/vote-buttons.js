@@ -56,7 +56,7 @@ export function wireVoteButtons(container, project, onShowCommentDialog) {
         };
         
         if (!hasUser()) {
-            showUserDialog('Please provide your information to use this feature', doUpvote);
+            showUserDialog('Please fill out a profile to use this feature', doUpvote);
             return;
         }
         doUpvote();
@@ -78,7 +78,7 @@ export function wireVoteButtons(container, project, onShowCommentDialog) {
         };
         
         if (!hasUser()) {
-            showUserDialog('Please provide your information to use this feature', doDownvote);
+            showUserDialog('Please fill out a profile to use this feature', doDownvote);
             return;
         }
         doDownvote();
@@ -95,7 +95,7 @@ export function wireVoteButtons(container, project, onShowCommentDialog) {
         };
         
         if (!hasUser()) {
-            showUserDialog('Please provide your information to use this feature', doShowComment);
+            showUserDialog('Please fill out a profile to use this feature', doShowComment);
             return;
         }
         doShowComment();
