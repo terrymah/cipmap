@@ -25,7 +25,7 @@ function getConfigPath() {
         return `${sanitized}.json`;
     }
     
-    return 'config.json';
+    return '2026survey.json';
 }
 
 /**
