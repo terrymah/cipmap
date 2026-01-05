@@ -43,6 +43,12 @@ export function setOnMapClick(callback) {
  * Initialize the Leaflet map
  */
 export function initMap() {
+    // Guard against double initialization
+    if (map) {
+        console.warn('Map already initialized');
+        return;
+    }
+    
     const config = getConfig();
 
     map = L.map('map').setView(
