@@ -50,7 +50,8 @@ import {
     setOnUserChanged
 } from './user.js';
 import {
-    loadVotesAndComments
+    loadVotesAndComments,
+    recoverVotesToServer
 } from './votes.js';
 import { wireVoteButtons } from './vote-buttons.js';
 import { initEventListeners } from './event-listeners.js';
@@ -148,6 +149,9 @@ async function init() {
 
         // Load votes and comments from cookies
         loadVotesAndComments();
+        
+        // One-time vote recovery after server data loss
+        recoverVotesToServer();
 
         // Initial render
         renderProjects();

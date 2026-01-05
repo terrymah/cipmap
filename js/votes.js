@@ -130,6 +130,74 @@ export function loadVotesAndComments() {
 }
 
 /**
+ * Get the cookie name for tracking vote recovery
+ */
+function getVotesRecoveredCookieName() {
+    return `${getAppId()}_votes_recovered`;
+}
+
+/**
+ * Resubmit all votes from cookies to the API server
+ * This is a one-time recovery function for when server data is lost
+ * Sets a cookie to prevent re-running
+ */
+export async function recoverVotesToServer() {
+    const config = getConfig();
+    if (!config.apiServer) {
+        return;
+    }
+    
+    // Check if already recovered
+    if (getCookie(getVotesRecoveredCookieName())) {
+        return;
+    }
+    
+    const user = getUser();
+    if (!user?.userId) {
+        // No user yet, can't recover
+        return;
+    }
+    
+    // Get votes from cookie
+    const voteCount = Object.keys(userVotes).length;
+    if (voteCount === 0) {
+        // No votes to recover, mark as done
+        setCookie(getVotesRecoveredCookieName(), 'true', COOKIE_DAYS);
+        return;
+    }
+    
+    console.log(`Recovering ${voteCount} votes to server...`);
+    
+    // Resubmit each vote
+    for (const [projectId, vote] of Object.entries(userVotes)) {
+        const apiVote = vote === 'up' ? 1 : vote === 'down' ? -1 : 0;
+        if (apiVote !== 0) {
+            try {
+                await fetch(`${config.apiServer}/api/vote`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        userid: user.userId,
+                        appid: getAppId(),
+                        item_id: projectId,
+                        vote: apiVote
+                    })
+                });
+            } catch (error) {
+                console.error(`Failed to recover vote for ${projectId}:`, error);
+            }
+        }
+    }
+    
+    console.log('Vote recovery complete');
+    
+    // Mark as recovered so we don't do this again
+    setCookie(getVotesRecoveredCookieName(), 'true', COOKIE_DAYS);
+}
+
+/**
  * Get the user's vote for a project
  * @returns 'up' | 'down' | null
  */
