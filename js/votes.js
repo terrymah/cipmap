@@ -168,12 +168,15 @@ export async function recoverVotesToServer() {
     
     console.log(`Recovering ${voteCount} votes to server...`);
     
+    let successCount = 0;
+    let failCount = 0;
+    
     // Resubmit each vote
     for (const [projectId, vote] of Object.entries(userVotes)) {
         const apiVote = vote === 'up' ? 1 : vote === 'down' ? -1 : 0;
         if (apiVote !== 0) {
             try {
-                await fetch(`${config.apiServer}/api/vote`, {
+                const response = await fetch(`${config.apiServer}/api/vote`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -185,18 +188,28 @@ export async function recoverVotesToServer() {
                         vote: apiVote
                     })
                 });
+                if (response.ok) {
+                    successCount++;
+                } else {
+                    failCount++;
+                    console.error(`Failed to recover vote for ${projectId}: HTTP ${response.status}`);
+                }
                 // Small delay to avoid overwhelming the server
                 await new Promise(resolve => setTimeout(resolve, 50));
             } catch (error) {
+                failCount++;
                 console.error(`Failed to recover vote for ${projectId}:`, error);
             }
         }
     }
     
-    console.log('Vote recovery complete');
+    console.log(`Vote recovery complete: ${successCount} succeeded, ${failCount} failed`);
     
-    // Mark as recovered so we don't do this again
-    setCookie(getVotesRecoveredCookieName(), 'true', COOKIE_DAYS);
+    // Only mark as recovered if we had some success (or no votes to recover)
+    // If all failed, we'll try again next time
+    if (successCount > 0 || failCount === 0) {
+        setCookie(getVotesRecoveredCookieName(), 'true', COOKIE_DAYS);
+    }
 }
 
 /**

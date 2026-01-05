@@ -129,6 +129,84 @@ export function loadUser() {
 }
 
 /**
+ * Get the cookie name for tracking user recovery
+ */
+function getUserRecoveredCookieName() {
+    return `${getAppId()}_user_recovered`;
+}
+
+/**
+ * Resubmit user info from cookie to the API server
+ * This is a one-time recovery function for when server data is lost
+ * Sets a cookie to prevent re-running
+ */
+export async function recoverUserToServer() {
+    const config = getConfig();
+    if (!config.apiServer) {
+        return;
+    }
+    
+    // Check if already recovered
+    if (getCookie(getUserRecoveredCookieName())) {
+        return;
+    }
+    
+    // Check if we have a user to recover
+    if (!currentUser) {
+        // No user to recover, mark as done
+        setCookie(getUserRecoveredCookieName(), 'true', COOKIE_DAYS);
+        return;
+    }
+    
+    // Must have required fields
+    if (!currentUser.firstName || !currentUser.lastName || !currentUser.email) {
+        console.log('User missing required fields, skipping recovery');
+        setCookie(getUserRecoveredCookieName(), 'true', COOKIE_DAYS);
+        return;
+    }
+    
+    console.log('Recovering user to server...');
+    
+    try {
+        const response = await fetch(`${config.apiServer}/api/users`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                first_name: currentUser.firstName,
+                last_name: currentUser.lastName,
+                email: currentUser.email,
+                hex_location: currentUser.location?.hexId || null,
+                appid: getAppId()
+            })
+        });
+        
+        if (response.ok) {
+            const data = await response.json();
+            const newUserId = data.userid || data.userId || data.id || null;
+            
+            // Update the user with the new userId if we got one
+            if (newUserId && newUserId !== currentUser.userId) {
+                console.log(`User recovered with new userId: ${newUserId}`);
+                currentUser.userId = newUserId;
+                setCookie(getUserCookieName(), JSON.stringify(currentUser), COOKIE_DAYS);
+            } else {
+                console.log('User recovery complete');
+            }
+            
+            setCookie(getUserRecoveredCookieName(), 'true', COOKIE_DAYS);
+        } else {
+            console.error(`Failed to recover user: HTTP ${response.status}`);
+            // Don't mark as recovered so we retry next time
+        }
+    } catch (error) {
+        console.error('Failed to recover user:', error);
+        // Don't mark as recovered so we retry next time
+    }
+}
+
+/**
  * Validate user data
  */
 export function validateUser(user) {

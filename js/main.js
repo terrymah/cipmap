@@ -46,6 +46,7 @@ import {
 } from './location-editor.js';
 import {
     loadUser,
+    recoverUserToServer,
     updateUserIcon,
     setOnUserChanged
 } from './user.js';
@@ -142,6 +143,10 @@ async function init() {
 
         // Load user from cookie and update icon
         loadUser();
+        
+        // One-time user recovery after server data loss (must complete before vote recovery)
+        await recoverUserToServer();
+        
         updateUserIcon();
         setOnUserChanged(() => {
             updateUserIcon();
