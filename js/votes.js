@@ -185,6 +185,8 @@ export async function recoverVotesToServer() {
                         vote: apiVote
                     })
                 });
+                // Small delay to avoid overwhelming the server
+                await new Promise(resolve => setTimeout(resolve, 50));
             } catch (error) {
                 console.error(`Failed to recover vote for ${projectId}:`, error);
             }
