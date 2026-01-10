@@ -156,15 +156,18 @@ function renderComments(comments) {
         const headerEl = document.createElement('div');
         headerEl.className = 'comment-header';
         
-        const authorEl = document.createElement('span');
-        authorEl.className = 'comment-author';
-        authorEl.textContent = `${comment.firstname} ${comment.lastname}`;
+        // Only show author name in debug mode (anonymous in results mode)
+        if (isDebugMode()) {
+            const authorEl = document.createElement('span');
+            authorEl.className = 'comment-author';
+            authorEl.textContent = `${comment.firstname} ${comment.lastname}`;
+            headerEl.appendChild(authorEl);
+        }
         
         const timeEl = document.createElement('span');
         timeEl.className = 'comment-time';
         timeEl.textContent = formatCommentTime(comment.created_at);
         
-        headerEl.appendChild(authorEl);
         headerEl.appendChild(timeEl);
         
         const textEl = document.createElement('div');
