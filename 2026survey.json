@@ -4,6 +4,7 @@
   "mobileTitle": "Town of Apex Projects",
   "subtitle": "FY26-27 Capital Project Prioritization Exercise",
   "survey": true,
+  "results": true,
   "help": "<p>Welcome to the FY26-27 Capital Project Prioritization Exercise!</p><p>Browse the list of proposed capital improvement projects and vote on the ones you feel are most important for our community.</p><p>Click on any project to see details, then use the thumbs up or down buttons to share your priorities. You can also leave comments to provide additional feedback on specific projects.</p>",
   "logo": {
     "image": "logo.png",
