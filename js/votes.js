@@ -105,6 +105,7 @@ export async function fetchVoteScore(projectId) {
 export async function fetchAllVoteScores() {
     const config = getConfig();
     if (!config.apiServer) {
+        console.log('fetchAllVoteScores: No apiServer configured');
         return {};
     }
     
@@ -113,7 +114,10 @@ export async function fetchAllVoteScores() {
             appid: getAppId()
         });
         
-        const response = await fetch(`${config.apiServer}/api/votes?${params}`, {
+        const url = `${config.apiServer}/api/votes?${params}`;
+        console.log('fetchAllVoteScores: Fetching', url);
+        
+        const response = await fetch(url, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -126,6 +130,7 @@ export async function fetchAllVoteScores() {
         }
         
         const data = await response.json();
+        console.log('fetchAllVoteScores: Got data', data);
         // Convert array to map by item_id
         const scoreMap = {};
         if (Array.isArray(data)) {

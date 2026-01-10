@@ -132,8 +132,11 @@ export function isSurveyMode() {
  */
 export function isResultsMode() {
     const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('results') === 'true') return true;
-    return config?.results === true;
+    const fromParam = urlParams.get('results') === 'true';
+    const fromConfig = config?.results === true;
+    const result = fromParam || fromConfig;
+    console.log('isResultsMode:', { fromParam, fromConfig, result });
+    return result;
 }
 
 /**
