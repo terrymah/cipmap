@@ -4,8 +4,8 @@
  */
 
 import { getComments, addComment } from './votes.js';
-import { getUser } from './user.js';
-import { getConfig, getAppId } from './config.js';
+import { getUser, hasUser, showUserDialog } from './user.js';
+import { getConfig, getAppId, isResultsMode } from './config.js';
 import { showApiError, isDebugMode } from './debug.js';
 
 // Current project ID for comment dialog
@@ -182,6 +182,14 @@ function renderComments(comments) {
  * @param {Object} project - The project to comment on
  */
 export async function showCommentDialog(project) {
+    // Require profile before showing comments
+    if (!hasUser()) {
+        showUserDialog('Please fill out a profile to view and add comments', () => {
+            showCommentDialog(project);
+        });
+        return;
+    }
+    
     commentProjectId = project.id;
     
     const dialog = document.getElementById('commentDialog');
@@ -193,9 +201,10 @@ export async function showCommentDialog(project) {
     // Clear input
     document.getElementById('commentInput').value = '';
     
-    // Show/hide previous comments based on debug mode
+    // Show previous comments in debug mode or results mode
+    const showPreviousComments = isDebugMode() || isResultsMode();
     const previousCommentsContainer = document.getElementById('previousComments');
-    if (isDebugMode()) {
+    if (showPreviousComments) {
         previousCommentsContainer.style.display = '';
         // Show loading state
         previousCommentsContainer.innerHTML = '<div class="loading-comments">Loading comments...</div>';
@@ -210,8 +219,8 @@ export async function showCommentDialog(project) {
     // Focus input
     document.getElementById('commentInput').focus();
     
-    // Fetch and render comments from API (only in debug mode)
-    if (isDebugMode()) {
+    // Fetch and render comments from API
+    if (showPreviousComments) {
         const comments = await fetchCommentsFromApi(project.id);
         renderComments(comments);
     }

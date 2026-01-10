@@ -243,6 +243,10 @@
     flex-shrink: 0;
 }
 
+.project-card-actions[hidden] {
+    display: none;
+}
+
 .project-card-actions .comment-btn {
     grid-column: 2;
     justify-self: end;
@@ -329,9 +333,17 @@
 .results-vote-score {
     font-size: 1.1rem;
     font-weight: 600;
-    color: var(--primary-color);
+    color: var(--text-secondary);
     min-width: 30px;
     text-align: center;
+}
+
+.results-vote-score.positive {
+    color: var(--success-color);
+}
+
+.results-vote-score.negative {
+    color: var(--accent-color);
 }
 
 .results-comment-btn {

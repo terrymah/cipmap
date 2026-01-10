@@ -361,6 +361,12 @@ function createProjectCard(project, config) {
             if (scoreEl) {
                 scoreEl.textContent = score;
                 scoreEl.title = `${allVoteScores[project.id]?.upvotes || 0} upvotes, ${allVoteScores[project.id]?.downvotes || 0} downvotes`;
+                // Color based on score
+                if (score > 0) {
+                    scoreEl.classList.add('positive');
+                } else if (score < 0) {
+                    scoreEl.classList.add('negative');
+                }
             }
             
             // Set comment count
