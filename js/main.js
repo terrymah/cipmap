@@ -4,7 +4,7 @@
  */
 
 // Import modules
-import { loadConfig, getConfig, isSurveyMode } from './config.js';
+import { loadConfig, getConfig, isSurveyMode, isResultsMode } from './config.js';
 import { loadProjects, getProjects, getFilteredProjects, setFilteredProjects } from './data.js';
 import { cacheTemplates, cloneTemplate } from './templates.js';
 import { formatCurrency } from './utils.js';
@@ -52,13 +52,18 @@ import {
 } from './user.js';
 import {
     loadVotesAndComments,
-    recoverVotesToServer
+    recoverVotesToServer,
+    fetchAllVoteScores
 } from './votes.js';
 import { wireVoteButtons } from './vote-buttons.js';
 import { initEventListeners } from './event-listeners.js';
-import { showCommentDialog, hideCommentDialog, handleCommentDialogOk } from './comment-dialog.js';
+import { showCommentDialog, hideCommentDialog, handleCommentDialogOk, fetchAllCommentCounts } from './comment-dialog.js';
 import { initDebugMode, isDebugMode } from './debug.js';
 import { initHelp } from './help.js';
+
+// Results mode data cache
+let allVoteScores = {};
+let allCommentCounts = {};
 
 /**
  * Initialize the application
@@ -158,6 +163,14 @@ async function init() {
         // One-time vote recovery after server data loss
         recoverVotesToServer();
 
+        // In results mode, fetch all vote scores and comment counts
+        if (isResultsMode()) {
+            [allVoteScores, allCommentCounts] = await Promise.all([
+                fetchAllVoteScores(),
+                fetchAllCommentCounts()
+            ]);
+        }
+
         // Initial render
         renderProjects();
         renderMarkers(true, false);  // Fit bounds on initial load, no animation
@@ -246,6 +259,15 @@ function renderProjects() {
         filteredProjects = applyNoLocationFilter(filteredProjects);
     }
     
+    // In results mode, sort by vote score descending
+    if (isResultsMode()) {
+        filteredProjects = [...filteredProjects].sort((a, b) => {
+            const scoreA = allVoteScores[a.id]?.score || 0;
+            const scoreB = allVoteScores[b.id]?.score || 0;
+            return scoreB - scoreA;
+        });
+    }
+    
     const container = document.getElementById('projectList');
     const totalFunding = filteredProjects.reduce((sum, p) => sum + p.totalFunding, 0);
 
@@ -321,8 +343,43 @@ function createProjectCard(project, config) {
         card.classList.add('assigning-location');
     }
 
-    // Wire up vote buttons
-    wireVoteButtons(card, project, showCommentDialog);
+    // In results mode, show vote score and comment count instead of vote buttons
+    if (isResultsMode()) {
+        const actionsEl = card.querySelector('.project-card-actions');
+        const resultsEl = card.querySelector('.project-card-results');
+        
+        if (actionsEl) actionsEl.hidden = true;
+        if (resultsEl) {
+            resultsEl.hidden = false;
+            
+            // Set vote score
+            const scoreEl = resultsEl.querySelector('.results-vote-score');
+            const score = allVoteScores[project.id]?.score || 0;
+            if (scoreEl) {
+                scoreEl.textContent = score;
+                scoreEl.title = `${allVoteScores[project.id]?.upvotes || 0} upvotes, ${allVoteScores[project.id]?.downvotes || 0} downvotes`;
+            }
+            
+            // Set comment count
+            const commentCountEl = resultsEl.querySelector('.comment-count');
+            const commentCount = allCommentCounts[project.id] || 0;
+            if (commentCountEl) {
+                commentCountEl.textContent = commentCount;
+            }
+            
+            // Wire up comment button
+            const commentBtn = resultsEl.querySelector('.results-comment-btn');
+            if (commentBtn) {
+                commentBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    showCommentDialog(project);
+                });
+            }
+        }
+    } else {
+        // Wire up vote buttons (normal mode)
+        wireVoteButtons(card, project, showCommentDialog);
+    }
 
     // Click handler - shift+click for location assignment mode (debug mode only)
     card.addEventListener('click', (e) => {

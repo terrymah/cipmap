@@ -94,6 +94,49 @@ async function fetchCommentsFromApi(projectId) {
 }
 
 /**
+ * Fetch all comment counts from API server
+ * @returns {Promise<Object>} - Map of item_id -> count
+ */
+export async function fetchAllCommentCounts() {
+    const config = getConfig();
+    if (!config.apiServer) {
+        return {};
+    }
+    
+    try {
+        const params = new URLSearchParams({
+            appid: getAppId()
+        });
+        
+        const response = await fetch(`${config.apiServer}/api/comments/counts?${params}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        if (!response.ok) {
+            console.error('API fetch comment counts failed:', response.status);
+            return {};
+        }
+        
+        const data = await response.json();
+        // Convert array to map by item_id
+        const countMap = {};
+        if (Array.isArray(data)) {
+            data.forEach(item => {
+                countMap[item.item_id] = item.count || 0;
+            });
+        }
+        return countMap;
+    } catch (error) {
+        console.error('API fetch comment counts error:', error);
+        showApiError('/api/comments/counts GET', error);
+        return {};
+    }
+}
+
+/**
  * Render comments in the dialog
  * @param {Array} comments - Array of comment objects from API
  */

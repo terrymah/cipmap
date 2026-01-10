@@ -3,13 +3,14 @@
  * Handles project selection and detail panel display
  */
 
-import { getConfig, isSurveyMode } from './config.js';
+import { getConfig, isSurveyMode, isResultsMode } from './config.js';
 import { getProjects } from './data.js';
 import { cloneTemplate } from './templates.js';
 import { formatCurrency, formatDate, isPastDate } from './utils.js';
 import { panTo, setMapView } from './map.js';
 import { assignLink } from './location-editor.js';
 import { wireVoteButtons } from './vote-buttons.js';
+import { hasUser, showUserDialog } from './user.js';
 
 // Currently selected project
 let selectedProject = null;
@@ -45,6 +46,20 @@ export function getSelectedProject() {
  * Select a project and show its detail panel
  */
 export function selectProject(project) {
+    // Require profile before viewing details (all modes)
+    if (!hasUser()) {
+        showUserDialog('Please fill out a profile to view project details', () => {
+            doSelectProject(project);
+        });
+        return;
+    }
+    doSelectProject(project);
+}
+
+/**
+ * Internal function to select project after user check
+ */
+function doSelectProject(project) {
     selectedProject = project;
     
     // Update URL

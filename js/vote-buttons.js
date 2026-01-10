@@ -5,14 +5,16 @@
 
 import { getVote, upvote, downvote, hasComments, fetchVoteScore } from './votes.js';
 import { hasUser, showUserDialog } from './user.js';
+import { isResultsMode } from './config.js';
 
 /**
  * Wire up vote buttons in a container element
  * @param {Element} container - The container element with vote buttons
  * @param {Object} project - The project object
  * @param {Function} onShowCommentDialog - Callback to show the comment dialog
+ * @param {Object} options - Optional configuration { resultsData: { score, commentCount } }
  */
-export function wireVoteButtons(container, project, onShowCommentDialog) {
+export function wireVoteButtons(container, project, onShowCommentDialog, options = {}) {
     const upvoteBtn = container.querySelector('.upvote-btn');
     const downvoteBtn = container.querySelector('.downvote-btn');
     const commentBtn = container.querySelector('.comment-btn');
@@ -22,7 +24,49 @@ export function wireVoteButtons(container, project, onShowCommentDialog) {
         return; // Buttons not found
     }
 
-    // Set initial vote state
+    const resultsMode = isResultsMode();
+
+    // In results mode, disable voting and show results data
+    if (resultsMode) {
+        // Disable vote buttons visually
+        upvoteBtn.disabled = true;
+        downvoteBtn.disabled = true;
+        upvoteBtn.classList.add('disabled');
+        downvoteBtn.classList.add('disabled');
+        upvoteBtn.style.opacity = '0.5';
+        downvoteBtn.style.opacity = '0.5';
+        upvoteBtn.style.cursor = 'default';
+        downvoteBtn.style.cursor = 'default';
+        
+        // Show score if provided in options
+        if (scoreEl && options.resultsData) {
+            scoreEl.textContent = options.resultsData.score || 0;
+            scoreEl.title = `${options.resultsData.upvotes || 0} upvotes, ${options.resultsData.downvotes || 0} downvotes`;
+        } else if (scoreEl) {
+            // Fetch score for detail panel
+            fetchAndDisplayScore(project.id, scoreEl);
+        }
+        
+        // Add comment count badge if provided
+        if (options.resultsData?.commentCount !== undefined) {
+            const countBadge = document.createElement('span');
+            countBadge.className = 'comment-count-badge';
+            countBadge.textContent = options.resultsData.commentCount;
+            commentBtn.appendChild(countBadge);
+        }
+        
+        // Comment button still works
+        commentBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (onShowCommentDialog) {
+                onShowCommentDialog(project);
+            }
+        });
+        
+        return;
+    }
+
+    // Normal mode - set initial vote state
     const currentVote = getVote(project.id);
     if (currentVote === 'up') {
         upvoteBtn.classList.add('active');

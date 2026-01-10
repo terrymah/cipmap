@@ -99,6 +99,53 @@ export async function fetchVoteScore(projectId) {
 }
 
 /**
+ * Fetch all vote scores from API server
+ * @returns {Promise<Object>} - Map of item_id -> { upvotes, downvotes, score }
+ */
+export async function fetchAllVoteScores() {
+    const config = getConfig();
+    if (!config.apiServer) {
+        return {};
+    }
+    
+    try {
+        const params = new URLSearchParams({
+            appid: getAppId()
+        });
+        
+        const response = await fetch(`${config.apiServer}/api/votes?${params}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        if (!response.ok) {
+            console.error('API fetch all vote scores failed:', response.status);
+            return {};
+        }
+        
+        const data = await response.json();
+        // Convert array to map by item_id
+        const scoreMap = {};
+        if (Array.isArray(data)) {
+            data.forEach(item => {
+                scoreMap[item.item_id] = {
+                    upvotes: item.upvotes || 0,
+                    downvotes: item.downvotes || 0,
+                    score: item.score || 0
+                };
+            });
+        }
+        return scoreMap;
+    } catch (error) {
+        console.error('API fetch all vote scores error:', error);
+        showApiError('/api/votes GET', error);
+        return {};
+    }
+}
+
+/**
  * Load votes and comments from cookies
  */
 export function loadVotesAndComments() {

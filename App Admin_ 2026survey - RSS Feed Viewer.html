@@ -1,0 +1,2435 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)https://sum.wakeresults.org/app/2026survey?password= -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Admin: 2026survey - RSS Feed Viewer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary-color: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .header {
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .breadcrumb {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+        
+        .breadcrumb a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+        
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        
+        h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+        }
+        
+        .card {
+            background: var(--card-bg);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: box-shadow 0.2s, transform 0.2s;
+        }
+        
+        .card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+        
+        .card-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .card-meta {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .card-description {
+            color: var(--text-primary);
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+        
+        .badge {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        
+        .rss-link {
+            text-decoration: none;
+            font-size: 1.25rem;
+            margin-left: 0.5rem;
+            opacity: 0.7;
+            transition: opacity 0.2s, transform 0.2s;
+            display: inline-block;
+        }
+        
+        .rss-link:hover {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+        }
+        
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+        
+        /* Sortable table styles */
+        .sortable th[data-sort] {
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        .sortable th[data-sort]:hover {
+            background: #e2e8f0;
+        }
+        
+        .sortable th .sort-icon {
+            margin-left: 0.25rem;
+            opacity: 0.5;
+        }
+        
+        .sortable th.sorted .sort-icon {
+            opacity: 1;
+        }
+    </style>
+    
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <a href="https://sum.wakeresults.org/" class="logo">📰 RSS Feed Viewer</a>
+            
+        </div>
+    </div>
+    
+    <div class="container" data-np-autofill-form-type="other" data-np-checked="1" data-np-watching="1">
+        
+<div class="back-link">
+    <a href="https://sum.wakeresults.org/users?password=">← Back to Users</a>
+</div>
+
+<h1>📱 App Admin: 2026survey</h1>
+
+<div class="stats-overview">
+    <div class="stat-card">
+        <span class="stat-value">100</span>
+        <span class="stat-label">Users</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-value">42</span>
+        <span class="stat-label">Projects</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-value">128</span>
+        <span class="stat-label">Total Votes</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-value">30</span>
+        <span class="stat-label">Comments</span>
+    </div>
+</div>
+
+<!-- User Heatmap Section -->
+<div class="section-card">
+    <h2>🗺️ User Location Heatmap</h2>
+    
+        <div id="heatmap-container">
+            <div id="map" style="height: 400px; width: 100%; border-radius: 8px; position: relative;" class="leaflet-container leaflet-touch leaflet-retina leaflet-fade-anim leaflet-grab leaflet-touch-drag leaflet-touch-zoom" tabindex="0"><div class="leaflet-pane leaflet-map-pane" style="transform: translate3d(12px, -11px, 0px);"><div class="leaflet-pane leaflet-tile-pane"><div class="leaflet-layer " style="z-index: 1; opacity: 1;"><div class="leaflet-tile-container leaflet-zoom-animated" style="z-index: 18; transform: translate3d(0px, 0px, 0px) scale(1);"><img alt="" src="./App Admin_ 2026survey - RSS Feed Viewer_files/805.png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(337px, -81px, 0px); opacity: 1;"><img alt="" src="./App Admin_ 2026survey - RSS Feed Viewer_files/806.png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(337px, 175px, 0px); opacity: 1;"><img alt="" src="./App Admin_ 2026survey - RSS Feed Viewer_files/805(1).png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(81px, -81px, 0px); opacity: 1;"><img alt="" src="./App Admin_ 2026survey - RSS Feed Viewer_files/805(2).png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(593px, -81px, 0px); opacity: 1;"><img alt="" src="./App Admin_ 2026survey - RSS Feed Viewer_files/806(1).png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(81px, 175px, 0px); opacity: 1;"><img alt="" src="./App Admin_ 2026survey - RSS Feed Viewer_files/806(2).png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(593px, 175px, 0px); opacity: 1;"><img alt="" src="./App Admin_ 2026survey - RSS Feed Viewer_files/805(3).png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(-175px, -81px, 0px); opacity: 1;"><img alt="" src="./App Admin_ 2026survey - RSS Feed Viewer_files/805(4).png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(849px, -81px, 0px); opacity: 1;"><img alt="" src="./App Admin_ 2026survey - RSS Feed Viewer_files/806(3).png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(-175px, 175px, 0px); opacity: 1;"><img alt="" src="./App Admin_ 2026survey - RSS Feed Viewer_files/806(4).png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(849px, 175px, 0px); opacity: 1;"></div></div></div><div class="leaflet-pane leaflet-overlay-pane"><svg pointer-events="none" class="leaflet-zoom-animated" width="1072" height="480" viewBox="-101 -29 1072 480" style="transform: translate3d(-101px, -29px, 0px);"><g><path class="leaflet-interactive" stroke="#2563eb" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="rgb(111, 206, 111)" fill-opacity="0.6" fill-rule="evenodd" d="M397 185L385 193L385 207L397 214L410 207L410 193z"></path><path class="leaflet-interactive" stroke="#2563eb" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="rgb(55, 153, 55)" fill-opacity="0.6" fill-rule="evenodd" d="M422 185L410 193L410 207L422 214L434 207L434 193z"></path><path class="leaflet-interactive" stroke="#2563eb" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="rgb(122, 217, 122)" fill-opacity="0.6" fill-rule="evenodd" d="M434 164L422 171L422 185L434 193L447 185L447 171z"></path><path class="leaflet-interactive" stroke="#2563eb" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="rgb(78, 174, 78)" fill-opacity="0.6" fill-rule="evenodd" d="M347 228L335 236L335 250L347 257L360 250L360 236z"></path><path class="leaflet-interactive" stroke="#2563eb" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="rgb(122, 217, 122)" fill-opacity="0.6" fill-rule="evenodd" d="M546 272L534 279L534 293L546 300L559 293L559 279z"></path><path class="leaflet-interactive" stroke="#2563eb" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="rgb(0, 100, 0)" fill-opacity="0.6" fill-rule="evenodd" d="M447 185L434 193L434 207L447 214L459 207L459 193z"></path><path class="leaflet-interactive" stroke="#2563eb" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="rgb(89, 185, 89)" fill-opacity="0.6" fill-rule="evenodd" d="M410 164L397 171L397 185L410 193L422 185L422 171z"></path><path class="leaflet-interactive" stroke="#2563eb" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="rgb(66, 164, 66)" fill-opacity="0.6" fill-rule="evenodd" d="M372 185L360 193L360 207L372 214L385 207L385 193z"></path><path class="leaflet-interactive" stroke="#2563eb" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="rgb(66, 164, 66)" fill-opacity="0.6" fill-rule="evenodd" d="M347 185L335 193L335 207L347 214L360 207L360 193z"></path><path class="leaflet-interactive" stroke="#2563eb" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="rgb(66, 164, 66)" fill-opacity="0.6" fill-rule="evenodd" d="M434 207L422 214L422 228L434 236L447 228L447 214z"></path><path class="leaflet-interactive" stroke="#2563eb" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="rgb(66, 164, 66)" fill-opacity="0.6" fill-rule="evenodd" d="M360 207L347 214L347 228L360 236L372 228L372 214z"></path><path class="leaflet-interactive" stroke="#2563eb" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="rgb(111, 206, 111)" fill-opacity="0.6" fill-rule="evenodd" d="M472 185L459 193L459 207L472 214L484 207L484 193z"></path><path class="leaflet-interactive" stroke="#2563eb" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="rgb(89, 185, 89)" fill-opacity="0.6" fill-rule="evenodd" d="M410 207L397 214L397 228L410 236L422 228L422 214z"></path><path class="leaflet-interactive" stroke="#2563eb" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="rgb(111, 206, 111)" fill-opacity="0.6" fill-rule="evenodd" d="M422 228L410 236L410 250L422 257L434 250L434 236z"></path><path class="leaflet-interactive" stroke="#2563eb" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="rgb(122, 217, 122)" fill-opacity="0.6" fill-rule="evenodd" d="M459 164L447 171L447 185L459 193L472 185L472 171z"></path><path class="leaflet-interactive" stroke="#2563eb" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="rgb(122, 217, 122)" fill-opacity="0.6" fill-rule="evenodd" d="M459 207L447 214L447 228L459 236L472 228L472 214z"></path><path class="leaflet-interactive" stroke="#2563eb" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="rgb(111, 206, 111)" fill-opacity="0.6" fill-rule="evenodd" d="M447 142L434 150L434 164L447 171L459 164L459 150z"></path><path class="leaflet-interactive" stroke="#2563eb" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="rgb(133, 227, 133)" fill-opacity="0.6" fill-rule="evenodd" d="M323 185L310 193L310 207L323 214L335 207L335 193z"></path><path class="leaflet-interactive" stroke="#2563eb" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="rgb(122, 217, 122)" fill-opacity="0.6" fill-rule="evenodd" d="M397 228L385 236L385 250L397 257L410 250L410 236z"></path><path class="leaflet-interactive" stroke="#2563eb" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="rgb(111, 206, 111)" fill-opacity="0.6" fill-rule="evenodd" d="M385 207L372 214L372 228L385 236L397 228L397 214z"></path><path class="leaflet-interactive" stroke="#2563eb" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="rgb(122, 217, 122)" fill-opacity="0.6" fill-rule="evenodd" d="M397 142L385 150L385 164L397 171L410 164L410 150z"></path><path class="leaflet-interactive" stroke="#2563eb" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="rgb(122, 217, 122)" fill-opacity="0.6" fill-rule="evenodd" d="M472 142L459 150L459 164L472 171L484 164L484 150z"></path><path class="leaflet-interactive" stroke="#2563eb" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="rgb(133, 227, 133)" fill-opacity="0.6" fill-rule="evenodd" d="M410 250L397 257L397 272L410 279L422 272L422 257z"></path><path class="leaflet-interactive" stroke="#2563eb" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="rgb(133, 227, 133)" fill-opacity="0.6" fill-rule="evenodd" d="M422 142L410 150L410 164L422 171L434 164L434 150z"></path><path class="leaflet-interactive" stroke="#2563eb" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="rgb(133, 227, 133)" fill-opacity="0.6" fill-rule="evenodd" d="M335 121L323 128L323 142L335 150L347 142L347 128z"></path><path class="leaflet-interactive" stroke="#2563eb" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="rgb(133, 227, 133)" fill-opacity="0.6" fill-rule="evenodd" d="M497 185L484 193L484 207L497 214L509 207L509 193z"></path><path class="leaflet-interactive" stroke="#2563eb" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="rgb(133, 227, 133)" fill-opacity="0.6" fill-rule="evenodd" d="M372 228L360 236L360 250L372 257L385 250L385 236z"></path></g></svg></div><div class="leaflet-pane leaflet-shadow-pane"></div><div class="leaflet-pane leaflet-marker-pane"></div><div class="leaflet-pane leaflet-tooltip-pane"></div><div class="leaflet-pane leaflet-popup-pane"></div><div class="leaflet-proxy leaflet-zoom-animated" style="transform: translate3d(147297px, 206372px, 0px) scale(1024);"></div></div><div class="leaflet-control-container"><div class="leaflet-top leaflet-left"><div class="leaflet-control-zoom leaflet-bar leaflet-control"><a class="leaflet-control-zoom-in" href="https://sum.wakeresults.org/app/2026survey?password=#" title="Zoom in" role="button" aria-label="Zoom in" aria-disabled="false"><span aria-hidden="true">+</span></a><a class="leaflet-control-zoom-out" href="https://sum.wakeresults.org/app/2026survey?password=#" title="Zoom out" role="button" aria-label="Zoom out" aria-disabled="false"><span aria-hidden="true">−</span></a></div></div><div class="leaflet-top leaflet-right"></div><div class="leaflet-bottom leaflet-left"></div><div class="leaflet-bottom leaflet-right"><div class="leaflet-control-attribution leaflet-control"><a href="https://leafletjs.com/" title="A JavaScript library for interactive maps"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8" class="leaflet-attribution-flag"><path fill="#4C7BE1" d="M0 0h12v4H0z"></path><path fill="#FFD500" d="M0 4h12v3H0z"></path><path fill="#E0BC00" d="M0 7h12v1H0z"></path></svg> Leaflet</a> <span aria-hidden="true">|</span> © OpenStreetMap contributors</div></div></div></div>
+        </div>
+        <p class="map-note">Showing 100 user location(s) based on H3 hex locations.</p>
+    
+</div>
+
+<!-- Users Section -->
+<div class="section-card">
+    <h2>👥 Users (100)</h2>
+    
+    <!-- Email Template -->
+    <div class="email-template-section">
+        <h3>📧 Email Template</h3>
+        <p class="template-hint">Use placeholders: <code>{{first_name}}</code>, <code>{{last_name}}</code>, <code>{{email}}</code></p>
+        <div class="email-form">
+            <div class="form-group">
+                <label for="email-subject">Subject</label>
+                <input type="text" id="email-subject" placeholder="e.g., Hello {{first_name}}!" class="email-input">
+            </div>
+            <div class="form-group">
+                <label for="email-body">Body</label>
+                <textarea id="email-body" rows="4" placeholder="e.g., Dear {{first_name}} {{last_name}},
+
+Thank you for participating..." class="email-textarea"></textarea>
+            </div>
+        </div>
+    </div>
+    
+    
+        <div class="table-container">
+            <table class="data-table sortable" id="users-table">
+                <thead>
+                    <tr>
+                        <th>User ID</th>
+                        <th data-sort="name" style="cursor: pointer;">Name <span class="sort-icon"></span></th>
+                        <th data-sort="email" style="cursor: pointer;">Email <span class="sort-icon"></span></th>
+                        <th data-sort="hex" style="cursor: pointer;">Hex Location <span class="sort-icon"></span></th>
+                        <th data-sort="votes" style="cursor: pointer;">Votes <span class="sort-icon"></span></th>
+                        <th data-sort="comments" style="cursor: pointer;">Comments <span class="sort-icon"></span></th>
+                        <th data-sort="created" style="cursor: pointer;">Created <span class="sort-icon"></span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    <tr data-name="Jason Buydens" data-email="jbuydens@gmail.com" data-hex="hex_0_-2" data-votes="5" data-comments="0" data-created="2026-01-04T16:49:49.125883" data-firstname="Jason" data-lastname="Buydens">
+                        <td><a href="https://sum.wakeresults.org/users/e0f4707a31c5e5b7?password=" class="user-link"><code>e0f4707a...</code></a></td>
+                        <td>Jason Buydens</td>
+                        <td><a href="mailto:jbuydens@gmail.com" class="email-link" data-email="jbuydens@gmail.com" data-firstname="Jason" data-lastname="Buydens">jbuydens@gmail.com</a></td>
+                        <td><code>hex_0_-2</code></td>
+                        <td>🗳️ 5</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Alan Stadiem" data-email="afstadiem@gmail.com" data-hex="hex_0_-1" data-votes="0" data-comments="0" data-created="2026-01-04T17:04:54.165035" data-firstname="Alan" data-lastname="Stadiem">
+                        <td><a href="https://sum.wakeresults.org/users/500660e5707b22f6?password=" class="user-link"><code>500660e5...</code></a></td>
+                        <td>Alan Stadiem</td>
+                        <td><a href="mailto:afstadiem@gmail.com" class="email-link" data-email="afstadiem@gmail.com" data-firstname="Alan" data-lastname="Stadiem">afstadiem@gmail.com</a></td>
+                        <td><code>hex_0_-1</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Kirk Winkelman" data-email="kirk@winkelman.io" data-hex="hex_1_-1" data-votes="0" data-comments="0" data-created="2026-01-04T17:12:45.855772" data-firstname="Kirk" data-lastname="Winkelman">
+                        <td><a href="https://sum.wakeresults.org/users/074702aa47f1398d?password=" class="user-link"><code>074702aa...</code></a></td>
+                        <td>Kirk Winkelman</td>
+                        <td><a href="mailto:kirk@winkelman.io" class="email-link" data-email="kirk@winkelman.io" data-firstname="Kirk" data-lastname="Winkelman">kirk@winkelman.io</a></td>
+                        <td><code>hex_1_-1</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Evan Mandel" data-email="emandel@middlerelief.net" data-hex="hex_-2_-4" data-votes="0" data-comments="1" data-created="2026-01-04T17:14:21.251326" data-firstname="Evan" data-lastname="Mandel">
+                        <td><a href="https://sum.wakeresults.org/users/04c0299e1478011b?password=" class="user-link"><code>04c0299e...</code></a></td>
+                        <td>Evan Mandel</td>
+                        <td><a href="mailto:emandel@middlerelief.net" class="email-link" data-email="emandel@middlerelief.net" data-firstname="Evan" data-lastname="Mandel">emandel@middlerelief.net</a></td>
+                        <td><code>hex_-2_-4</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 1</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Evan Schatz" data-email="evan1joe@gmail.com" data-hex="hex_-4_4" data-votes="0" data-comments="0" data-created="2026-01-04T17:14:40.583937" data-firstname="Evan" data-lastname="Schatz">
+                        <td><a href="https://sum.wakeresults.org/users/9270bf443c6a04bb?password=" class="user-link"><code>9270bf44...</code></a></td>
+                        <td>Evan Schatz</td>
+                        <td><a href="mailto:evan1joe@gmail.com" class="email-link" data-email="evan1joe@gmail.com" data-firstname="Evan" data-lastname="Schatz">evan1joe@gmail.com</a></td>
+                        <td><code>hex_-4_4</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Timothy Smith" data-email="timothysmith@gmail.com" data-hex="hex_0_0" data-votes="0" data-comments="0" data-created="2026-01-04T17:15:33.812439" data-firstname="Timothy" data-lastname="Smith">
+                        <td><a href="https://sum.wakeresults.org/users/4a395fd58157a139?password=" class="user-link"><code>4a395fd5...</code></a></td>
+                        <td>Timothy Smith</td>
+                        <td><a href="mailto:timothysmith@gmail.com" class="email-link" data-email="timothysmith@gmail.com" data-firstname="Timothy" data-lastname="Smith">timothysmith@gmail.com</a></td>
+                        <td><code>hex_0_0</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Rob Fegley" data-email="robfegley@yahoo.com" data-hex="hex_1_-2" data-votes="0" data-comments="0" data-created="2026-01-04T17:18:52.492372" data-firstname="Rob" data-lastname="Fegley">
+                        <td><a href="https://sum.wakeresults.org/users/50785b2905d2887c?password=" class="user-link"><code>50785b29...</code></a></td>
+                        <td>Rob Fegley</td>
+                        <td><a href="mailto:robfegley@yahoo.com" class="email-link" data-email="robfegley@yahoo.com" data-firstname="Rob" data-lastname="Fegley">robfegley@yahoo.com</a></td>
+                        <td><code>hex_1_-2</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Sumith Surajan" data-email="sumith19@gmail.com" data-hex="hex_-2_-4" data-votes="0" data-comments="0" data-created="2026-01-04T17:30:32.725756" data-firstname="Sumith" data-lastname="Surajan">
+                        <td><a href="https://sum.wakeresults.org/users/3cf7a63b42a901e0?password=" class="user-link"><code>3cf7a63b...</code></a></td>
+                        <td>Sumith Surajan</td>
+                        <td><a href="mailto:sumith19@gmail.com" class="email-link" data-email="sumith19@gmail.com" data-firstname="Sumith" data-lastname="Surajan">sumith19@gmail.com</a></td>
+                        <td><code>hex_-2_-4</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Jay Vora" data-email="Jayvora87@gmail.com" data-hex="hex_0_-3" data-votes="0" data-comments="0" data-created="2026-01-04T17:43:32.442744" data-firstname="Jay" data-lastname="Vora">
+                        <td><a href="https://sum.wakeresults.org/users/2e8838a8dc9d4ea7?password=" class="user-link"><code>2e8838a8...</code></a></td>
+                        <td>Jay Vora</td>
+                        <td><a href="mailto:Jayvora87@gmail.com" class="email-link" data-email="Jayvora87@gmail.com" data-firstname="Jay" data-lastname="Vora">Jayvora87@gmail.com</a></td>
+                        <td><code>hex_0_-3</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Dana Roederer" data-email="dana.roederer@gmail.com" data-hex="hex_0_-2" data-votes="0" data-comments="0" data-created="2026-01-04T18:03:08.156025" data-firstname="Dana" data-lastname="Roederer">
+                        <td><a href="https://sum.wakeresults.org/users/8ddbd83949d51f33?password=" class="user-link"><code>8ddbd839...</code></a></td>
+                        <td>Dana Roederer</td>
+                        <td><a href="mailto:dana.roederer@gmail.com" class="email-link" data-email="dana.roederer@gmail.com" data-firstname="Dana" data-lastname="Roederer">dana.roederer@gmail.com</a></td>
+                        <td><code>hex_0_-2</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Heidi Sico" data-email="hsico75@gmail.com" data-hex="hex_0_-4" data-votes="0" data-comments="0" data-created="2026-01-04T18:03:58.186494" data-firstname="Heidi" data-lastname="Sico">
+                        <td><a href="https://sum.wakeresults.org/users/ffc757d0ca87dd6b?password=" class="user-link"><code>ffc757d0...</code></a></td>
+                        <td>Heidi Sico</td>
+                        <td><a href="mailto:hsico75@gmail.com" class="email-link" data-email="hsico75@gmail.com" data-firstname="Heidi" data-lastname="Sico">hsico75@gmail.com</a></td>
+                        <td><code>hex_0_-4</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Kendall Rotondo" data-email="kendro23@gmail.com" data-hex="hex_0_-3" data-votes="0" data-comments="0" data-created="2026-01-04T18:09:43.892461" data-firstname="Kendall" data-lastname="Rotondo">
+                        <td><a href="https://sum.wakeresults.org/users/744f1099fa53bfe9?password=" class="user-link"><code>744f1099...</code></a></td>
+                        <td>Kendall Rotondo</td>
+                        <td><a href="mailto:kendro23@gmail.com" class="email-link" data-email="kendro23@gmail.com" data-firstname="Kendall" data-lastname="Rotondo">kendro23@gmail.com</a></td>
+                        <td><code>hex_0_-3</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Charles Riggs" data-email="criggs_us@yahoo.com" data-hex="hex_-1_-1" data-votes="0" data-comments="1" data-created="2026-01-04T18:12:37.230297" data-firstname="Charles" data-lastname="Riggs">
+                        <td><a href="https://sum.wakeresults.org/users/23c8bf37f807637f?password=" class="user-link"><code>23c8bf37...</code></a></td>
+                        <td>Charles Riggs</td>
+                        <td><a href="mailto:criggs_us@yahoo.com" class="email-link" data-email="criggs_us@yahoo.com" data-firstname="Charles" data-lastname="Riggs">criggs_us@yahoo.com</a></td>
+                        <td><code>hex_-1_-1</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 1</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Mathew Boban" data-email="mboban@umich.edu" data-hex="hex_0_0" data-votes="0" data-comments="1" data-created="2026-01-04T18:19:29.510340" data-firstname="Mathew" data-lastname="Boban">
+                        <td><a href="https://sum.wakeresults.org/users/ec9d598f31ae446a?password=" class="user-link"><code>ec9d598f...</code></a></td>
+                        <td>Mathew Boban</td>
+                        <td><a href="mailto:mboban@umich.edu" class="email-link" data-email="mboban@umich.edu" data-firstname="Mathew" data-lastname="Boban">mboban@umich.edu</a></td>
+                        <td><code>hex_0_0</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 1</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Alan Maness" data-email="amaness69@gmail.com" data-hex="hex_0_0" data-votes="0" data-comments="0" data-created="2026-01-04T18:19:30.406615" data-firstname="Alan" data-lastname="Maness">
+                        <td><a href="https://sum.wakeresults.org/users/aea6da9c8bf5177d?password=" class="user-link"><code>aea6da9c...</code></a></td>
+                        <td>Alan Maness</td>
+                        <td><a href="mailto:amaness69@gmail.com" class="email-link" data-email="amaness69@gmail.com" data-firstname="Alan" data-lastname="Maness">amaness69@gmail.com</a></td>
+                        <td><code>hex_0_0</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Patrick Patton" data-email="patrickdpatton@gmail.com" data-hex="hex_0_-3" data-votes="0" data-comments="0" data-created="2026-01-04T18:21:07.998741" data-firstname="Patrick" data-lastname="Patton">
+                        <td><a href="https://sum.wakeresults.org/users/0a420ed936157044?password=" class="user-link"><code>0a420ed9...</code></a></td>
+                        <td>Patrick Patton</td>
+                        <td><a href="mailto:patrickdpatton@gmail.com" class="email-link" data-email="patrickdpatton@gmail.com" data-firstname="Patrick" data-lastname="Patton">patrickdpatton@gmail.com</a></td>
+                        <td><code>hex_0_-3</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Amy Denning" data-email="amyden@gmail.com" data-hex="hex_-2_-4" data-votes="0" data-comments="0" data-created="2026-01-04T18:22:09.965909" data-firstname="Amy" data-lastname="Denning">
+                        <td><a href="https://sum.wakeresults.org/users/305f6b5ae42c813f?password=" class="user-link"><code>305f6b5a...</code></a></td>
+                        <td>Amy Denning</td>
+                        <td><a href="mailto:amyden@gmail.com" class="email-link" data-email="amyden@gmail.com" data-firstname="Amy" data-lastname="Denning">amyden@gmail.com</a></td>
+                        <td><code>hex_-2_-4</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Daniel Khodaparast" data-email="dkhodaparast@gmail.com" data-hex="hex_0_0" data-votes="14" data-comments="0" data-created="2026-01-04T18:27:38.227992" data-firstname="Daniel" data-lastname="Khodaparast">
+                        <td><a href="https://sum.wakeresults.org/users/5d3427ca0522fbc6?password=" class="user-link"><code>5d3427ca...</code></a></td>
+                        <td>Daniel Khodaparast</td>
+                        <td><a href="mailto:dkhodaparast@gmail.com" class="email-link" data-email="dkhodaparast@gmail.com" data-firstname="Daniel" data-lastname="Khodaparast">dkhodaparast@gmail.com</a></td>
+                        <td><code>hex_0_0</code></td>
+                        <td>🗳️ 14</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Charles Burilla" data-email="burillactb@gmail.com" data-hex="hex_-1_-4" data-votes="0" data-comments="0" data-created="2026-01-04T18:40:21.990371" data-firstname="Charles" data-lastname="Burilla">
+                        <td><a href="https://sum.wakeresults.org/users/ae59e2b3813b26a1?password=" class="user-link"><code>ae59e2b3...</code></a></td>
+                        <td>Charles Burilla</td>
+                        <td><a href="mailto:burillactb@gmail.com" class="email-link" data-email="burillactb@gmail.com" data-firstname="Charles" data-lastname="Burilla">burillactb@gmail.com</a></td>
+                        <td><code>hex_-1_-4</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Charles Estell" data-email="chaz.estell@gmail.com" data-hex="hex_0_-4" data-votes="0" data-comments="0" data-created="2026-01-04T18:51:31.662633" data-firstname="Charles" data-lastname="Estell">
+                        <td><a href="https://sum.wakeresults.org/users/9eaf83d97224130d?password=" class="user-link"><code>9eaf83d9...</code></a></td>
+                        <td>Charles Estell</td>
+                        <td><a href="mailto:chaz.estell@gmail.com" class="email-link" data-email="chaz.estell@gmail.com" data-firstname="Charles" data-lastname="Estell">chaz.estell@gmail.com</a></td>
+                        <td><code>hex_0_-4</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Connie Carringer" data-email="ccarringer@gmail.com" data-hex="hex_0_1" data-votes="0" data-comments="7" data-created="2026-01-04T18:52:12.841008" data-firstname="Connie" data-lastname="Carringer">
+                        <td><a href="https://sum.wakeresults.org/users/ecfe5261e145d27f?password=" class="user-link"><code>ecfe5261...</code></a></td>
+                        <td>Connie Carringer</td>
+                        <td><a href="mailto:ccarringer@gmail.com" class="email-link" data-email="ccarringer@gmail.com" data-firstname="Connie" data-lastname="Carringer">ccarringer@gmail.com</a></td>
+                        <td><code>hex_0_1</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 7</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Steve Young" data-email="smyoung@gmail.com" data-hex="hex_-1_-2" data-votes="0" data-comments="3" data-created="2026-01-04T18:59:48.192482" data-firstname="Steve" data-lastname="Young">
+                        <td><a href="https://sum.wakeresults.org/users/56ec59b79f940fd1?password=" class="user-link"><code>56ec59b7...</code></a></td>
+                        <td>Steve Young</td>
+                        <td><a href="mailto:smyoung@gmail.com" class="email-link" data-email="smyoung@gmail.com" data-firstname="Steve" data-lastname="Young">smyoung@gmail.com</a></td>
+                        <td><code>hex_-1_-2</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 3</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Albert Francia" data-email="alfrancia@hotmail.com" data-hex="hex_-2_-1" data-votes="0" data-comments="0" data-created="2026-01-04T19:00:35.891576" data-firstname="Albert" data-lastname="Francia">
+                        <td><a href="https://sum.wakeresults.org/users/dba8a118a9c1c9c3?password=" class="user-link"><code>dba8a118...</code></a></td>
+                        <td>Albert Francia</td>
+                        <td><a href="mailto:alfrancia@hotmail.com" class="email-link" data-email="alfrancia@hotmail.com" data-firstname="Albert" data-lastname="Francia">alfrancia@hotmail.com</a></td>
+                        <td><code>hex_-2_-1</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Phil Stein" data-email="im.phil22@gmail.com" data-hex="hex_1_-2" data-votes="0" data-comments="0" data-created="2026-01-04T19:02:20.207195" data-firstname="Phil" data-lastname="Stein">
+                        <td><a href="https://sum.wakeresults.org/users/255bbf4cde9839c5?password=" class="user-link"><code>255bbf4c...</code></a></td>
+                        <td>Phil Stein</td>
+                        <td><a href="mailto:im.phil22@gmail.com" class="email-link" data-email="im.phil22@gmail.com" data-firstname="Phil" data-lastname="Stein">im.phil22@gmail.com</a></td>
+                        <td><code>hex_1_-2</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Eric Stephens" data-email="etstephens22@yahoo.com" data-hex="hex_0_0" data-votes="0" data-comments="0" data-created="2026-01-04T19:06:09.619343" data-firstname="Eric" data-lastname="Stephens">
+                        <td><a href="https://sum.wakeresults.org/users/4a1888713b023fcb?password=" class="user-link"><code>4a188871...</code></a></td>
+                        <td>Eric Stephens</td>
+                        <td><a href="mailto:etstephens22@yahoo.com" class="email-link" data-email="etstephens22@yahoo.com" data-firstname="Eric" data-lastname="Stephens">etstephens22@yahoo.com</a></td>
+                        <td><code>hex_0_0</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Lauren Newman" data-email="laurenne@gmail.com" data-hex="hex_1_0" data-votes="0" data-comments="0" data-created="2026-01-04T19:09:10.689722" data-firstname="Lauren" data-lastname="Newman">
+                        <td><a href="https://sum.wakeresults.org/users/ad2d528a2dc2cbee?password=" class="user-link"><code>ad2d528a...</code></a></td>
+                        <td>Lauren Newman</td>
+                        <td><a href="mailto:laurenne@gmail.com" class="email-link" data-email="laurenne@gmail.com" data-firstname="Lauren" data-lastname="Newman">laurenne@gmail.com</a></td>
+                        <td><code>hex_1_0</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Lis Pfeiffer" data-email="lsweetp@att.net" data-hex="hex_-1_-4" data-votes="0" data-comments="0" data-created="2026-01-04T19:14:23.108476" data-firstname="Lis" data-lastname="Pfeiffer">
+                        <td><a href="https://sum.wakeresults.org/users/341a9cae92b7f1c6?password=" class="user-link"><code>341a9cae...</code></a></td>
+                        <td>Lis Pfeiffer</td>
+                        <td><a href="mailto:lsweetp@att.net" class="email-link" data-email="lsweetp@att.net" data-firstname="Lis" data-lastname="Pfeiffer">lsweetp@att.net</a></td>
+                        <td><code>hex_-1_-4</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Rhianon Purro" data-email="rhianonpurro@gmail.com" data-hex="hex_-1_0" data-votes="0" data-comments="0" data-created="2026-01-04T19:18:03.799895" data-firstname="Rhianon" data-lastname="Purro">
+                        <td><a href="https://sum.wakeresults.org/users/edaef833ea3ee2e0?password=" class="user-link"><code>edaef833...</code></a></td>
+                        <td>Rhianon Purro</td>
+                        <td><a href="mailto:rhianonpurro@gmail.com" class="email-link" data-email="rhianonpurro@gmail.com" data-firstname="Rhianon" data-lastname="Purro">rhianonpurro@gmail.com</a></td>
+                        <td><code>hex_-1_0</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Fernando Correal" data-email="fcorreal2310@gmail.com" data-hex="hex_0_-1" data-votes="0" data-comments="1" data-created="2026-01-04T19:23:49.803550" data-firstname="Fernando" data-lastname="Correal">
+                        <td><a href="https://sum.wakeresults.org/users/b79207f0b449c472?password=" class="user-link"><code>b79207f0...</code></a></td>
+                        <td>Fernando Correal</td>
+                        <td><a href="mailto:fcorreal2310@gmail.com" class="email-link" data-email="fcorreal2310@gmail.com" data-firstname="Fernando" data-lastname="Correal">fcorreal2310@gmail.com</a></td>
+                        <td><code>hex_0_-1</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 1</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Diane Kurilecz" data-email="kurilecz@gmail.com" data-hex="hex_2_0" data-votes="8" data-comments="0" data-created="2026-01-04T19:33:14.728982" data-firstname="Diane" data-lastname="Kurilecz">
+                        <td><a href="https://sum.wakeresults.org/users/b9fdcd882ce40aa6?password=" class="user-link"><code>b9fdcd88...</code></a></td>
+                        <td>Diane Kurilecz</td>
+                        <td><a href="mailto:kurilecz@gmail.com" class="email-link" data-email="kurilecz@gmail.com" data-firstname="Diane" data-lastname="Kurilecz">kurilecz@gmail.com</a></td>
+                        <td><code>hex_2_0</code></td>
+                        <td>🗳️ 8</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Bill Collins" data-email="photo@bill-collins.net" data-hex="hex_2_0" data-votes="0" data-comments="0" data-created="2026-01-04T19:36:46.415901" data-firstname="Bill" data-lastname="Collins">
+                        <td><a href="https://sum.wakeresults.org/users/60d6a5af2780512a?password=" class="user-link"><code>60d6a5af...</code></a></td>
+                        <td>Bill Collins</td>
+                        <td><a href="mailto:photo@bill-collins.net" class="email-link" data-email="photo@bill-collins.net" data-firstname="Bill" data-lastname="Collins">photo@bill-collins.net</a></td>
+                        <td><code>hex_2_0</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Manju Dafforn" data-email="manju_dafforn@yahoo.com" data-hex="hex_0_-5" data-votes="0" data-comments="0" data-created="2026-01-04T19:41:42.379555" data-firstname="Manju" data-lastname="Dafforn">
+                        <td><a href="https://sum.wakeresults.org/users/d7f2e7dacb926267?password=" class="user-link"><code>d7f2e7da...</code></a></td>
+                        <td>Manju Dafforn</td>
+                        <td><a href="mailto:manju_dafforn@yahoo.com" class="email-link" data-email="manju_dafforn@yahoo.com" data-firstname="Manju" data-lastname="Dafforn">manju_dafforn@yahoo.com</a></td>
+                        <td><code>hex_0_-5</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Blaise Alicki" data-email="blaise@alicki.com" data-hex="hex_0_-2" data-votes="0" data-comments="0" data-created="2026-01-04T19:42:02.899632" data-firstname="Blaise" data-lastname="Alicki">
+                        <td><a href="https://sum.wakeresults.org/users/e0d8a8b324ef4b8b?password=" class="user-link"><code>e0d8a8b3...</code></a></td>
+                        <td>Blaise Alicki</td>
+                        <td><a href="mailto:blaise@alicki.com" class="email-link" data-email="blaise@alicki.com" data-firstname="Blaise" data-lastname="Alicki">blaise@alicki.com</a></td>
+                        <td><code>hex_0_-2</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Crystal O’Mara" data-email="crystalhomara@Gmail.com" data-hex="hex_0_0" data-votes="0" data-comments="0" data-created="2026-01-04T19:49:56.318876" data-firstname="Crystal" data-lastname="O’Mara">
+                        <td><a href="https://sum.wakeresults.org/users/ce8218e39ebd4b6f?password=" class="user-link"><code>ce8218e3...</code></a></td>
+                        <td>Crystal O’Mara</td>
+                        <td><a href="mailto:crystalhomara@Gmail.com" class="email-link" data-email="crystalhomara@Gmail.com" data-firstname="Crystal" data-lastname="O’Mara">crystalhomara@Gmail.com</a></td>
+                        <td><code>hex_0_0</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Daniel Bishop" data-email="lolologist@gmail.com" data-hex="hex_0_-1" data-votes="0" data-comments="0" data-created="2026-01-04T19:54:31.077767" data-firstname="Daniel" data-lastname="Bishop">
+                        <td><a href="https://sum.wakeresults.org/users/ad1cfe6b855cc25a?password=" class="user-link"><code>ad1cfe6b...</code></a></td>
+                        <td>Daniel Bishop</td>
+                        <td><a href="mailto:lolologist@gmail.com" class="email-link" data-email="lolologist@gmail.com" data-firstname="Daniel" data-lastname="Bishop">lolologist@gmail.com</a></td>
+                        <td><code>hex_0_-1</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Brad Beaton" data-email="bradbeaton@gmail.com" data-hex="hex_0_-3" data-votes="0" data-comments="0" data-created="2026-01-04T19:58:27.938058" data-firstname="Brad" data-lastname="Beaton">
+                        <td><a href="https://sum.wakeresults.org/users/57a92e260f6b7c8e?password=" class="user-link"><code>57a92e26...</code></a></td>
+                        <td>Brad Beaton</td>
+                        <td><a href="mailto:bradbeaton@gmail.com" class="email-link" data-email="bradbeaton@gmail.com" data-firstname="Brad" data-lastname="Beaton">bradbeaton@gmail.com</a></td>
+                        <td><code>hex_0_-3</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Chris Miller" data-email="chris7483@yahoo.com" data-hex="hex_-1_-1" data-votes="0" data-comments="0" data-created="2026-01-04T20:05:08.940505" data-firstname="Chris" data-lastname="Miller">
+                        <td><a href="https://sum.wakeresults.org/users/1baea5b872149ec2?password=" class="user-link"><code>1baea5b8...</code></a></td>
+                        <td>Chris Miller</td>
+                        <td><a href="mailto:chris7483@yahoo.com" class="email-link" data-email="chris7483@yahoo.com" data-firstname="Chris" data-lastname="Miller">chris7483@yahoo.com</a></td>
+                        <td><code>hex_-1_-1</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Roger Squires" data-email="roger.m.squires@gmail.com" data-hex="hex_0_0" data-votes="0" data-comments="0" data-created="2026-01-04T20:05:17.282094" data-firstname="Roger" data-lastname="Squires">
+                        <td><a href="https://sum.wakeresults.org/users/96743e4fbacb1aee?password=" class="user-link"><code>96743e4f...</code></a></td>
+                        <td>Roger Squires</td>
+                        <td><a href="mailto:roger.m.squires@gmail.com" class="email-link" data-email="roger.m.squires@gmail.com" data-firstname="Roger" data-lastname="Squires">roger.m.squires@gmail.com</a></td>
+                        <td><code>hex_0_0</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Scott Gerenser" data-email="sgerenser@gmail.com" data-hex="hex_-2_-4" data-votes="0" data-comments="0" data-created="2026-01-04T20:12:06.814602" data-firstname="Scott" data-lastname="Gerenser">
+                        <td><a href="https://sum.wakeresults.org/users/47aef086a214bcf1?password=" class="user-link"><code>47aef086...</code></a></td>
+                        <td>Scott Gerenser</td>
+                        <td><a href="mailto:sgerenser@gmail.com" class="email-link" data-email="sgerenser@gmail.com" data-firstname="Scott" data-lastname="Gerenser">sgerenser@gmail.com</a></td>
+                        <td><code>hex_-2_-4</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Laura Naslund" data-email="lauranaslund@gmail.com" data-hex="hex_0_-1" data-votes="0" data-comments="1" data-created="2026-01-04T20:14:26.705390" data-firstname="Laura" data-lastname="Naslund">
+                        <td><a href="https://sum.wakeresults.org/users/1d39cee9acfeeba1?password=" class="user-link"><code>1d39cee9...</code></a></td>
+                        <td>Laura Naslund</td>
+                        <td><a href="mailto:lauranaslund@gmail.com" class="email-link" data-email="lauranaslund@gmail.com" data-firstname="Laura" data-lastname="Naslund">lauranaslund@gmail.com</a></td>
+                        <td><code>hex_0_-1</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 1</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Mike Kastellec" data-email="mkastellec@gmail.com" data-hex="hex_0_0" data-votes="0" data-comments="3" data-created="2026-01-04T20:20:18.769922" data-firstname="Mike" data-lastname="Kastellec">
+                        <td><a href="https://sum.wakeresults.org/users/994a986b6f3c9f60?password=" class="user-link"><code>994a986b...</code></a></td>
+                        <td>Mike Kastellec</td>
+                        <td><a href="mailto:mkastellec@gmail.com" class="email-link" data-email="mkastellec@gmail.com" data-firstname="Mike" data-lastname="Kastellec">mkastellec@gmail.com</a></td>
+                        <td><code>hex_0_0</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 3</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Darcy Hull" data-email="dwhull15@gmail.com" data-hex="hex_0_-1" data-votes="0" data-comments="2" data-created="2026-01-04T20:28:07.167365" data-firstname="Darcy" data-lastname="Hull">
+                        <td><a href="https://sum.wakeresults.org/users/1f59e076aee52a28?password=" class="user-link"><code>1f59e076...</code></a></td>
+                        <td>Darcy Hull</td>
+                        <td><a href="mailto:dwhull15@gmail.com" class="email-link" data-email="dwhull15@gmail.com" data-firstname="Darcy" data-lastname="Hull">dwhull15@gmail.com</a></td>
+                        <td><code>hex_0_-1</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 2</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Tagbo Ekwueme-Okoli" data-email="tagbo.okoli@gmail.com" data-hex="hex_-2_-2" data-votes="0" data-comments="0" data-created="2026-01-04T20:46:22.474366" data-firstname="Tagbo" data-lastname="Ekwueme-Okoli">
+                        <td><a href="https://sum.wakeresults.org/users/27b8c7fc09c444e4?password=" class="user-link"><code>27b8c7fc...</code></a></td>
+                        <td>Tagbo Ekwueme-Okoli</td>
+                        <td><a href="mailto:tagbo.okoli@gmail.com" class="email-link" data-email="tagbo.okoli@gmail.com" data-firstname="Tagbo" data-lastname="Ekwueme-Okoli">tagbo.okoli@gmail.com</a></td>
+                        <td><code>hex_-2_-2</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Heather Lanigan" data-email="hmlanigan@gmail.com" data-hex="hex_-1_-3" data-votes="0" data-comments="0" data-created="2026-01-04T20:48:39.428048" data-firstname="Heather" data-lastname="Lanigan">
+                        <td><a href="https://sum.wakeresults.org/users/6d1374ae94537736?password=" class="user-link"><code>6d1374ae...</code></a></td>
+                        <td>Heather Lanigan</td>
+                        <td><a href="mailto:hmlanigan@gmail.com" class="email-link" data-email="hmlanigan@gmail.com" data-firstname="Heather" data-lastname="Lanigan">hmlanigan@gmail.com</a></td>
+                        <td><code>hex_-1_-3</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Johnathan Bynum" data-email="jwb1223@gmail.com" data-hex="hex_2_-2" data-votes="0" data-comments="0" data-created="2026-01-04T20:56:57.240929" data-firstname="Johnathan" data-lastname="Bynum">
+                        <td><a href="https://sum.wakeresults.org/users/cc880e9afc7b2391?password=" class="user-link"><code>cc880e9a...</code></a></td>
+                        <td>Johnathan Bynum</td>
+                        <td><a href="mailto:jwb1223@gmail.com" class="email-link" data-email="jwb1223@gmail.com" data-firstname="Johnathan" data-lastname="Bynum">jwb1223@gmail.com</a></td>
+                        <td><code>hex_2_-2</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Kristy Casper-Bynum" data-email="kristy_casper@yahoo.com" data-hex="hex_-1_-1" data-votes="0" data-comments="0" data-created="2026-01-04T21:08:36.148893" data-firstname="Kristy" data-lastname="Casper-Bynum">
+                        <td><a href="https://sum.wakeresults.org/users/d495c400182a964d?password=" class="user-link"><code>d495c400...</code></a></td>
+                        <td>Kristy Casper-Bynum</td>
+                        <td><a href="mailto:kristy_casper@yahoo.com" class="email-link" data-email="kristy_casper@yahoo.com" data-firstname="Kristy" data-lastname="Casper-Bynum">kristy_casper@yahoo.com</a></td>
+                        <td><code>hex_-1_-1</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="John Cotter" data-email="cotter.john@gmail.com" data-hex="hex_-1_-4" data-votes="0" data-comments="0" data-created="2026-01-04T21:18:00.314723" data-firstname="John" data-lastname="Cotter">
+                        <td><a href="https://sum.wakeresults.org/users/7cba0a2e24c6b058?password=" class="user-link"><code>7cba0a2e...</code></a></td>
+                        <td>John Cotter</td>
+                        <td><a href="mailto:cotter.john@gmail.com" class="email-link" data-email="cotter.john@gmail.com" data-firstname="John" data-lastname="Cotter">cotter.john@gmail.com</a></td>
+                        <td><code>hex_-1_-4</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="David Hooks" data-email="davidhooksnc@gmail.com" data-hex="hex_-1_-1" data-votes="0" data-comments="0" data-created="2026-01-04T21:20:15.207445" data-firstname="David" data-lastname="Hooks">
+                        <td><a href="https://sum.wakeresults.org/users/96f96805030d3e4a?password=" class="user-link"><code>96f96805...</code></a></td>
+                        <td>David Hooks</td>
+                        <td><a href="mailto:davidhooksnc@gmail.com" class="email-link" data-email="davidhooksnc@gmail.com" data-firstname="David" data-lastname="Hooks">davidhooksnc@gmail.com</a></td>
+                        <td><code>hex_-1_-1</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Colin McGowan" data-email="colinjmu@gmail.com" data-hex="hex_-4_4" data-votes="0" data-comments="0" data-created="2026-01-04T21:27:34.911010" data-firstname="Colin" data-lastname="McGowan">
+                        <td><a href="https://sum.wakeresults.org/users/d5693aaf903fa6ee?password=" class="user-link"><code>d5693aaf...</code></a></td>
+                        <td>Colin McGowan</td>
+                        <td><a href="mailto:colinjmu@gmail.com" class="email-link" data-email="colinjmu@gmail.com" data-firstname="Colin" data-lastname="McGowan">colinjmu@gmail.com</a></td>
+                        <td><code>hex_-4_4</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Brian Morrissey" data-email="bcmorrissey@live.com" data-hex="hex_0_0" data-votes="0" data-comments="1" data-created="2026-01-04T21:30:41.209950" data-firstname="Brian" data-lastname="Morrissey">
+                        <td><a href="https://sum.wakeresults.org/users/54fb96b0d10f2af0?password=" class="user-link"><code>54fb96b0...</code></a></td>
+                        <td>Brian Morrissey</td>
+                        <td><a href="mailto:bcmorrissey@live.com" class="email-link" data-email="bcmorrissey@live.com" data-firstname="Brian" data-lastname="Morrissey">bcmorrissey@live.com</a></td>
+                        <td><code>hex_0_0</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 1</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Cari McGregor" data-email="c_mcgregor@live.com" data-hex="hex_-1_-2" data-votes="0" data-comments="0" data-created="2026-01-04T21:41:53.087259" data-firstname="Cari" data-lastname="McGregor">
+                        <td><a href="https://sum.wakeresults.org/users/dcfa94942ec20518?password=" class="user-link"><code>dcfa9494...</code></a></td>
+                        <td>Cari McGregor</td>
+                        <td><a href="mailto:c_mcgregor@live.com" class="email-link" data-email="c_mcgregor@live.com" data-firstname="Cari" data-lastname="McGregor">c_mcgregor@live.com</a></td>
+                        <td><code>hex_-1_-2</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Maury McCoy" data-email="Maury.McCoy@gmail.com" data-hex="hex_1_-2" data-votes="0" data-comments="1" data-created="2026-01-04T21:53:18.652166" data-firstname="Maury" data-lastname="McCoy">
+                        <td><a href="https://sum.wakeresults.org/users/a8cb8e9d8b757321?password=" class="user-link"><code>a8cb8e9d...</code></a></td>
+                        <td>Maury McCoy</td>
+                        <td><a href="mailto:Maury.McCoy@gmail.com" class="email-link" data-email="Maury.McCoy@gmail.com" data-firstname="Maury" data-lastname="McCoy">Maury.McCoy@gmail.com</a></td>
+                        <td><code>hex_1_-2</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 1</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Barbara Cook" data-email="babs.cook1462@gmail.com" data-hex="hex_-1_-4" data-votes="0" data-comments="0" data-created="2026-01-04T22:13:44.646417" data-firstname="Barbara" data-lastname="Cook">
+                        <td><a href="https://sum.wakeresults.org/users/415955b7d4bcb74a?password=" class="user-link"><code>415955b7...</code></a></td>
+                        <td>Barbara Cook</td>
+                        <td><a href="mailto:babs.cook1462@gmail.com" class="email-link" data-email="babs.cook1462@gmail.com" data-firstname="Barbara" data-lastname="Cook">babs.cook1462@gmail.com</a></td>
+                        <td><code>hex_-1_-4</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Lynn Letukas" data-email="lynn.letukas@gmail.com" data-hex="hex_2_0" data-votes="0" data-comments="0" data-created="2026-01-04T22:13:53.564637" data-firstname="Lynn" data-lastname="Letukas">
+                        <td><a href="https://sum.wakeresults.org/users/6a46951589663bf2?password=" class="user-link"><code>6a469515...</code></a></td>
+                        <td>Lynn Letukas</td>
+                        <td><a href="mailto:lynn.letukas@gmail.com" class="email-link" data-email="lynn.letukas@gmail.com" data-firstname="Lynn" data-lastname="Letukas">lynn.letukas@gmail.com</a></td>
+                        <td><code>hex_2_0</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Kristen Bello" data-email="bellokristen@gmail.com" data-hex="hex_0_0" data-votes="0" data-comments="0" data-created="2026-01-04T22:18:05.483244" data-firstname="Kristen" data-lastname="Bello">
+                        <td><a href="https://sum.wakeresults.org/users/367cc8e5a7f9a92e?password=" class="user-link"><code>367cc8e5...</code></a></td>
+                        <td>Kristen Bello</td>
+                        <td><a href="mailto:bellokristen@gmail.com" class="email-link" data-email="bellokristen@gmail.com" data-firstname="Kristen" data-lastname="Bello">bellokristen@gmail.com</a></td>
+                        <td><code>hex_0_0</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Keith Wood" data-email="keith.wood@gmail.com" data-hex="hex_-2_-4" data-votes="0" data-comments="0" data-created="2026-01-04T22:27:29.087533" data-firstname="Keith" data-lastname="Wood">
+                        <td><a href="https://sum.wakeresults.org/users/b121ebdb80fc9227?password=" class="user-link"><code>b121ebdb...</code></a></td>
+                        <td>Keith Wood</td>
+                        <td><a href="mailto:keith.wood@gmail.com" class="email-link" data-email="keith.wood@gmail.com" data-firstname="Keith" data-lastname="Wood">keith.wood@gmail.com</a></td>
+                        <td><code>hex_-2_-4</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Sergey Russell" data-email="rohor26239@cameltok.com" data-hex="hex_0_0" data-votes="0" data-comments="0" data-created="2026-01-04T22:28:30.898984" data-firstname="Sergey" data-lastname="Russell">
+                        <td><a href="https://sum.wakeresults.org/users/859774bc3ec47771?password=" class="user-link"><code>859774bc...</code></a></td>
+                        <td>Sergey Russell</td>
+                        <td><a href="mailto:rohor26239@cameltok.com" class="email-link" data-email="rohor26239@cameltok.com" data-firstname="Sergey" data-lastname="Russell">rohor26239@cameltok.com</a></td>
+                        <td><code>hex_0_0</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="bob kastner" data-email="kastnerct@yahoo.com" data-hex="hex_2_1" data-votes="1" data-comments="0" data-created="2026-01-04T22:33:38.425215" data-firstname="bob" data-lastname="kastner">
+                        <td><a href="https://sum.wakeresults.org/users/01ab50bc4740d9cd?password=" class="user-link"><code>01ab50bc...</code></a></td>
+                        <td>bob kastner</td>
+                        <td><a href="mailto:kastnerct@yahoo.com" class="email-link" data-email="kastnerct@yahoo.com" data-firstname="bob" data-lastname="kastner">kastnerct@yahoo.com</a></td>
+                        <td><code>hex_2_1</code></td>
+                        <td>🗳️ 1</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Andrew Cleveland" data-email="aross.cleveland@gmail.com" data-hex="hex_0_-3" data-votes="0" data-comments="0" data-created="2026-01-04T22:34:03.808092" data-firstname="Andrew" data-lastname="Cleveland">
+                        <td><a href="https://sum.wakeresults.org/users/cb0999bafd556852?password=" class="user-link"><code>cb0999ba...</code></a></td>
+                        <td>Andrew Cleveland</td>
+                        <td><a href="mailto:aross.cleveland@gmail.com" class="email-link" data-email="aross.cleveland@gmail.com" data-firstname="Andrew" data-lastname="Cleveland">aross.cleveland@gmail.com</a></td>
+                        <td><code>hex_0_-3</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Jonathan Springer" data-email="jfspring@yahoo.com" data-hex="hex_-1_-4" data-votes="0" data-comments="0" data-created="2026-01-04T22:38:59.177507" data-firstname="Jonathan" data-lastname="Springer">
+                        <td><a href="https://sum.wakeresults.org/users/bb2916936c9420a1?password=" class="user-link"><code>bb291693...</code></a></td>
+                        <td>Jonathan Springer</td>
+                        <td><a href="mailto:jfspring@yahoo.com" class="email-link" data-email="jfspring@yahoo.com" data-firstname="Jonathan" data-lastname="Springer">jfspring@yahoo.com</a></td>
+                        <td><code>hex_-1_-4</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Doug Shartzer" data-email="dougshartzer@gmail.com" data-hex="hex_0_0" data-votes="0" data-comments="0" data-created="2026-01-04T23:01:15.599912" data-firstname="Doug" data-lastname="Shartzer">
+                        <td><a href="https://sum.wakeresults.org/users/0e4e2c8056a41665?password=" class="user-link"><code>0e4e2c80...</code></a></td>
+                        <td>Doug Shartzer</td>
+                        <td><a href="mailto:dougshartzer@gmail.com" class="email-link" data-email="dougshartzer@gmail.com" data-firstname="Doug" data-lastname="Shartzer">dougshartzer@gmail.com</a></td>
+                        <td><code>hex_0_0</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Brian Griffin" data-email="brian.griffin.bg@gmail.com" data-hex="hex_0_1" data-votes="0" data-comments="0" data-created="2026-01-04T23:01:49.735517" data-firstname="Brian" data-lastname="Griffin">
+                        <td><a href="https://sum.wakeresults.org/users/e93c8885d58065be?password=" class="user-link"><code>e93c8885...</code></a></td>
+                        <td>Brian Griffin</td>
+                        <td><a href="mailto:brian.griffin.bg@gmail.com" class="email-link" data-email="brian.griffin.bg@gmail.com" data-firstname="Brian" data-lastname="Griffin">brian.griffin.bg@gmail.com</a></td>
+                        <td><code>hex_0_1</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Thomas Montgomery" data-email="tmontgo1@gmail.com" data-hex="hex_1_0" data-votes="0" data-comments="0" data-created="2026-01-04T23:06:40.541808" data-firstname="Thomas" data-lastname="Montgomery">
+                        <td><a href="https://sum.wakeresults.org/users/4464d91992ffcc1b?password=" class="user-link"><code>4464d919...</code></a></td>
+                        <td>Thomas Montgomery</td>
+                        <td><a href="mailto:tmontgo1@gmail.com" class="email-link" data-email="tmontgo1@gmail.com" data-firstname="Thomas" data-lastname="Montgomery">tmontgo1@gmail.com</a></td>
+                        <td><code>hex_1_0</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Brant Gifford" data-email="brant.gifford@gmail.com" data-hex="hex_0_-4" data-votes="0" data-comments="0" data-created="2026-01-04T23:35:43.041425" data-firstname="Brant" data-lastname="Gifford">
+                        <td><a href="https://sum.wakeresults.org/users/e40ededed63d1e32?password=" class="user-link"><code>e40edede...</code></a></td>
+                        <td>Brant Gifford</td>
+                        <td><a href="mailto:brant.gifford@gmail.com" class="email-link" data-email="brant.gifford@gmail.com" data-firstname="Brant" data-lastname="Gifford">brant.gifford@gmail.com</a></td>
+                        <td><code>hex_0_-4</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-04</td>
+                    </tr>
+                    
+                    <tr data-name="Heather Dashnau" data-email="hdashnau@gmail.com" data-hex="hex_1_-2" data-votes="0" data-comments="0" data-created="2026-01-05T00:03:30.281553" data-firstname="Heather" data-lastname="Dashnau">
+                        <td><a href="https://sum.wakeresults.org/users/8dcaa2ac57ef9817?password=" class="user-link"><code>8dcaa2ac...</code></a></td>
+                        <td>Heather Dashnau</td>
+                        <td><a href="mailto:hdashnau@gmail.com" class="email-link" data-email="hdashnau@gmail.com" data-firstname="Heather" data-lastname="Dashnau">hdashnau@gmail.com</a></td>
+                        <td><code>hex_1_-2</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-05</td>
+                    </tr>
+                    
+                    <tr data-name="Tom Colwell" data-email="tcolwe@gmail.com" data-hex="hex_0_0" data-votes="0" data-comments="0" data-created="2026-01-05T00:14:47.959826" data-firstname="Tom" data-lastname="Colwell">
+                        <td><a href="https://sum.wakeresults.org/users/6eb324c7204278f8?password=" class="user-link"><code>6eb324c7...</code></a></td>
+                        <td>Tom Colwell</td>
+                        <td><a href="mailto:tcolwe@gmail.com" class="email-link" data-email="tcolwe@gmail.com" data-firstname="Tom" data-lastname="Colwell">tcolwe@gmail.com</a></td>
+                        <td><code>hex_0_0</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-05</td>
+                    </tr>
+                    
+                    <tr data-name="Paul Dewey" data-email="deweypt@gmail.com" data-hex="hex_0_-1" data-votes="0" data-comments="0" data-created="2026-01-05T00:21:50.582912" data-firstname="Paul" data-lastname="Dewey">
+                        <td><a href="https://sum.wakeresults.org/users/7228fc86ace2b141?password=" class="user-link"><code>7228fc86...</code></a></td>
+                        <td>Paul Dewey</td>
+                        <td><a href="mailto:deweypt@gmail.com" class="email-link" data-email="deweypt@gmail.com" data-firstname="Paul" data-lastname="Dewey">deweypt@gmail.com</a></td>
+                        <td><code>hex_0_-1</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-05</td>
+                    </tr>
+                    
+                    <tr data-name="Brooke McGinnis" data-email="brookemcginnis33@gmail.com" data-hex="hex_-1_-3" data-votes="0" data-comments="0" data-created="2026-01-05T00:30:36.457958" data-firstname="Brooke" data-lastname="McGinnis">
+                        <td><a href="https://sum.wakeresults.org/users/5a82d0a2371a28d4?password=" class="user-link"><code>5a82d0a2...</code></a></td>
+                        <td>Brooke McGinnis</td>
+                        <td><a href="mailto:brookemcginnis33@gmail.com" class="email-link" data-email="brookemcginnis33@gmail.com" data-firstname="Brooke" data-lastname="McGinnis">brookemcginnis33@gmail.com</a></td>
+                        <td><code>hex_-1_-3</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-05</td>
+                    </tr>
+                    
+                    <tr data-name="Robert Vila" data-email="robertvila@gmail.com" data-hex="hex_-1_-2" data-votes="1" data-comments="0" data-created="2026-01-05T00:34:40.641847" data-firstname="Robert" data-lastname="Vila">
+                        <td><a href="https://sum.wakeresults.org/users/f7f55b9f89d4dbf5?password=" class="user-link"><code>f7f55b9f...</code></a></td>
+                        <td>Robert Vila</td>
+                        <td><a href="mailto:robertvila@gmail.com" class="email-link" data-email="robertvila@gmail.com" data-firstname="Robert" data-lastname="Vila">robertvila@gmail.com</a></td>
+                        <td><code>hex_-1_-2</code></td>
+                        <td>🗳️ 1</td>
+                        <td>💬 0</td>
+                        <td>2026-01-05</td>
+                    </tr>
+                    
+                    <tr data-name="Adam Sepulveda" data-email="as1epulveda3@gmail.com" data-hex="hex_0_-4" data-votes="0" data-comments="0" data-created="2026-01-05T00:36:11.945427" data-firstname="Adam" data-lastname="Sepulveda">
+                        <td><a href="https://sum.wakeresults.org/users/5c0046ca95a7597b?password=" class="user-link"><code>5c0046ca...</code></a></td>
+                        <td>Adam Sepulveda</td>
+                        <td><a href="mailto:as1epulveda3@gmail.com" class="email-link" data-email="as1epulveda3@gmail.com" data-firstname="Adam" data-lastname="Sepulveda">as1epulveda3@gmail.com</a></td>
+                        <td><code>hex_0_-4</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-05</td>
+                    </tr>
+                    
+                    <tr data-name="Travis Orr" data-email="tdorr714@gmail.com" data-hex="hex_-1_-1" data-votes="0" data-comments="0" data-created="2026-01-05T00:38:14.430553" data-firstname="Travis" data-lastname="Orr">
+                        <td><a href="https://sum.wakeresults.org/users/073f5837c4c6b444?password=" class="user-link"><code>073f5837...</code></a></td>
+                        <td>Travis Orr</td>
+                        <td><a href="mailto:tdorr714@gmail.com" class="email-link" data-email="tdorr714@gmail.com" data-firstname="Travis" data-lastname="Orr">tdorr714@gmail.com</a></td>
+                        <td><code>hex_-1_-1</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-05</td>
+                    </tr>
+                    
+                    <tr data-name="Michelle Rose" data-email="michelle-a-rose@att.net" data-hex="hex_-1_-3" data-votes="0" data-comments="0" data-created="2026-01-05T00:43:07.251858" data-firstname="Michelle" data-lastname="Rose">
+                        <td><a href="https://sum.wakeresults.org/users/3f9deec08896012f?password=" class="user-link"><code>3f9deec0...</code></a></td>
+                        <td>Michelle Rose</td>
+                        <td><a href="mailto:michelle-a-rose@att.net" class="email-link" data-email="michelle-a-rose@att.net" data-firstname="Michelle" data-lastname="Rose">michelle-a-rose@att.net</a></td>
+                        <td><code>hex_-1_-3</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-05</td>
+                    </tr>
+                    
+                    <tr data-name="SHANNAN SHEAFFER" data-email="shannansheaffer@gmail.com" data-hex="hex_0_-1" data-votes="0" data-comments="0" data-created="2026-01-05T00:48:40.147923" data-firstname="SHANNAN" data-lastname="SHEAFFER">
+                        <td><a href="https://sum.wakeresults.org/users/f12fa81f4e50f7a7?password=" class="user-link"><code>f12fa81f...</code></a></td>
+                        <td>SHANNAN SHEAFFER</td>
+                        <td><a href="mailto:shannansheaffer@gmail.com" class="email-link" data-email="shannansheaffer@gmail.com" data-firstname="SHANNAN" data-lastname="SHEAFFER">shannansheaffer@gmail.com</a></td>
+                        <td><code>hex_0_-1</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-05</td>
+                    </tr>
+                    
+                    <tr data-name="Kostya Filippenko" data-email="kostya.filippenko@gmail.com" data-hex="hex_2_1" data-votes="0" data-comments="0" data-created="2026-01-05T00:55:35.805834" data-firstname="Kostya" data-lastname="Filippenko">
+                        <td><a href="https://sum.wakeresults.org/users/b4763653adf771c3?password=" class="user-link"><code>b4763653...</code></a></td>
+                        <td>Kostya Filippenko</td>
+                        <td><a href="mailto:kostya.filippenko@gmail.com" class="email-link" data-email="kostya.filippenko@gmail.com" data-firstname="Kostya" data-lastname="Filippenko">kostya.filippenko@gmail.com</a></td>
+                        <td><code>hex_2_1</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-05</td>
+                    </tr>
+                    
+                    <tr data-name="Oleksandr Vashchenko" data-email="vaschenkoalex2000@gmail.com" data-hex="hex_0_-4" data-votes="0" data-comments="0" data-created="2026-01-05T01:11:49.654947" data-firstname="Oleksandr" data-lastname="Vashchenko">
+                        <td><a href="https://sum.wakeresults.org/users/7679fb873df395f0?password=" class="user-link"><code>7679fb87...</code></a></td>
+                        <td>Oleksandr Vashchenko</td>
+                        <td><a href="mailto:vaschenkoalex2000@gmail.com" class="email-link" data-email="vaschenkoalex2000@gmail.com" data-firstname="Oleksandr" data-lastname="Vashchenko">vaschenkoalex2000@gmail.com</a></td>
+                        <td><code>hex_0_-4</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-05</td>
+                    </tr>
+                    
+                    <tr data-name="Kenny Finch" data-email="kenfinch@gmail.com" data-hex="hex_-2_-2" data-votes="0" data-comments="2" data-created="2026-01-05T01:16:37.689667" data-firstname="Kenny" data-lastname="Finch">
+                        <td><a href="https://sum.wakeresults.org/users/46ee905b9fa1ff01?password=" class="user-link"><code>46ee905b...</code></a></td>
+                        <td>Kenny Finch</td>
+                        <td><a href="mailto:kenfinch@gmail.com" class="email-link" data-email="kenfinch@gmail.com" data-firstname="Kenny" data-lastname="Finch">kenfinch@gmail.com</a></td>
+                        <td><code>hex_-2_-2</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 2</td>
+                        <td>2026-01-05</td>
+                    </tr>
+                    
+                    <tr data-name="Cindy Rossetti" data-email="crossetti30@yahoo.com" data-hex="hex_0_-1" data-votes="0" data-comments="0" data-created="2026-01-05T01:19:33.330683" data-firstname="Cindy" data-lastname="Rossetti">
+                        <td><a href="https://sum.wakeresults.org/users/f21cde9f3c8f8789?password=" class="user-link"><code>f21cde9f...</code></a></td>
+                        <td>Cindy Rossetti</td>
+                        <td><a href="mailto:crossetti30@yahoo.com" class="email-link" data-email="crossetti30@yahoo.com" data-firstname="Cindy" data-lastname="Rossetti">crossetti30@yahoo.com</a></td>
+                        <td><code>hex_0_-1</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-05</td>
+                    </tr>
+                    
+                    <tr data-name="Naomi Stadiem" data-email="nstadiem@gmail.com" data-hex="hex_-3_-2" data-votes="0" data-comments="0" data-created="2026-01-05T01:20:05.265052" data-firstname="Naomi" data-lastname="Stadiem">
+                        <td><a href="https://sum.wakeresults.org/users/3072a3301b3c69c3?password=" class="user-link"><code>3072a330...</code></a></td>
+                        <td>Naomi Stadiem</td>
+                        <td><a href="mailto:nstadiem@gmail.com" class="email-link" data-email="nstadiem@gmail.com" data-firstname="Naomi" data-lastname="Stadiem">nstadiem@gmail.com</a></td>
+                        <td><code>hex_-3_-2</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-05</td>
+                    </tr>
+                    
+                    <tr data-name="Aaron Sutara" data-email="sutara08@gmail.com" data-hex="hex_-1_0" data-votes="0" data-comments="0" data-created="2026-01-05T01:21:31.379786" data-firstname="Aaron" data-lastname="Sutara">
+                        <td><a href="https://sum.wakeresults.org/users/1c343757997cddd6?password=" class="user-link"><code>1c343757...</code></a></td>
+                        <td>Aaron Sutara</td>
+                        <td><a href="mailto:sutara08@gmail.com" class="email-link" data-email="sutara08@gmail.com" data-firstname="Aaron" data-lastname="Sutara">sutara08@gmail.com</a></td>
+                        <td><code>hex_-1_0</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-05</td>
+                    </tr>
+                    
+                    <tr data-name="Ruth Finch" data-email="ruthfinch@gmail.com" data-hex="hex_-1_-1" data-votes="0" data-comments="1" data-created="2026-01-05T01:22:33.832755" data-firstname="Ruth" data-lastname="Finch">
+                        <td><a href="https://sum.wakeresults.org/users/7bc56010faf7e197?password=" class="user-link"><code>7bc56010...</code></a></td>
+                        <td>Ruth Finch</td>
+                        <td><a href="mailto:ruthfinch@gmail.com" class="email-link" data-email="ruthfinch@gmail.com" data-firstname="Ruth" data-lastname="Finch">ruthfinch@gmail.com</a></td>
+                        <td><code>hex_-1_-1</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 1</td>
+                        <td>2026-01-05</td>
+                    </tr>
+                    
+                    <tr data-name="Jake Sugg" data-email="jsugg001@gmail.com" data-hex="hex_2_-1" data-votes="5" data-comments="0" data-created="2026-01-05T01:26:13.964943" data-firstname="Jake" data-lastname="Sugg">
+                        <td><a href="https://sum.wakeresults.org/users/af68be4a0d95d3bb?password=" class="user-link"><code>af68be4a...</code></a></td>
+                        <td>Jake Sugg</td>
+                        <td><a href="mailto:jsugg001@gmail.com" class="email-link" data-email="jsugg001@gmail.com" data-firstname="Jake" data-lastname="Sugg">jsugg001@gmail.com</a></td>
+                        <td><code>hex_2_-1</code></td>
+                        <td>🗳️ 5</td>
+                        <td>💬 0</td>
+                        <td>2026-01-05</td>
+                    </tr>
+                    
+                    <tr data-name="Anna Precourt" data-email="hganbold@gmail.com" data-hex="hex_3_-5" data-votes="0" data-comments="3" data-created="2026-01-05T01:31:03.144153" data-firstname="Anna" data-lastname="Precourt">
+                        <td><a href="https://sum.wakeresults.org/users/4e990d0e6c687aa2?password=" class="user-link"><code>4e990d0e...</code></a></td>
+                        <td>Anna Precourt</td>
+                        <td><a href="mailto:hganbold@gmail.com" class="email-link" data-email="hganbold@gmail.com" data-firstname="Anna" data-lastname="Precourt">hganbold@gmail.com</a></td>
+                        <td><code>hex_3_-5</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 3</td>
+                        <td>2026-01-05</td>
+                    </tr>
+                    
+                    <tr data-name="Elizabeth Robinson" data-email="ejrobinson-pmp@outlook.com" data-hex="hex_0_2" data-votes="7" data-comments="0" data-created="2026-01-05T01:31:06.552196" data-firstname="Elizabeth" data-lastname="Robinson">
+                        <td><a href="https://sum.wakeresults.org/users/3ef4ead8e6c1f6be?password=" class="user-link"><code>3ef4ead8...</code></a></td>
+                        <td>Elizabeth Robinson</td>
+                        <td><a href="mailto:ejrobinson-pmp@outlook.com" class="email-link" data-email="ejrobinson-pmp@outlook.com" data-firstname="Elizabeth" data-lastname="Robinson">ejrobinson-pmp@outlook.com</a></td>
+                        <td><code>hex_0_2</code></td>
+                        <td>🗳️ 7</td>
+                        <td>💬 0</td>
+                        <td>2026-01-05</td>
+                    </tr>
+                    
+                    <tr data-name="Denise Chiu" data-email="denisecmsa@gmail.com" data-hex="hex_0_-3" data-votes="0" data-comments="0" data-created="2026-01-05T02:02:54.652519" data-firstname="Denise" data-lastname="Chiu">
+                        <td><a href="https://sum.wakeresults.org/users/bd985bff48c811ab?password=" class="user-link"><code>bd985bff...</code></a></td>
+                        <td>Denise Chiu</td>
+                        <td><a href="mailto:denisecmsa@gmail.com" class="email-link" data-email="denisecmsa@gmail.com" data-firstname="Denise" data-lastname="Chiu">denisecmsa@gmail.com</a></td>
+                        <td><code>hex_0_-3</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-05</td>
+                    </tr>
+                    
+                    <tr data-name="David F" data-email="dgfleisch@gmail.com" data-hex="hex_-1_-4" data-votes="0" data-comments="0" data-created="2026-01-05T02:04:56.984945" data-firstname="David" data-lastname="F">
+                        <td><a href="https://sum.wakeresults.org/users/72adc3b87568384d?password=" class="user-link"><code>72adc3b8...</code></a></td>
+                        <td>David F</td>
+                        <td><a href="mailto:dgfleisch@gmail.com" class="email-link" data-email="dgfleisch@gmail.com" data-firstname="David" data-lastname="F">dgfleisch@gmail.com</a></td>
+                        <td><code>hex_-1_-4</code></td>
+                        <td>🗳️ 0</td>
+                        <td>💬 0</td>
+                        <td>2026-01-05</td>
+                    </tr>
+                    
+                    <tr data-name="Lisa Kim" data-email="lkkim4@aol.com" data-hex="hex_2_-2" data-votes="1" data-comments="0" data-created="2026-01-05T02:11:15.851931" data-firstname="Lisa" data-lastname="Kim">
+                        <td><a href="https://sum.wakeresults.org/users/31173e11da999f29?password=" class="user-link"><code>31173e11...</code></a></td>
+                        <td>Lisa Kim</td>
+                        <td><a href="mailto:lkkim4@aol.com" class="email-link" data-email="lkkim4@aol.com" data-firstname="Lisa" data-lastname="Kim">lkkim4@aol.com</a></td>
+                        <td><code>hex_2_-2</code></td>
+                        <td>🗳️ 1</td>
+                        <td>💬 0</td>
+                        <td>2026-01-05</td>
+                    </tr>
+                    
+                    <tr data-name="Maria Kalouda" data-email="kaloudam@gmail.com" data-hex="hex_-1_-4" data-votes="5" data-comments="0" data-created="2026-01-05T02:17:58.680839" data-firstname="Maria" data-lastname="Kalouda">
+                        <td><a href="https://sum.wakeresults.org/users/6506324700ff3b7a?password=" class="user-link"><code>65063247...</code></a></td>
+                        <td>Maria Kalouda</td>
+                        <td><a href="mailto:kaloudam@gmail.com" class="email-link" data-email="kaloudam@gmail.com" data-firstname="Maria" data-lastname="Kalouda">kaloudam@gmail.com</a></td>
+                        <td><code>hex_-1_-4</code></td>
+                        <td>🗳️ 5</td>
+                        <td>💬 0</td>
+                        <td>2026-01-05</td>
+                    </tr>
+                    
+                    <tr data-name="Avery Emery" data-email="avery.little@gmail.com" data-hex="hex_-2_-1" data-votes="6" data-comments="0" data-created="2026-01-05T02:24:20.455037" data-firstname="Avery" data-lastname="Emery">
+                        <td><a href="https://sum.wakeresults.org/users/51ff4fb8f8604ed2?password=" class="user-link"><code>51ff4fb8...</code></a></td>
+                        <td>Avery Emery</td>
+                        <td><a href="mailto:avery.little@gmail.com" class="email-link" data-email="avery.little@gmail.com" data-firstname="Avery" data-lastname="Emery">avery.little@gmail.com</a></td>
+                        <td><code>hex_-2_-1</code></td>
+                        <td>🗳️ 6</td>
+                        <td>💬 0</td>
+                        <td>2026-01-05</td>
+                    </tr>
+                    
+                    <tr data-name="Terry Mahaffey" data-email="terry.mahaffey@gmail.com" data-hex="hex_-1_-2" data-votes="6" data-comments="0" data-created="2026-01-05T02:38:14.367324" data-firstname="Terry" data-lastname="Mahaffey">
+                        <td><a href="https://sum.wakeresults.org/users/32a382619f4cda91?password=" class="user-link"><code>32a38261...</code></a></td>
+                        <td>Terry Mahaffey</td>
+                        <td><a href="mailto:terry.mahaffey@gmail.com" class="email-link" data-email="terry.mahaffey@gmail.com" data-firstname="Terry" data-lastname="Mahaffey">terry.mahaffey@gmail.com</a></td>
+                        <td><code>hex_-1_-2</code></td>
+                        <td>🗳️ 6</td>
+                        <td>💬 0</td>
+                        <td>2026-01-05</td>
+                    </tr>
+                    
+                    <tr data-name="Leah Proctor" data-email="leahproctor88@gmail.com" data-hex="hex_-1_-2" data-votes="6" data-comments="0" data-created="2026-01-05T03:11:35.783523" data-firstname="Leah" data-lastname="Proctor">
+                        <td><a href="https://sum.wakeresults.org/users/edbc935d9ee2a1d9?password=" class="user-link"><code>edbc935d...</code></a></td>
+                        <td>Leah Proctor</td>
+                        <td><a href="mailto:leahproctor88@gmail.com" class="email-link" data-email="leahproctor88@gmail.com" data-firstname="Leah" data-lastname="Proctor">leahproctor88@gmail.com</a></td>
+                        <td><code>hex_-1_-2</code></td>
+                        <td>🗳️ 6</td>
+                        <td>💬 0</td>
+                        <td>2026-01-05</td>
+                    </tr>
+                    
+                    <tr data-name="Lisa Vines" data-email="lisa.w.vines@gmail.com" data-hex="hex_-1_-1" data-votes="16" data-comments="0" data-created="2026-01-05T03:25:10.791212" data-firstname="Lisa" data-lastname="Vines">
+                        <td><a href="https://sum.wakeresults.org/users/ec9ace4b4689e441?password=" class="user-link"><code>ec9ace4b...</code></a></td>
+                        <td>Lisa Vines</td>
+                        <td><a href="mailto:lisa.w.vines@gmail.com" class="email-link" data-email="lisa.w.vines@gmail.com" data-firstname="Lisa" data-lastname="Vines">lisa.w.vines@gmail.com</a></td>
+                        <td><code>hex_-1_-1</code></td>
+                        <td>🗳️ 16</td>
+                        <td>💬 0</td>
+                        <td>2026-01-05</td>
+                    </tr>
+                    
+                    <tr data-name="Austin Burke" data-email="Austin.burke.810@gmail.com" data-hex="hex_0_1" data-votes="9" data-comments="0" data-created="2026-01-05T03:26:45.705112" data-firstname="Austin" data-lastname="Burke">
+                        <td><a href="https://sum.wakeresults.org/users/35498bdf71bca7d4?password=" class="user-link"><code>35498bdf...</code></a></td>
+                        <td>Austin Burke</td>
+                        <td><a href="mailto:Austin.burke.810@gmail.com" class="email-link" data-email="Austin.burke.810@gmail.com" data-firstname="Austin" data-lastname="Burke">Austin.burke.810@gmail.com</a></td>
+                        <td><code>hex_0_1</code></td>
+                        <td>🗳️ 9</td>
+                        <td>💬 0</td>
+                        <td>2026-01-05</td>
+                    </tr>
+                    
+                    <tr data-name="Tejas Pande" data-email="tejas.s.pande@gmail.com" data-hex="hex_0_-4" data-votes="6" data-comments="0" data-created="2026-01-05T03:27:25.133363" data-firstname="Tejas" data-lastname="Pande">
+                        <td><a href="https://sum.wakeresults.org/users/f2b7b100b3d31a01?password=" class="user-link"><code>f2b7b100...</code></a></td>
+                        <td>Tejas Pande</td>
+                        <td><a href="mailto:tejas.s.pande@gmail.com" class="email-link" data-email="tejas.s.pande@gmail.com" data-firstname="Tejas" data-lastname="Pande">tejas.s.pande@gmail.com</a></td>
+                        <td><code>hex_0_-4</code></td>
+                        <td>🗳️ 6</td>
+                        <td>💬 0</td>
+                        <td>2026-01-05</td>
+                    </tr>
+                    
+                    <tr data-name="Sandra McPhail" data-email="mcphail.sph@gmail.com" data-hex="hex_-2_-3" data-votes="14" data-comments="0" data-created="2026-01-05T03:50:20.685610" data-firstname="Sandra" data-lastname="McPhail">
+                        <td><a href="https://sum.wakeresults.org/users/2d1be2c93050adcc?password=" class="user-link"><code>2d1be2c9...</code></a></td>
+                        <td>Sandra McPhail</td>
+                        <td><a href="mailto:mcphail.sph@gmail.com" class="email-link" data-email="mcphail.sph@gmail.com" data-firstname="Sandra" data-lastname="McPhail">mcphail.sph@gmail.com</a></td>
+                        <td><code>hex_-2_-3</code></td>
+                        <td>🗳️ 14</td>
+                        <td>💬 0</td>
+                        <td>2026-01-05</td>
+                    </tr>
+                    
+                    <tr data-name="Colton Miller" data-email="cdmiller91@gmail.com" data-hex="hex_0_-4" data-votes="1" data-comments="0" data-created="2026-01-05T04:05:02.428968" data-firstname="Colton" data-lastname="Miller">
+                        <td><a href="https://sum.wakeresults.org/users/ff8c138b47c753a2?password=" class="user-link"><code>ff8c138b...</code></a></td>
+                        <td>Colton Miller</td>
+                        <td><a href="mailto:cdmiller91@gmail.com" class="email-link" data-email="cdmiller91@gmail.com" data-firstname="Colton" data-lastname="Miller">cdmiller91@gmail.com</a></td>
+                        <td><code>hex_0_-4</code></td>
+                        <td>🗳️ 1</td>
+                        <td>💬 0</td>
+                        <td>2026-01-05</td>
+                    </tr>
+                    
+                    <tr data-name="Marc Pamley" data-email="mpamley@gmail.com" data-hex="hex_-2_-4" data-votes="5" data-comments="0" data-created="2026-01-05T05:06:59.215128" data-firstname="Marc" data-lastname="Pamley">
+                        <td><a href="https://sum.wakeresults.org/users/c53954888e0236dd?password=" class="user-link"><code>c5395488...</code></a></td>
+                        <td>Marc Pamley</td>
+                        <td><a href="mailto:mpamley@gmail.com" class="email-link" data-email="mpamley@gmail.com" data-firstname="Marc" data-lastname="Pamley">mpamley@gmail.com</a></td>
+                        <td><code>hex_-2_-4</code></td>
+                        <td>🗳️ 5</td>
+                        <td>💬 0</td>
+                        <td>2026-01-05</td>
+                    </tr>
+                    
+                    <tr data-name="Marci S" data-email="marciryanpt@gmail.com" data-hex="hex_-2_-1" data-votes="1" data-comments="1" data-created="2026-01-05T11:24:01.812362" data-firstname="Marci" data-lastname="S">
+                        <td><a href="https://sum.wakeresults.org/users/418fbfab0e6e1990?password=" class="user-link"><code>418fbfab...</code></a></td>
+                        <td>Marci S</td>
+                        <td><a href="mailto:marciryanpt@gmail.com" class="email-link" data-email="marciryanpt@gmail.com" data-firstname="Marci" data-lastname="S">marciryanpt@gmail.com</a></td>
+                        <td><code>hex_-2_-1</code></td>
+                        <td>🗳️ 1</td>
+                        <td>💬 1</td>
+                        <td>2026-01-05</td>
+                    </tr>
+                    
+                    <tr data-name="Samuel Williams" data-email="sbwga1@gmail.com" data-hex="hex_1_-1" data-votes="9" data-comments="0" data-created="2026-01-05T12:55:58.930357" data-firstname="Samuel" data-lastname="Williams">
+                        <td><a href="https://sum.wakeresults.org/users/7607279cb92be8a5?password=" class="user-link"><code>7607279c...</code></a></td>
+                        <td>Samuel Williams</td>
+                        <td><a href="mailto:sbwga1@gmail.com" class="email-link" data-email="sbwga1@gmail.com" data-firstname="Samuel" data-lastname="Williams">sbwga1@gmail.com</a></td>
+                        <td><code>hex_1_-1</code></td>
+                        <td>🗳️ 9</td>
+                        <td>💬 0</td>
+                        <td>2026-01-05</td>
+                    </tr>
+                    
+                    <tr data-name="Pam Stewart" data-email="pamincolo@gmail.com" data-hex="hex_1_-2" data-votes="1" data-comments="0" data-created="2026-01-05T13:56:18.456066" data-firstname="Pam" data-lastname="Stewart">
+                        <td><a href="https://sum.wakeresults.org/users/69c07b2a2dafec30?password=" class="user-link"><code>69c07b2a...</code></a></td>
+                        <td>Pam Stewart</td>
+                        <td><a href="mailto:pamincolo@gmail.com" class="email-link" data-email="pamincolo@gmail.com" data-firstname="Pam" data-lastname="Stewart">pamincolo@gmail.com</a></td>
+                        <td><code>hex_1_-2</code></td>
+                        <td>🗳️ 1</td>
+                        <td>💬 0</td>
+                        <td>2026-01-05</td>
+                    </tr>
+                    
+                    <tr data-name="Jason Patrick" data-email="misuse1@jasonpatrick.com" data-hex="hex_0_-3" data-votes="1" data-comments="1" data-created="2026-01-05T13:56:30.824468" data-firstname="Jason" data-lastname="Patrick">
+                        <td><a href="https://sum.wakeresults.org/users/2a5ad67424656db6?password=" class="user-link"><code>2a5ad674...</code></a></td>
+                        <td>Jason Patrick</td>
+                        <td><a href="mailto:misuse1@jasonpatrick.com" class="email-link" data-email="misuse1@jasonpatrick.com" data-firstname="Jason" data-lastname="Patrick">misuse1@jasonpatrick.com</a></td>
+                        <td><code>hex_0_-3</code></td>
+                        <td>🗳️ 1</td>
+                        <td>💬 1</td>
+                        <td>2026-01-05</td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+    
+</div>
+
+<!-- Projects Section -->
+<div class="section-card">
+    <h2>📊 Projects (42)</h2>
+    
+        <div class="table-container">
+            <table class="data-table sortable" id="projects-table">
+                <thead>
+                    <tr>
+                        <th data-sort="name" style="cursor: pointer;">Name <span class="sort-icon"></span></th>
+                        <th data-sort="score" class="sorted desc" style="cursor: pointer;">Score <span class="sort-icon">▼</span></th>
+                        <th data-sort="upvotes" style="cursor: pointer;">Upvotes <span class="sort-icon"></span></th>
+                        <th data-sort="downvotes" style="cursor: pointer;">Downvotes <span class="sort-icon"></span></th>
+                        <th data-sort="total_votes" style="cursor: pointer;">Total Votes <span class="sort-icon"></span></th>
+                        <th data-sort="comments" style="cursor: pointer;">Comments <span class="sort-icon"></span></th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    <tr data-score="9" data-upvotes="9" data-downvotes="0" data-total_votes="9" data-comments="3" data-name="Olive Chapel Rd at Apex BBQ Rd Improvements">
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/622?password=" class="project-link">
+                                Olive Chapel Rd at Apex BBQ Rd Improvements
+                            </a>
+                        </td>
+                        <td class="score-cell positive">
+                            +9
+                        </td>
+                        <td class="upvote-cell">👍 9</td>
+                        <td class="downvote-cell">👎 0</td>
+                        <td>9</td>
+                        <td>💬 3</td>
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/622?password=" class="btn-small">View</a>
+                        </td>
+                    </tr>
+                    
+                    <tr data-score="6" data-upvotes="6" data-downvotes="0" data-total_votes="6" data-comments="0" data-name="Fire Station 3 Renovation and Addition">
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/676?password=" class="project-link">
+                                Fire Station 3 Renovation and Addition
+                            </a>
+                        </td>
+                        <td class="score-cell positive">
+                            +6
+                        </td>
+                        <td class="upvote-cell">👍 6</td>
+                        <td class="downvote-cell">👎 0</td>
+                        <td>6</td>
+                        <td>💬 0</td>
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/676?password=" class="btn-small">View</a>
+                        </td>
+                    </tr>
+                    
+                    <tr data-score="5" data-upvotes="6" data-downvotes="1" data-total_votes="8" data-comments="3" data-name="Apex Peakway North Widening">
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/620?password=" class="project-link">
+                                Apex Peakway North Widening
+                            </a>
+                        </td>
+                        <td class="score-cell positive">
+                            +5
+                        </td>
+                        <td class="upvote-cell">👍 6</td>
+                        <td class="downvote-cell">👎 1</td>
+                        <td>8</td>
+                        <td>💬 3</td>
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/620?password=" class="btn-small">View</a>
+                        </td>
+                    </tr>
+                    
+                    <tr data-score="4" data-upvotes="5" data-downvotes="1" data-total_votes="6" data-comments="3" data-name="Apex Peakway at Tingen Road Intersection Improvements">
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/7?password=" class="project-link">
+                                Apex Peakway at Tingen Road Intersection Improvements
+                            </a>
+                        </td>
+                        <td class="score-cell positive">
+                            +4
+                        </td>
+                        <td class="upvote-cell">👍 5</td>
+                        <td class="downvote-cell">👎 1</td>
+                        <td>6</td>
+                        <td>💬 3</td>
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/7?password=" class="btn-small">View</a>
+                        </td>
+                    </tr>
+                    
+                    <tr data-score="4" data-upvotes="4" data-downvotes="0" data-total_votes="4" data-comments="0" data-name="Apex Peakway Southwest Widening">
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/628?password=" class="project-link">
+                                Apex Peakway Southwest Widening
+                            </a>
+                        </td>
+                        <td class="score-cell positive">
+                            +4
+                        </td>
+                        <td class="upvote-cell">👍 4</td>
+                        <td class="downvote-cell">👎 0</td>
+                        <td>4</td>
+                        <td>💬 0</td>
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/628?password=" class="btn-small">View</a>
+                        </td>
+                    </tr>
+                    
+                    <tr data-score="4" data-upvotes="5" data-downvotes="1" data-total_votes="6" data-comments="2" data-name="S-line Mobility Hub">
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/633?password=" class="project-link">
+                                S-line Mobility Hub
+                            </a>
+                        </td>
+                        <td class="score-cell positive">
+                            +4
+                        </td>
+                        <td class="upvote-cell">👍 5</td>
+                        <td class="downvote-cell">👎 1</td>
+                        <td>6</td>
+                        <td>💬 2</td>
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/633?password=" class="btn-small">View</a>
+                        </td>
+                    </tr>
+                    
+                    <tr data-score="4" data-upvotes="4" data-downvotes="0" data-total_votes="4" data-comments="4" data-name="KidsTowne Playground Renovation">
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/649?password=" class="project-link">
+                                KidsTowne Playground Renovation
+                            </a>
+                        </td>
+                        <td class="score-cell positive">
+                            +4
+                        </td>
+                        <td class="upvote-cell">👍 4</td>
+                        <td class="downvote-cell">👎 0</td>
+                        <td>4</td>
+                        <td>💬 4</td>
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/649?password=" class="btn-small">View</a>
+                        </td>
+                    </tr>
+                    
+                    <tr data-score="4" data-upvotes="4" data-downvotes="0" data-total_votes="4" data-comments="0" data-name="Town Campus Stage">
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/13?password=" class="project-link">
+                                Town Campus Stage
+                            </a>
+                        </td>
+                        <td class="score-cell positive">
+                            +4
+                        </td>
+                        <td class="upvote-cell">👍 4</td>
+                        <td class="downvote-cell">👎 0</td>
+                        <td>4</td>
+                        <td>💬 0</td>
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/13?password=" class="btn-small">View</a>
+                        </td>
+                    </tr>
+                    
+                    <tr data-score="3" data-upvotes="3" data-downvotes="0" data-total_votes="3" data-comments="0" data-name="Center Street RR Crossing Improvements">
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/629?password=" class="project-link">
+                                Center Street RR Crossing Improvements
+                            </a>
+                        </td>
+                        <td class="score-cell positive">
+                            +3
+                        </td>
+                        <td class="upvote-cell">👍 3</td>
+                        <td class="downvote-cell">👎 0</td>
+                        <td>3</td>
+                        <td>💬 0</td>
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/629?password=" class="btn-small">View</a>
+                        </td>
+                    </tr>
+                    
+                    <tr data-score="3" data-upvotes="3" data-downvotes="0" data-total_votes="3" data-comments="0" data-name="Center &amp; Chatham St Sidewalk Phase 2">
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/636?password=" class="project-link">
+                                Center &amp; Chatham St Sidewalk Phase 2
+                            </a>
+                        </td>
+                        <td class="score-cell positive">
+                            +3
+                        </td>
+                        <td class="upvote-cell">👍 3</td>
+                        <td class="downvote-cell">👎 0</td>
+                        <td>3</td>
+                        <td>💬 0</td>
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/636?password=" class="btn-small">View</a>
+                        </td>
+                    </tr>
+                    
+                    <tr data-score="3" data-upvotes="4" data-downvotes="1" data-total_votes="5" data-comments="1" data-name="Tingen Road Pedestrian Tunnel">
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/640?password=" class="project-link">
+                                Tingen Road Pedestrian Tunnel
+                            </a>
+                        </td>
+                        <td class="score-cell positive">
+                            +3
+                        </td>
+                        <td class="upvote-cell">👍 4</td>
+                        <td class="downvote-cell">👎 1</td>
+                        <td>5</td>
+                        <td>💬 1</td>
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/640?password=" class="btn-small">View</a>
+                        </td>
+                    </tr>
+                    
+                    <tr data-score="3" data-upvotes="3" data-downvotes="0" data-total_votes="3" data-comments="0" data-name="Nature Park Operations &amp; Maintenance Building">
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/658?password=" class="project-link">
+                                Nature Park Operations &amp; Maintenance Building
+                            </a>
+                        </td>
+                        <td class="score-cell positive">
+                            +3
+                        </td>
+                        <td class="upvote-cell">👍 3</td>
+                        <td class="downvote-cell">👎 0</td>
+                        <td>3</td>
+                        <td>💬 0</td>
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/658?password=" class="btn-small">View</a>
+                        </td>
+                    </tr>
+                    
+                    <tr data-score="3" data-upvotes="4" data-downvotes="1" data-total_votes="5" data-comments="0" data-name="Reedy Branch Greenway">
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/651?password=" class="project-link">
+                                Reedy Branch Greenway
+                            </a>
+                        </td>
+                        <td class="score-cell positive">
+                            +3
+                        </td>
+                        <td class="upvote-cell">👍 4</td>
+                        <td class="downvote-cell">👎 1</td>
+                        <td>5</td>
+                        <td>💬 0</td>
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/651?password=" class="btn-small">View</a>
+                        </td>
+                    </tr>
+                    
+                    <tr data-score="3" data-upvotes="5" data-downvotes="2" data-total_votes="7" data-comments="1" data-name="Depot Parking Lot Repurposing">
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/682?password=" class="project-link">
+                                Depot Parking Lot Repurposing
+                            </a>
+                        </td>
+                        <td class="score-cell positive">
+                            +3
+                        </td>
+                        <td class="upvote-cell">👍 5</td>
+                        <td class="downvote-cell">👎 2</td>
+                        <td>7</td>
+                        <td>💬 1</td>
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/682?password=" class="btn-small">View</a>
+                        </td>
+                    </tr>
+                    
+                    <tr data-score="3" data-upvotes="3" data-downvotes="0" data-total_votes="3" data-comments="0" data-name="Public Safety Station 7 (Olive Farm Area)">
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/683?password=" class="project-link">
+                                Public Safety Station 7 (Olive Farm Area)
+                            </a>
+                        </td>
+                        <td class="score-cell positive">
+                            +3
+                        </td>
+                        <td class="upvote-cell">👍 3</td>
+                        <td class="downvote-cell">👎 0</td>
+                        <td>3</td>
+                        <td>💬 0</td>
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/683?password=" class="btn-small">View</a>
+                        </td>
+                    </tr>
+                    
+                    <tr data-score="2" data-upvotes="2" data-downvotes="0" data-total_votes="2" data-comments="0" data-name="Annual Pavement Management">
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/619?password=" class="project-link">
+                                Annual Pavement Management
+                            </a>
+                        </td>
+                        <td class="score-cell positive">
+                            +2
+                        </td>
+                        <td class="upvote-cell">👍 2</td>
+                        <td class="downvote-cell">👎 0</td>
+                        <td>2</td>
+                        <td>💬 0</td>
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/619?password=" class="btn-small">View</a>
+                        </td>
+                    </tr>
+                    
+                    <tr data-score="2" data-upvotes="2" data-downvotes="0" data-total_votes="2" data-comments="0" data-name="Chatham Street RR Crossing Improvements">
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/630?password=" class="project-link">
+                                Chatham Street RR Crossing Improvements
+                            </a>
+                        </td>
+                        <td class="score-cell positive">
+                            +2
+                        </td>
+                        <td class="upvote-cell">👍 2</td>
+                        <td class="downvote-cell">👎 0</td>
+                        <td>2</td>
+                        <td>💬 0</td>
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/630?password=" class="btn-small">View</a>
+                        </td>
+                    </tr>
+                    
+                    <tr data-score="2" data-upvotes="3" data-downvotes="1" data-total_votes="4" data-comments="1" data-name="Davis Dr at Salem Church Rd Realignment">
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/637?password=" class="project-link">
+                                Davis Dr at Salem Church Rd Realignment
+                            </a>
+                        </td>
+                        <td class="score-cell positive">
+                            +2
+                        </td>
+                        <td class="upvote-cell">👍 3</td>
+                        <td class="downvote-cell">👎 1</td>
+                        <td>4</td>
+                        <td>💬 1</td>
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/637?password=" class="btn-small">View</a>
+                        </td>
+                    </tr>
+                    
+                    <tr data-score="2" data-upvotes="2" data-downvotes="0" data-total_votes="2" data-comments="1" data-name="Jessie Drive Phase 2">
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/638?password=" class="project-link">
+                                Jessie Drive Phase 2
+                            </a>
+                        </td>
+                        <td class="score-cell positive">
+                            +2
+                        </td>
+                        <td class="upvote-cell">👍 2</td>
+                        <td class="downvote-cell">👎 0</td>
+                        <td>2</td>
+                        <td>💬 1</td>
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/638?password=" class="btn-small">View</a>
+                        </td>
+                    </tr>
+                    
+                    <tr data-score="2" data-upvotes="2" data-downvotes="0" data-total_votes="2" data-comments="0" data-name="Beaver Creek Greenway Extension">
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/648?password=" class="project-link">
+                                Beaver Creek Greenway Extension
+                            </a>
+                        </td>
+                        <td class="score-cell positive">
+                            +2
+                        </td>
+                        <td class="upvote-cell">👍 2</td>
+                        <td class="downvote-cell">👎 0</td>
+                        <td>2</td>
+                        <td>💬 0</td>
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/648?password=" class="btn-small">View</a>
+                        </td>
+                    </tr>
+                    
+                    <tr data-score="2" data-upvotes="2" data-downvotes="0" data-total_votes="2" data-comments="1" data-name="Environmental Education Center">
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/654?password=" class="project-link">
+                                Environmental Education Center
+                            </a>
+                        </td>
+                        <td class="score-cell positive">
+                            +2
+                        </td>
+                        <td class="upvote-cell">👍 2</td>
+                        <td class="downvote-cell">👎 0</td>
+                        <td>2</td>
+                        <td>💬 1</td>
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/654?password=" class="btn-small">View</a>
+                        </td>
+                    </tr>
+                    
+                    <tr data-score="2" data-upvotes="2" data-downvotes="0" data-total_votes="2" data-comments="0" data-name="Hunter Street Park Renovation">
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/655?password=" class="project-link">
+                                Hunter Street Park Renovation
+                            </a>
+                        </td>
+                        <td class="score-cell positive">
+                            +2
+                        </td>
+                        <td class="upvote-cell">👍 2</td>
+                        <td class="downvote-cell">👎 0</td>
+                        <td>2</td>
+                        <td>💬 0</td>
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/655?password=" class="btn-small">View</a>
+                        </td>
+                    </tr>
+                    
+                    <tr data-score="2" data-upvotes="3" data-downvotes="1" data-total_votes="4" data-comments="1" data-name="Wimberly Road Park">
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/652?password=" class="project-link">
+                                Wimberly Road Park
+                            </a>
+                        </td>
+                        <td class="score-cell positive">
+                            +2
+                        </td>
+                        <td class="upvote-cell">👍 3</td>
+                        <td class="downvote-cell">👎 1</td>
+                        <td>4</td>
+                        <td>💬 1</td>
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/652?password=" class="btn-small">View</a>
+                        </td>
+                    </tr>
+                    
+                    <tr data-score="2" data-upvotes="2" data-downvotes="0" data-total_votes="3" data-comments="2" data-name="Hughes Street Mixed-Use Development">
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/15?password=" class="project-link">
+                                Hughes Street Mixed-Use Development
+                            </a>
+                        </td>
+                        <td class="score-cell positive">
+                            +2
+                        </td>
+                        <td class="upvote-cell">👍 2</td>
+                        <td class="downvote-cell">👎 0</td>
+                        <td>3</td>
+                        <td>💬 2</td>
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/15?password=" class="btn-small">View</a>
+                        </td>
+                    </tr>
+                    
+                    <tr data-score="1" data-upvotes="1" data-downvotes="0" data-total_votes="1" data-comments="0" data-name="Downtown Projects: Commerce Street &amp; Seaboard Street Improvements">
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/8?password=" class="project-link">
+                                Downtown Projects: Commerce Street &amp; Seaboard Street Improvements
+                            </a>
+                        </td>
+                        <td class="score-cell positive">
+                            +1
+                        </td>
+                        <td class="upvote-cell">👍 1</td>
+                        <td class="downvote-cell">👎 0</td>
+                        <td>1</td>
+                        <td>💬 0</td>
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/8?password=" class="btn-small">View</a>
+                        </td>
+                    </tr>
+                    
+                    <tr data-score="1" data-upvotes="2" data-downvotes="1" data-total_votes="3" data-comments="1" data-name="Richardson Road at Core Banks Street Traffic Signal">
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/10?password=" class="project-link">
+                                Richardson Road at Core Banks Street Traffic Signal
+                            </a>
+                        </td>
+                        <td class="score-cell positive">
+                            +1
+                        </td>
+                        <td class="upvote-cell">👍 2</td>
+                        <td class="downvote-cell">👎 1</td>
+                        <td>3</td>
+                        <td>💬 1</td>
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/10?password=" class="btn-small">View</a>
+                        </td>
+                    </tr>
+                    
+                    <tr data-score="1" data-upvotes="1" data-downvotes="0" data-total_votes="1" data-comments="1" data-name="Beaver Creek Greenway Renovation">
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/12?password=" class="project-link">
+                                Beaver Creek Greenway Renovation
+                            </a>
+                        </td>
+                        <td class="score-cell positive">
+                            +1
+                        </td>
+                        <td class="upvote-cell">👍 1</td>
+                        <td class="downvote-cell">👎 0</td>
+                        <td>1</td>
+                        <td>💬 1</td>
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/12?password=" class="btn-small">View</a>
+                        </td>
+                    </tr>
+                    
+                    <tr data-score="1" data-upvotes="1" data-downvotes="0" data-total_votes="1" data-comments="0" data-name="Community Park Trail Widening (Swift Creek Greenway)">
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/653?password=" class="project-link">
+                                Community Park Trail Widening (Swift Creek Greenway)
+                            </a>
+                        </td>
+                        <td class="score-cell positive">
+                            +1
+                        </td>
+                        <td class="upvote-cell">👍 1</td>
+                        <td class="downvote-cell">👎 0</td>
+                        <td>1</td>
+                        <td>💬 0</td>
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/653?password=" class="btn-small">View</a>
+                        </td>
+                    </tr>
+                    
+                    <tr data-score="1" data-upvotes="2" data-downvotes="1" data-total_votes="4" data-comments="1" data-name="Middle Creek Greenway">
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/650?password=" class="project-link">
+                                Middle Creek Greenway
+                            </a>
+                        </td>
+                        <td class="score-cell positive">
+                            +1
+                        </td>
+                        <td class="upvote-cell">👍 2</td>
+                        <td class="downvote-cell">👎 1</td>
+                        <td>4</td>
+                        <td>💬 1</td>
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/650?password=" class="btn-small">View</a>
+                        </td>
+                    </tr>
+                    
+                    <tr data-score="1" data-upvotes="1" data-downvotes="0" data-total_votes="2" data-comments="1" data-name="Street Hockey &amp; Inclusive Playground">
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/656?password=" class="project-link">
+                                Street Hockey &amp; Inclusive Playground
+                            </a>
+                        </td>
+                        <td class="score-cell positive">
+                            +1
+                        </td>
+                        <td class="upvote-cell">👍 1</td>
+                        <td class="downvote-cell">👎 0</td>
+                        <td>2</td>
+                        <td>💬 1</td>
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/656?password=" class="btn-small">View</a>
+                        </td>
+                    </tr>
+                    
+                    <tr data-score="1" data-upvotes="1" data-downvotes="0" data-total_votes="1" data-comments="1" data-name="Fire Department Administration Building">
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/675?password=" class="project-link">
+                                Fire Department Administration Building
+                            </a>
+                        </td>
+                        <td class="score-cell positive">
+                            +1
+                        </td>
+                        <td class="upvote-cell">👍 1</td>
+                        <td class="downvote-cell">👎 0</td>
+                        <td>1</td>
+                        <td>💬 1</td>
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/675?password=" class="btn-small">View</a>
+                        </td>
+                    </tr>
+                    
+                    <tr data-score="1" data-upvotes="1" data-downvotes="0" data-total_votes="1" data-comments="0" data-name="Townwide Solar Initiative">
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/681?password=" class="project-link">
+                                Townwide Solar Initiative
+                            </a>
+                        </td>
+                        <td class="score-cell positive">
+                            +1
+                        </td>
+                        <td class="upvote-cell">👍 1</td>
+                        <td class="downvote-cell">👎 0</td>
+                        <td>1</td>
+                        <td>💬 0</td>
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/681?password=" class="btn-small">View</a>
+                        </td>
+                    </tr>
+                    
+                    <tr data-score="0" data-upvotes="0" data-downvotes="0" data-total_votes="0" data-comments="1" data-name="GoApex New Bus Stop Installations">
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/9?password=" class="project-link">
+                                GoApex New Bus Stop Installations
+                            </a>
+                        </td>
+                        <td class="score-cell neutral">
+                            0
+                        </td>
+                        <td class="upvote-cell">👍 0</td>
+                        <td class="downvote-cell">👎 0</td>
+                        <td>0</td>
+                        <td>💬 1</td>
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/9?password=" class="btn-small">View</a>
+                        </td>
+                    </tr>
+                    
+                    <tr data-score="0" data-upvotes="0" data-downvotes="0" data-total_votes="0" data-comments="0" data-name="GPS Emergency Vehicle Preemption">
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/621?password=" class="project-link">
+                                GPS Emergency Vehicle Preemption
+                            </a>
+                        </td>
+                        <td class="score-cell neutral">
+                            0
+                        </td>
+                        <td class="upvote-cell">👍 0</td>
+                        <td class="downvote-cell">👎 0</td>
+                        <td>0</td>
+                        <td>💬 0</td>
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/621?password=" class="btn-small">View</a>
+                        </td>
+                    </tr>
+                    
+                    <tr data-score="0" data-upvotes="1" data-downvotes="1" data-total_votes="2" data-comments="0" data-name="South Salem St Bicycle Connection">
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/625?password=" class="project-link">
+                                South Salem St Bicycle Connection
+                            </a>
+                        </td>
+                        <td class="score-cell neutral">
+                            0
+                        </td>
+                        <td class="upvote-cell">👍 1</td>
+                        <td class="downvote-cell">👎 1</td>
+                        <td>2</td>
+                        <td>💬 0</td>
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/625?password=" class="btn-small">View</a>
+                        </td>
+                    </tr>
+                    
+                    <tr data-score="0" data-upvotes="0" data-downvotes="0" data-total_votes="0" data-comments="0" data-name="Traffic Signal System: Apex-Holly Springs-Fuquay-Varina Partnership">
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/641?password=" class="project-link">
+                                Traffic Signal System: Apex-Holly Springs-Fuquay-Varina Partnership
+                            </a>
+                        </td>
+                        <td class="score-cell neutral">
+                            0
+                        </td>
+                        <td class="upvote-cell">👍 0</td>
+                        <td class="downvote-cell">👎 0</td>
+                        <td>0</td>
+                        <td>💬 0</td>
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/641?password=" class="btn-small">View</a>
+                        </td>
+                    </tr>
+                    
+                    <tr data-score="0" data-upvotes="0" data-downvotes="0" data-total_votes="0" data-comments="0" data-name="Wayfinding Signage">
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/635?password=" class="project-link">
+                                Wayfinding Signage
+                            </a>
+                        </td>
+                        <td class="score-cell neutral">
+                            0
+                        </td>
+                        <td class="upvote-cell">👍 0</td>
+                        <td class="downvote-cell">👎 0</td>
+                        <td>0</td>
+                        <td>💬 0</td>
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/635?password=" class="btn-small">View</a>
+                        </td>
+                    </tr>
+                    
+                    <tr data-score="0" data-upvotes="2" data-downvotes="2" data-total_votes="4" data-comments="0" data-name="Wimberly Road Sidewalk">
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/11?password=" class="project-link">
+                                Wimberly Road Sidewalk
+                            </a>
+                        </td>
+                        <td class="score-cell neutral">
+                            0
+                        </td>
+                        <td class="upvote-cell">👍 2</td>
+                        <td class="downvote-cell">👎 2</td>
+                        <td>4</td>
+                        <td>💬 0</td>
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/11?password=" class="btn-small">View</a>
+                        </td>
+                    </tr>
+                    
+                    <tr data-score="0" data-upvotes="0" data-downvotes="0" data-total_votes="0" data-comments="0" data-name="Electric Vehicle Supply Equipment (EVSE) Infrastructure Development">
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/14?password=" class="project-link">
+                                Electric Vehicle Supply Equipment (EVSE) Infrastructure Development
+                            </a>
+                        </td>
+                        <td class="score-cell neutral">
+                            0
+                        </td>
+                        <td class="upvote-cell">👍 0</td>
+                        <td class="downvote-cell">👎 0</td>
+                        <td>0</td>
+                        <td>💬 0</td>
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/14?password=" class="btn-small">View</a>
+                        </td>
+                    </tr>
+                    
+                    <tr data-score="-1" data-upvotes="0" data-downvotes="1" data-total_votes="1" data-comments="0" data-name="Big Branch Greenway">
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/657?password=" class="project-link">
+                                Big Branch Greenway
+                            </a>
+                        </td>
+                        <td class="score-cell negative">
+                            -1
+                        </td>
+                        <td class="upvote-cell">👍 0</td>
+                        <td class="downvote-cell">👎 1</td>
+                        <td>1</td>
+                        <td>💬 0</td>
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/657?password=" class="btn-small">View</a>
+                        </td>
+                    </tr>
+                    
+                    <tr data-score="-1" data-upvotes="2" data-downvotes="3" data-total_votes="5" data-comments="0" data-name="Jaycee Park Expansion">
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/659?password=" class="project-link">
+                                Jaycee Park Expansion
+                            </a>
+                        </td>
+                        <td class="score-cell negative">
+                            -1
+                        </td>
+                        <td class="upvote-cell">👍 2</td>
+                        <td class="downvote-cell">👎 3</td>
+                        <td>5</td>
+                        <td>💬 0</td>
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/659?password=" class="btn-small">View</a>
+                        </td>
+                    </tr>
+                    
+                    <tr data-score="-1" data-upvotes="1" data-downvotes="2" data-total_votes="3" data-comments="1" data-name="Seymour Athletic Fields and Nature Park Parking Lot Expansion and Turf Renovation">
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/663?password=" class="project-link">
+                                Seymour Athletic Fields and Nature Park Parking Lot Expansion and Turf Renovation
+                            </a>
+                        </td>
+                        <td class="score-cell negative">
+                            -1
+                        </td>
+                        <td class="upvote-cell">👍 1</td>
+                        <td class="downvote-cell">👎 2</td>
+                        <td>3</td>
+                        <td>💬 1</td>
+                        <td>
+                            <a href="https://sum.wakeresults.org/item/2026survey/663?password=" class="btn-small">View</a>
+                        </td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+    
+</div>
+
+<!-- Leaflet CSS and JS for hex map -->
+<link rel="stylesheet" href="./App Admin_ 2026survey - RSS Feed Viewer_files/leaflet.css">
+<script src="./App Admin_ 2026survey - RSS Feed Viewer_files/leaflet.js"></script>
+<script src="./App Admin_ 2026survey - RSS Feed Viewer_files/hex-map.js"></script>
+
+<script>
+// User locations data from server
+const userLocations = [{"hex": "hex_0_-2", "name": "Jason Buydens", "userid": "e0f4707a31c5e5b7"}, {"hex": "hex_0_-1", "name": "Alan Stadiem", "userid": "500660e5707b22f6"}, {"hex": "hex_1_-1", "name": "Kirk Winkelman", "userid": "074702aa47f1398d"}, {"hex": "hex_-2_-4", "name": "Evan Mandel", "userid": "04c0299e1478011b"}, {"hex": "hex_-4_4", "name": "Evan Schatz", "userid": "9270bf443c6a04bb"}, {"hex": "hex_0_0", "name": "Timothy Smith", "userid": "4a395fd58157a139"}, {"hex": "hex_1_-2", "name": "Rob Fegley", "userid": "50785b2905d2887c"}, {"hex": "hex_-2_-4", "name": "Sumith Surajan", "userid": "3cf7a63b42a901e0"}, {"hex": "hex_0_-3", "name": "Jay Vora", "userid": "2e8838a8dc9d4ea7"}, {"hex": "hex_0_-2", "name": "Dana Roederer", "userid": "8ddbd83949d51f33"}, {"hex": "hex_0_-4", "name": "Heidi Sico", "userid": "ffc757d0ca87dd6b"}, {"hex": "hex_0_-3", "name": "Kendall Rotondo", "userid": "744f1099fa53bfe9"}, {"hex": "hex_-1_-1", "name": "Charles Riggs", "userid": "23c8bf37f807637f"}, {"hex": "hex_0_0", "name": "Mathew Boban", "userid": "ec9d598f31ae446a"}, {"hex": "hex_0_0", "name": "Alan Maness", "userid": "aea6da9c8bf5177d"}, {"hex": "hex_0_-3", "name": "Patrick Patton", "userid": "0a420ed936157044"}, {"hex": "hex_-2_-4", "name": "Amy Denning", "userid": "305f6b5ae42c813f"}, {"hex": "hex_0_0", "name": "Daniel Khodaparast", "userid": "5d3427ca0522fbc6"}, {"hex": "hex_-1_-4", "name": "Charles Burilla", "userid": "ae59e2b3813b26a1"}, {"hex": "hex_0_-4", "name": "Charles Estell", "userid": "9eaf83d97224130d"}, {"hex": "hex_0_1", "name": "Connie Carringer", "userid": "ecfe5261e145d27f"}, {"hex": "hex_-1_-2", "name": "Steve Young", "userid": "56ec59b79f940fd1"}, {"hex": "hex_-2_-1", "name": "Albert Francia", "userid": "dba8a118a9c1c9c3"}, {"hex": "hex_1_-2", "name": "Phil Stein", "userid": "255bbf4cde9839c5"}, {"hex": "hex_0_0", "name": "Eric Stephens", "userid": "4a1888713b023fcb"}, {"hex": "hex_1_0", "name": "Lauren Newman", "userid": "ad2d528a2dc2cbee"}, {"hex": "hex_-1_-4", "name": "Lis Pfeiffer", "userid": "341a9cae92b7f1c6"}, {"hex": "hex_-1_0", "name": "Rhianon Purro", "userid": "edaef833ea3ee2e0"}, {"hex": "hex_0_-1", "name": "Fernando Correal", "userid": "b79207f0b449c472"}, {"hex": "hex_2_0", "name": "Diane Kurilecz", "userid": "b9fdcd882ce40aa6"}, {"hex": "hex_2_0", "name": "Bill Collins", "userid": "60d6a5af2780512a"}, {"hex": "hex_0_-5", "name": "Manju Dafforn", "userid": "d7f2e7dacb926267"}, {"hex": "hex_0_-2", "name": "Blaise Alicki", "userid": "e0d8a8b324ef4b8b"}, {"hex": "hex_0_0", "name": "Crystal O\u2019Mara", "userid": "ce8218e39ebd4b6f"}, {"hex": "hex_0_-1", "name": "Daniel Bishop", "userid": "ad1cfe6b855cc25a"}, {"hex": "hex_0_-3", "name": "Brad Beaton", "userid": "57a92e260f6b7c8e"}, {"hex": "hex_-1_-1", "name": "Chris Miller", "userid": "1baea5b872149ec2"}, {"hex": "hex_0_0", "name": "Roger Squires", "userid": "96743e4fbacb1aee"}, {"hex": "hex_-2_-4", "name": "Scott Gerenser", "userid": "47aef086a214bcf1"}, {"hex": "hex_0_-1", "name": "Laura Naslund", "userid": "1d39cee9acfeeba1"}, {"hex": "hex_0_0", "name": "Mike Kastellec", "userid": "994a986b6f3c9f60"}, {"hex": "hex_0_-1", "name": "Darcy Hull", "userid": "1f59e076aee52a28"}, {"hex": "hex_-2_-2", "name": "Tagbo Ekwueme-Okoli", "userid": "27b8c7fc09c444e4"}, {"hex": "hex_-1_-3", "name": "Heather Lanigan", "userid": "6d1374ae94537736"}, {"hex": "hex_2_-2", "name": "Johnathan Bynum", "userid": "cc880e9afc7b2391"}, {"hex": "hex_-1_-1", "name": "Kristy Casper-Bynum", "userid": "d495c400182a964d"}, {"hex": "hex_-1_-4", "name": "John Cotter", "userid": "7cba0a2e24c6b058"}, {"hex": "hex_-1_-1", "name": "David Hooks", "userid": "96f96805030d3e4a"}, {"hex": "hex_-4_4", "name": "Colin McGowan", "userid": "d5693aaf903fa6ee"}, {"hex": "hex_0_0", "name": "Brian Morrissey", "userid": "54fb96b0d10f2af0"}, {"hex": "hex_-1_-2", "name": "Cari McGregor", "userid": "dcfa94942ec20518"}, {"hex": "hex_1_-2", "name": "Maury McCoy", "userid": "a8cb8e9d8b757321"}, {"hex": "hex_-1_-4", "name": "Barbara Cook", "userid": "415955b7d4bcb74a"}, {"hex": "hex_2_0", "name": "Lynn Letukas", "userid": "6a46951589663bf2"}, {"hex": "hex_0_0", "name": "Kristen Bello", "userid": "367cc8e5a7f9a92e"}, {"hex": "hex_-2_-4", "name": "Keith Wood", "userid": "b121ebdb80fc9227"}, {"hex": "hex_0_0", "name": "Sergey Russell", "userid": "859774bc3ec47771"}, {"hex": "hex_2_1", "name": "bob kastner", "userid": "01ab50bc4740d9cd"}, {"hex": "hex_0_-3", "name": "Andrew Cleveland", "userid": "cb0999bafd556852"}, {"hex": "hex_-1_-4", "name": "Jonathan Springer", "userid": "bb2916936c9420a1"}, {"hex": "hex_0_0", "name": "Doug Shartzer", "userid": "0e4e2c8056a41665"}, {"hex": "hex_0_1", "name": "Brian Griffin", "userid": "e93c8885d58065be"}, {"hex": "hex_1_0", "name": "Thomas Montgomery", "userid": "4464d91992ffcc1b"}, {"hex": "hex_0_-4", "name": "Brant Gifford", "userid": "e40ededed63d1e32"}, {"hex": "hex_1_-2", "name": "Heather Dashnau", "userid": "8dcaa2ac57ef9817"}, {"hex": "hex_0_0", "name": "Tom Colwell", "userid": "6eb324c7204278f8"}, {"hex": "hex_0_-1", "name": "Paul Dewey", "userid": "7228fc86ace2b141"}, {"hex": "hex_-1_-3", "name": "Brooke McGinnis", "userid": "5a82d0a2371a28d4"}, {"hex": "hex_-1_-2", "name": "Robert Vila", "userid": "f7f55b9f89d4dbf5"}, {"hex": "hex_0_-4", "name": "Adam Sepulveda", "userid": "5c0046ca95a7597b"}, {"hex": "hex_-1_-1", "name": "Travis Orr", "userid": "073f5837c4c6b444"}, {"hex": "hex_-1_-3", "name": "Michelle Rose", "userid": "3f9deec08896012f"}, {"hex": "hex_0_-1", "name": "SHANNAN SHEAFFER", "userid": "f12fa81f4e50f7a7"}, {"hex": "hex_2_1", "name": "Kostya Filippenko", "userid": "b4763653adf771c3"}, {"hex": "hex_0_-4", "name": "Oleksandr Vashchenko", "userid": "7679fb873df395f0"}, {"hex": "hex_-2_-2", "name": "Kenny Finch", "userid": "46ee905b9fa1ff01"}, {"hex": "hex_0_-1", "name": "Cindy Rossetti", "userid": "f21cde9f3c8f8789"}, {"hex": "hex_-3_-2", "name": "Naomi Stadiem", "userid": "3072a3301b3c69c3"}, {"hex": "hex_-1_0", "name": "Aaron Sutara", "userid": "1c343757997cddd6"}, {"hex": "hex_-1_-1", "name": "Ruth Finch", "userid": "7bc56010faf7e197"}, {"hex": "hex_2_-1", "name": "Jake Sugg", "userid": "af68be4a0d95d3bb"}, {"hex": "hex_3_-5", "name": "Anna Precourt", "userid": "4e990d0e6c687aa2"}, {"hex": "hex_0_2", "name": "Elizabeth Robinson", "userid": "3ef4ead8e6c1f6be"}, {"hex": "hex_0_-3", "name": "Denise Chiu", "userid": "bd985bff48c811ab"}, {"hex": "hex_-1_-4", "name": "David F", "userid": "72adc3b87568384d"}, {"hex": "hex_2_-2", "name": "Lisa Kim", "userid": "31173e11da999f29"}, {"hex": "hex_-1_-4", "name": "Maria Kalouda", "userid": "6506324700ff3b7a"}, {"hex": "hex_-2_-1", "name": "Avery Emery", "userid": "51ff4fb8f8604ed2"}, {"hex": "hex_-1_-2", "name": "Terry Mahaffey", "userid": "32a382619f4cda91"}, {"hex": "hex_-1_-2", "name": "Leah Proctor", "userid": "edbc935d9ee2a1d9"}, {"hex": "hex_-1_-1", "name": "Lisa Vines", "userid": "ec9ace4b4689e441"}, {"hex": "hex_0_1", "name": "Austin Burke", "userid": "35498bdf71bca7d4"}, {"hex": "hex_0_-4", "name": "Tejas Pande", "userid": "f2b7b100b3d31a01"}, {"hex": "hex_-2_-3", "name": "Sandra McPhail", "userid": "2d1be2c93050adcc"}, {"hex": "hex_0_-4", "name": "Colton Miller", "userid": "ff8c138b47c753a2"}, {"hex": "hex_-2_-4", "name": "Marc Pamley", "userid": "c53954888e0236dd"}, {"hex": "hex_-2_-1", "name": "Marci S", "userid": "418fbfab0e6e1990"}, {"hex": "hex_1_-1", "name": "Samuel Williams", "userid": "7607279cb92be8a5"}, {"hex": "hex_1_-2", "name": "Pam Stewart", "userid": "69c07b2a2dafec30"}, {"hex": "hex_0_-3", "name": "Jason Patrick", "userid": "2a5ad67424656db6"}];
+// Hex grid configuration
+const hexConfig = {"center": {"lat": 35.7327, "lng": -78.8503}, "hexSize": 0.008, "zoom": 11};
+
+// Initialize map using shared hex-map.js
+if (userLocations.length > 0) {
+    renderHexHeatmap('map', userLocations, hexConfig);
+}
+</script>
+
+<style>
+    .back-link {
+        margin-bottom: 1rem;
+    }
+    
+    .back-link a {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: 500;
+    }
+    
+    .back-link a:hover {
+        text-decoration: underline;
+    }
+    
+    .stats-overview {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+    
+    .stat-card {
+        background: var(--card-bg);
+        border-radius: 8px;
+        padding: 1.5rem;
+        text-align: center;
+        box-shadow: var(--shadow);
+    }
+    
+    .stat-card .stat-value {
+        display: block;
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--primary-color);
+    }
+    
+    .stat-card .stat-label {
+        display: block;
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+        margin-top: 0.25rem;
+    }
+    
+    .section-card {
+        background: var(--card-bg);
+        border-radius: 8px;
+        padding: 1.5rem;
+        box-shadow: var(--shadow);
+        margin-bottom: 1.5rem;
+    }
+    
+    .section-card h2 {
+        margin-bottom: 1rem;
+        font-size: 1.25rem;
+    }
+    
+    .table-container {
+        overflow-x: auto;
+    }
+    
+    .data-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    
+    .data-table th,
+    .data-table td {
+        padding: 0.75rem;
+        text-align: left;
+        border-bottom: 1px solid var(--border-color);
+    }
+    
+    .data-table th {
+        background: var(--bg-color);
+        font-weight: 600;
+        white-space: nowrap;
+    }
+    
+    .data-table th[data-sort] {
+        user-select: none;
+    }
+    
+    .data-table th[data-sort]:hover {
+        background: var(--border-color);
+    }
+    
+    .data-table th .sort-icon {
+        margin-left: 0.25rem;
+        font-size: 0.75rem;
+    }
+    
+    .data-table tbody tr:hover {
+        background: var(--bg-color);
+    }
+    
+    .user-link,
+    .project-link {
+        color: var(--primary-color);
+        text-decoration: none;
+    }
+    
+    .user-link:hover,
+    .project-link:hover {
+        text-decoration: underline;
+    }
+    
+    .score-cell {
+        font-weight: 600;
+    }
+    
+    .score-cell.positive {
+        color: #16a34a;
+    }
+    
+    .score-cell.negative {
+        color: #dc2626;
+    }
+    
+    .score-cell.neutral {
+        color: var(--text-secondary);
+    }
+    
+    .upvote-cell {
+        color: #16a34a;
+    }
+    
+    .downvote-cell {
+        color: #dc2626;
+    }
+    
+    .btn-small {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        background: var(--primary-color);
+        color: white;
+        border-radius: 4px;
+        text-decoration: none;
+        font-size: 0.875rem;
+    }
+    
+    .btn-small:hover {
+        background: var(--primary-hover);
+    }
+    
+    .empty-state-small {
+        padding: 2rem;
+        text-align: center;
+        color: var(--text-secondary);
+    }
+    
+    .map-note {
+        margin-top: 0.5rem;
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+    }
+    
+    code {
+        background: var(--bg-color);
+        padding: 0.125rem 0.375rem;
+        border-radius: 4px;
+        font-size: 0.875rem;
+    }
+    
+    /* Email template styles */
+    .email-template-section {
+        background: #f8fafc;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .email-template-section h3 {
+        margin-bottom: 0.5rem;
+        font-size: 1rem;
+    }
+    
+    .template-hint {
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+        margin-bottom: 1rem;
+    }
+    
+    .template-hint code {
+        background: #e2e8f0;
+        color: var(--text-primary);
+    }
+    
+    .email-form {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .email-form .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+    
+    .email-form label {
+        font-weight: 500;
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+    }
+    
+    .email-input, .email-textarea {
+        padding: 0.5rem 0.75rem;
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        font-family: inherit;
+        font-size: 0.9rem;
+    }
+    
+    .email-input:focus, .email-textarea:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+    
+    .email-textarea {
+        resize: vertical;
+        min-height: 80px;
+    }
+    
+    .email-link {
+        color: var(--primary-color);
+        text-decoration: none;
+    }
+    
+    .email-link:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<script>
+// Email template functionality
+(function() {
+    const subjectInput = document.getElementById('email-subject');
+    const bodyInput = document.getElementById('email-body');
+    const emailLinks = document.querySelectorAll('.email-link');
+    
+    // Handle click on email link - build mailto URL with placeholders replaced
+    emailLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            const subject = subjectInput ? subjectInput.value : '';
+            const body = bodyInput ? bodyInput.value : '';
+            
+            // If no template defined, let default mailto behavior work
+            if (!subject && !body) {
+                return;
+            }
+            
+            e.preventDefault();
+            
+            const email = this.dataset.email;
+            const firstName = this.dataset.firstname;
+            const lastName = this.dataset.lastname;
+            
+            // Build mailto URL
+            let mailtoUrl = `mailto:${email}`;
+            const params = [];
+            
+            if (subject) {
+                // Replace placeholders in subject
+                let processedSubject = subject
+                    .replace(/\{\{first_name\}\}/gi, firstName)
+                    .replace(/\{\{last_name\}\}/gi, lastName)
+                    .replace(/\{\{email\}\}/gi, email);
+                params.push(`subject=${encodeURIComponent(processedSubject)}`);
+            }
+            
+            if (body) {
+                // Replace placeholders in body
+                let processedBody = body
+                    .replace(/\{\{first_name\}\}/gi, firstName)
+                    .replace(/\{\{last_name\}\}/gi, lastName)
+                    .replace(/\{\{email\}\}/gi, email);
+                params.push(`body=${encodeURIComponent(processedBody)}`);
+            }
+            
+            if (params.length > 0) {
+                mailtoUrl += '?' + params.join('&');
+            }
+            
+            // Open the mailto link
+            window.location.href = mailtoUrl;
+        });
+    });
+})();
+</script>
+
+    </div>
+    
+    <footer>
+        <p>RSS Feed Viewer © 2025</p>
+    </footer>
+    
+    <script>
+    // Universal sortable table functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.sortable th[data-sort]').forEach(th => {
+            th.style.cursor = 'pointer';
+            th.addEventListener('click', () => {
+                const table = th.closest('table');
+                const tbody = table.querySelector('tbody');
+                const rows = Array.from(tbody.querySelectorAll('tr'));
+                const sortKey = th.dataset.sort;
+                const isAsc = th.classList.contains('asc');
+                
+                // Clear all sort indicators (only on headers that have sort-icon)
+                table.querySelectorAll('th').forEach(header => {
+                    header.classList.remove('asc', 'desc', 'sorted');
+                    const sortIcon = header.querySelector('.sort-icon');
+                    if (sortIcon) sortIcon.textContent = '';
+                });
+                
+                // Sort rows
+                rows.sort((a, b) => {
+                    let aVal = a.dataset[sortKey] || '';
+                    let bVal = b.dataset[sortKey] || '';
+                    
+                    // Try numeric comparison
+                    const aNum = parseFloat(aVal);
+                    const bNum = parseFloat(bVal);
+                    
+                    if (!isNaN(aNum) && !isNaN(bNum)) {
+                        return isAsc ? aNum - bNum : bNum - aNum;
+                    }
+                    
+                    // String comparison (case-insensitive)
+                    return isAsc ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
+                });
+                
+                // Update sort indicator
+                th.classList.add('sorted', isAsc ? 'desc' : 'asc');
+                const clickedSortIcon = th.querySelector('.sort-icon');
+                if (clickedSortIcon) clickedSortIcon.textContent = isAsc ? '▼' : '▲';
+                
+                // Reorder rows
+                rows.forEach(row => tbody.appendChild(row));
+            });
+        });
+    });
+    </script>
+
+</body></html>

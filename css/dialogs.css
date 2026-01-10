@@ -296,6 +296,56 @@
 }
 
 /* ========================================
+   Results Mode - Project Card
+   ======================================== */
+
+.project-card-results {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+.results-vote-score {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    min-width: 30px;
+    text-align: center;
+}
+
+.results-comment-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    transition: var(--transition);
+}
+
+.results-comment-btn:hover {
+    background: var(--background-color);
+    color: var(--text-primary);
+}
+
+.results-comment-btn .comment-count {
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.comment-count-badge {
+    font-size: 0.75rem;
+    margin-left: 4px;
+    color: var(--secondary-color);
+}
+
+/* ========================================
    Comment Dialog
    ======================================== */
 

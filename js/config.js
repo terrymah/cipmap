@@ -116,11 +116,24 @@ export function getAppId() {
 }
 
 /**
- * Check if survey mode is enabled
+ * Check if survey mode is enabled (via config or ?survey query param)
  * @returns {boolean} True if survey mode is enabled
  */
 export function isSurveyMode() {
-    return config?.survey === true;
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('survey') === 'true') return true;
+    if (urlParams.get('results') === 'true') return true;
+    return config?.survey === true || config?.results === true;
+}
+
+/**
+ * Check if results mode is enabled (via config or ?results query param)
+ * @returns {boolean} True if results mode is enabled
+ */
+export function isResultsMode() {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('results') === 'true') return true;
+    return config?.results === true;
 }
 
 /**
