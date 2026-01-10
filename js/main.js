@@ -164,11 +164,14 @@ async function init() {
         recoverVotesToServer();
 
         // In results mode, fetch all vote scores and comment counts
+        // In survey mode, just fetch comment counts
         if (isResultsMode()) {
             [allVoteScores, allCommentCounts] = await Promise.all([
                 fetchAllVoteScores(),
                 fetchAllCommentCounts()
             ]);
+        } else if (isSurveyMode()) {
+            allCommentCounts = await fetchAllCommentCounts();
         }
 
         // Initial render
@@ -377,8 +380,10 @@ function createProjectCard(project, config) {
             }
         }
     } else {
-        // Wire up vote buttons (normal mode)
-        wireVoteButtons(card, project, showCommentDialog);
+        // Wire up vote buttons (normal/survey mode)
+        // Pass comment count if available (survey mode)
+        const commentCount = allCommentCounts[project.id] || 0;
+        wireVoteButtons(card, project, showCommentDialog, { commentCount });
     }
 
     // Click handler - shift+click for location assignment mode (debug mode only)

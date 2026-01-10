@@ -248,6 +248,21 @@
     justify-self: end;
 }
 
+/* Comment count in actions (survey mode) */
+.project-card-actions .comment-btn {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    width: auto;
+    padding: 0 6px;
+}
+
+.project-card-actions .comment-count {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
 .vote-btn {
     width: 28px;
     height: 28px;
@@ -300,11 +315,15 @@
    ======================================== */
 
 .project-card-results {
-    display: flex;
+    display: none; /* Hidden by default, shown via JS removing hidden attribute */
     align-items: center;
     gap: 12px;
     margin-left: auto;
     flex-shrink: 0;
+}
+
+.project-card-results:not([hidden]) {
+    display: flex;
 }
 
 .results-vote-score {

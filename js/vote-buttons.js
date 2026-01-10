@@ -12,12 +12,13 @@ import { isResultsMode } from './config.js';
  * @param {Element} container - The container element with vote buttons
  * @param {Object} project - The project object
  * @param {Function} onShowCommentDialog - Callback to show the comment dialog
- * @param {Object} options - Optional configuration { resultsData: { score, commentCount } }
+ * @param {Object} options - Optional configuration { commentCount: number }
  */
 export function wireVoteButtons(container, project, onShowCommentDialog, options = {}) {
     const upvoteBtn = container.querySelector('.upvote-btn');
     const downvoteBtn = container.querySelector('.downvote-btn');
     const commentBtn = container.querySelector('.comment-btn');
+    const commentCountEl = container.querySelector('.comment-count');
     const scoreEl = container.querySelector('.vote-score');
 
     if (!upvoteBtn || !downvoteBtn || !commentBtn) {
@@ -25,6 +26,12 @@ export function wireVoteButtons(container, project, onShowCommentDialog, options
     }
 
     const resultsMode = isResultsMode();
+
+    // Show comment count if provided (survey mode or results mode)
+    if (commentCountEl && typeof options.commentCount === 'number' && options.commentCount > 0) {
+        commentCountEl.textContent = options.commentCount;
+        commentCountEl.hidden = false;
+    }
 
     // In results mode, disable voting and show results data
     if (resultsMode) {
@@ -45,14 +52,6 @@ export function wireVoteButtons(container, project, onShowCommentDialog, options
         } else if (scoreEl) {
             // Fetch score for detail panel
             fetchAndDisplayScore(project.id, scoreEl);
-        }
-        
-        // Add comment count badge if provided
-        if (options.resultsData?.commentCount !== undefined) {
-            const countBadge = document.createElement('span');
-            countBadge.className = 'comment-count-badge';
-            countBadge.textContent = options.resultsData.commentCount;
-            commentBtn.appendChild(countBadge);
         }
         
         // Comment button still works
